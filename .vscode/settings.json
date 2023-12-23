@@ -60,6 +60,11 @@
         "variant": "cpp",
         "vector": "cpp",
         "algorithm": "cpp",
-        "glad.h": "c"
-    }
+        "glad.h": "c",
+        "__verbose_abort": "cpp",
+        "charconv": "cpp",
+        "fstream": "cpp",
+        "iomanip": "cpp"
+    },
+    "cmake.configureOnOpen": false
 }
