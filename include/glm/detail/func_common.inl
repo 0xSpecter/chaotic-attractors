@@ -80,7 +80,7 @@ namespace detail
 	template<length_t L, typename T, typename U, qualifier Q, bool Aligned>
 	struct compute_mix_vector
 	{
-		GLM_FUNC_QUALIFIER GLM_CONSTEXPR static vec<L, T, Q> call(vec<L, T, Q> const& x, vec<L, T, Q> const& y, vec<L, U, Q> const& a)
+		GLM_FUNC_QUALIFIER static vec<L, T, Q> call(vec<L, T, Q> const& x, vec<L, T, Q> const& y, vec<L, U, Q> const& a)
 		{
 			GLM_STATIC_ASSERT(std::numeric_limits<U>::is_iec559 || GLM_CONFIG_UNRESTRICTED_GENTYPE, "'mix' only accept floating-point inputs for the interpolator a");
 
@@ -91,7 +91,7 @@ namespace detail
 	template<length_t L, typename T, qualifier Q, bool Aligned>
 	struct compute_mix_vector<L, T, bool, Q, Aligned>
 	{
-		GLM_FUNC_QUALIFIER GLM_CONSTEXPR static vec<L, T, Q> call(vec<L, T, Q> const& x, vec<L, T, Q> const& y, vec<L, bool, Q> const& a)
+		GLM_FUNC_QUALIFIER static vec<L, T, Q> call(vec<L, T, Q> const& x, vec<L, T, Q> const& y, vec<L, bool, Q> const& a)
 		{
 			vec<L, T, Q> Result;
 			for(length_t i = 0; i < x.length(); ++i)
@@ -103,7 +103,7 @@ namespace detail
 	template<length_t L, typename T, typename U, qualifier Q, bool Aligned>
 	struct compute_mix_scalar
 	{
-		GLM_FUNC_QUALIFIER GLM_CONSTEXPR static vec<L, T, Q> call(vec<L, T, Q> const& x, vec<L, T, Q> const& y, U const& a)
+		GLM_FUNC_QUALIFIER static vec<L, T, Q> call(vec<L, T, Q> const& x, vec<L, T, Q> const& y, U const& a)
 		{
 			GLM_STATIC_ASSERT(std::numeric_limits<U>::is_iec559 || GLM_CONFIG_UNRESTRICTED_GENTYPE, "'mix' only accept floating-point inputs for the interpolator a");
 
@@ -114,7 +114,7 @@ namespace detail
 	template<length_t L, typename T, qualifier Q, bool Aligned>
 	struct compute_mix_scalar<L, T, bool, Q, Aligned>
 	{
-		GLM_FUNC_QUALIFIER GLM_CONSTEXPR static vec<L, T, Q> call(vec<L, T, Q> const& x, vec<L, T, Q> const& y, bool const& a)
+		GLM_FUNC_QUALIFIER static vec<L, T, Q> call(vec<L, T, Q> const& x, vec<L, T, Q> const& y, bool const& a)
 		{
 			return a ? y : x;
 		}
@@ -123,7 +123,7 @@ namespace detail
 	template<typename T, typename U>
 	struct compute_mix
 	{
-		GLM_FUNC_QUALIFIER GLM_CONSTEXPR static T call(T const& x, T const& y, U const& a)
+		GLM_FUNC_QUALIFIER static T call(T const& x, T const& y, U const& a)
 		{
 			GLM_STATIC_ASSERT(std::numeric_limits<U>::is_iec559 || GLM_CONFIG_UNRESTRICTED_GENTYPE, "'mix' only accept floating-point inputs for the interpolator a");
 
@@ -134,7 +134,7 @@ namespace detail
 	template<typename T>
 	struct compute_mix<T, bool>
 	{
-		GLM_FUNC_QUALIFIER GLM_CONSTEXPR static T call(T const& x, T const& y, bool const& a)
+		GLM_FUNC_QUALIFIER static T call(T const& x, T const& y, bool const& a)
 		{
 			return a ? y : x;
 		}
@@ -143,7 +143,7 @@ namespace detail
 	template<length_t L, typename T, qualifier Q, bool isFloat, bool Aligned>
 	struct compute_sign
 	{
-		GLM_FUNC_QUALIFIER GLM_CONSTEXPR static vec<L, T, Q> call(vec<L, T, Q> const& x)
+		GLM_FUNC_QUALIFIER static vec<L, T, Q> call(vec<L, T, Q> const& x)
 		{
 			return vec<L, T, Q>(glm::lessThan(vec<L, T, Q>(0), x)) - vec<L, T, Q>(glm::lessThan(x, vec<L, T, Q>(0)));
 		}
@@ -153,7 +153,7 @@ namespace detail
 	template<length_t L, typename T, qualifier Q, bool Aligned>
 	struct compute_sign<L, T, Q, false, Aligned>
 	{
-		GLM_FUNC_QUALIFIER GLM_CONSTEXPR static vec<L, T, Q> call(vec<L, T, Q> const& x)
+		GLM_FUNC_QUALIFIER static vec<L, T, Q> call(vec<L, T, Q> const& x)
 		{
 			T const Shift(static_cast<T>(sizeof(T) * 8 - 1));
 			vec<L, T, Q> const y(vec<L, typename detail::make_unsigned<T>::type, Q>(-x) >> typename detail::make_unsigned<T>::type(Shift));
@@ -281,7 +281,7 @@ namespace detail
 	// sign
 	// fast and works for any type
 	template<typename genFIType>
-	GLM_FUNC_QUALIFIER GLM_CONSTEXPR genFIType sign(genFIType x)
+	GLM_FUNC_QUALIFIER genFIType sign(genFIType x)
 	{
 		GLM_STATIC_ASSERT(
 			std::numeric_limits<genFIType>::is_iec559 || (std::numeric_limits<genFIType>::is_signed && std::numeric_limits<genFIType>::is_integer),
@@ -292,7 +292,7 @@ namespace detail
 	}
 
 	template<length_t L, typename T, qualifier Q>
-	GLM_FUNC_QUALIFIER GLM_CONSTEXPR vec<L, T, Q> sign(vec<L, T, Q> const& x)
+	GLM_FUNC_QUALIFIER vec<L, T, Q> sign(vec<L, T, Q> const& x)
 	{
 		GLM_STATIC_ASSERT(
 			std::numeric_limits<T>::is_iec559 || (std::numeric_limits<T>::is_signed && std::numeric_limits<T>::is_integer),
@@ -401,7 +401,7 @@ namespace detail
 	template<typename genType>
 	GLM_FUNC_QUALIFIER genType mod(genType x, genType y)
 	{
-#		if (GLM_COMPILER & GLM_COMPILER_CUDA) || (GLM_COMPILER & GLM_COMPILER_HIP)
+#		if GLM_COMPILER & GLM_COMPILER_CUDA
 			// Another Cuda compiler bug https://github.com/g-truc/glm/issues/530
 			vec<1, genType, defaultp> Result(mod(vec<1, genType, defaultp>(x), y));
 			return Result.x;
@@ -523,19 +523,19 @@ namespace detail
 	}
 
 	template<typename genTypeT, typename genTypeU>
-	GLM_FUNC_QUALIFIER GLM_CONSTEXPR genTypeT mix(genTypeT x, genTypeT y, genTypeU a)
+	GLM_FUNC_QUALIFIER genTypeT mix(genTypeT x, genTypeT y, genTypeU a)
 	{
 		return detail::compute_mix<genTypeT, genTypeU>::call(x, y, a);
 	}
 
 	template<length_t L, typename T, typename U, qualifier Q>
-	GLM_FUNC_QUALIFIER GLM_CONSTEXPR vec<L, T, Q> mix(vec<L, T, Q> const& x, vec<L, T, Q> const& y, U a)
+	GLM_FUNC_QUALIFIER vec<L, T, Q> mix(vec<L, T, Q> const& x, vec<L, T, Q> const& y, U a)
 	{
 		return detail::compute_mix_scalar<L, T, U, Q, detail::is_aligned<Q>::value>::call(x, y, a);
 	}
 
 	template<length_t L, typename T, typename U, qualifier Q>
-	GLM_FUNC_QUALIFIER GLM_CONSTEXPR vec<L, T, Q> mix(vec<L, T, Q> const& x, vec<L, T, Q> const& y, vec<L, U, Q> const& a)
+	GLM_FUNC_QUALIFIER vec<L, T, Q> mix(vec<L, T, Q> const& x, vec<L, T, Q> const& y, vec<L, U, Q> const& a)
 	{
 		return detail::compute_mix_vector<L, T, U, Q, detail::is_aligned<Q>::value>::call(x, y, a);
 	}
@@ -601,7 +601,7 @@ namespace detail
 #				endif
 #			elif (GLM_COMPILER & (GLM_COMPILER_GCC | GLM_COMPILER_CLANG)) && (GLM_PLATFORM & GLM_PLATFORM_ANDROID) && __cplusplus < 201103L
 				return _isnan(x) != 0;
-#			elif (GLM_COMPILER & GLM_COMPILER_CUDA) || (GLM_COMPILER & GLM_COMPILER_HIP)
+#			elif GLM_COMPILER & GLM_COMPILER_CUDA
 				return ::isnan(x) != 0;
 #			else
 				return std::isnan(x);
@@ -642,7 +642,7 @@ namespace detail
 #				else
 					return std::isinf(x);
 #				endif
-#			elif (GLM_COMPILER & GLM_COMPILER_CUDA) || (GLM_COMPILER & GLM_COMPILER_HIP)
+#			elif GLM_COMPILER & GLM_COMPILER_CUDA
 				// http://developer.download.nvidia.com/compute/cuda/4_2/rel/toolkit/docs/online/group__CUDA__MATH__DOUBLE_g13431dd2b40b51f9139cbb7f50c18fab.html#g13431dd2b40b51f9139cbb7f50c18fab
 				return ::isinf(double(x)) != 0;
 #			else
@@ -662,7 +662,7 @@ namespace detail
 		return Result;
 	}
 
-	GLM_FUNC_QUALIFIER int floatBitsToInt(float v)
+	GLM_FUNC_QUALIFIER int floatBitsToInt(float const& v)
 	{
 		union
 		{
@@ -678,10 +678,10 @@ namespace detail
 	template<length_t L, qualifier Q>
 	GLM_FUNC_QUALIFIER vec<L, int, Q> floatBitsToInt(vec<L, float, Q> const& v)
 	{
-		return detail::functor1<vec, L, int, float, Q>::call(floatBitsToInt, v);
+		return reinterpret_cast<vec<L, int, Q>&>(const_cast<vec<L, float, Q>&>(v));
 	}
 
-	GLM_FUNC_QUALIFIER uint floatBitsToUint(float v)
+	GLM_FUNC_QUALIFIER uint floatBitsToUint(float const& v)
 	{
 		union
 		{
@@ -697,10 +697,10 @@ namespace detail
 	template<length_t L, qualifier Q>
 	GLM_FUNC_QUALIFIER vec<L, uint, Q> floatBitsToUint(vec<L, float, Q> const& v)
 	{
-		return detail::functor1<vec, L, uint, float, Q>::call(floatBitsToUint, v);
+		return reinterpret_cast<vec<L, uint, Q>&>(const_cast<vec<L, float, Q>&>(v));
 	}
 
-	GLM_FUNC_QUALIFIER float intBitsToFloat(int v)
+	GLM_FUNC_QUALIFIER float intBitsToFloat(int const& v)
 	{
 		union
 		{
@@ -716,10 +716,10 @@ namespace detail
 	template<length_t L, qualifier Q>
 	GLM_FUNC_QUALIFIER vec<L, float, Q> intBitsToFloat(vec<L, int, Q> const& v)
 	{
-		return detail::functor1<vec, L, float, int, Q>::call(intBitsToFloat, v);
+		return reinterpret_cast<vec<L, float, Q>&>(const_cast<vec<L, int, Q>&>(v));
 	}
 
-	GLM_FUNC_QUALIFIER float uintBitsToFloat(uint v)
+	GLM_FUNC_QUALIFIER float uintBitsToFloat(uint const& v)
 	{
 		union
 		{
