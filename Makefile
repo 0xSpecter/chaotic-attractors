@@ -1,13 +1,11 @@
-CC = clang -std=c11
 CXX = clang++ -std=c++11
 CFLAGS = -g -O -I./include -I./include/**  -Wall -Wno-unused 
+FRAMEWORKS = -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo
 	
 all: 
-	@$(CXX) $(CFLAGS) -c ./src/*.cpp  
-	@$(CC) $(CFLAGS) -pedantic-errors -O3  -c ./src/*.c -o glad.o
-	@$(CXX) $(CFLAGS) *.o -l glfw3 -L./lib -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo -o main
+	@$(CXX) $(CFLAGS) ./src/**.cpp  -l glfw3 -L./lib $(FRAMEWORKS) -o main
 	@./main
-	@rm -f *.o main
+	@rm -f main
 
-c:
-	@rm -f main *.o
+clean:
+	@rm -f main 
