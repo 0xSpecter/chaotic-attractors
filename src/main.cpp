@@ -14,7 +14,7 @@ int main()
 {
     GLFWwindow* window = init();
 
-    Shader shader("vertex_shader.GLSL", "fragment_shader.GLSL");
+    Shader shader("shader.vert", "shader.frag");
 
     float vertices[] = {
         // positions          // colors           // texture coords
