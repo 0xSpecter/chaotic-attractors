@@ -55,12 +55,15 @@ int main()
     glEnableVertexAttribArray(2);
 
     
-    Texture texture1("hardcap.png", "png"); 
-    Texture texture2("spooked.png", "png"); 
+    Texture texture1("container.jpg", GL_RGB); 
 
     shader.use();
     shader.setInt("texture1", 0);
-    shader.setInt("texture2", 1);
+
+    shader.setMat4("transform", glm::mat4(1.0f));
+
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, texture1.ID);
 
     while (!glfwWindowShouldClose(window))
     {
@@ -68,11 +71,6 @@ int main()
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, texture1.ID);
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, texture2.ID);
 
         shader.use();
         glBindVertexArray(VAO);

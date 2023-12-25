@@ -6,8 +6,8 @@ class Texture
     public:
         unsigned int ID;
 
-        Texture(std::string imagePath, std::string imageType = "png");
+        Texture(std::string imagePath, unsigned int RGB_CONFIG);
     
     private:
-        void loadTexture(std::string imagePath, std::string imageType);
+        void loadTexture(std::string imagePath, unsigned int RGB_CONFIG);
 };

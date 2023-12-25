@@ -4,7 +4,7 @@
 #include "texture.hpp"
 #include "stb_image.h"
 
-Texture::Texture(std::string imagePath, std::string imageType)
+Texture::Texture(std::string imagePath, unsigned int RGB_CONFIG)
 {
     glGenTextures(1, &ID);
     glBindTexture(GL_TEXTURE_2D, ID); 
@@ -14,17 +14,17 @@ Texture::Texture(std::string imagePath, std::string imageType)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-    loadTexture(imagePath, imageType);
+    loadTexture(imagePath, RGB_CONFIG);
 }
 
-void Texture::loadTexture(std::string imagePath, std::string imageType)
+void Texture::loadTexture(std::string imagePath, unsigned int RGB_CONFIG)
 {
     int width, height, nrChannels;
     unsigned char *data = stbi_load(imagePath.c_str(), &width, &height, &nrChannels, 0);
     
     if (data) {
         stbi_set_flip_vertically_on_load(true);  
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, (imageType.compare("png") ? GL_RGBA : GL_RGB), GL_UNSIGNED_BYTE, data);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, RGB_CONFIG, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
     }
     else {
