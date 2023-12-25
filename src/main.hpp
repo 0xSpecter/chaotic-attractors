@@ -5,6 +5,7 @@
 #include <cmath>
 #include "shaders.hpp"
 #include "texture.hpp"
+#include "camera.hpp"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>

@@ -1,14 +1,4 @@
-#include <string>
-#include <fstream>
-#include <sstream>
-#include <iostream>
-#include "glad/glad.h"
-#include "GLFW/glfw3.h"
 #include "shaders.hpp"
-
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
 
 
 Shader::Shader(const char* vertexPath, const char* fragmentPath)

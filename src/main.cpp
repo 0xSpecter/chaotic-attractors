@@ -84,37 +84,36 @@ int main()
     glEnableVertexAttribArray(1);
 
     
-    Texture texture("container.jpg", GL_RGB); 
+    Texture texture("social-media-monitoring-app.jpg", GL_RGB); 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture.ID);
 
     shader.use();
     shader.setInt("texture1", 0);
+    
+    glm::mat4 projection = glm::mat4(1.0f); 
+    projection = glm::perspective(glm::radians(45.0f), WIDTH / HEIGHT, 0.1f, 100.0f);
+    shader.setMat4("projection", projection);
 
+    Camera camera;
 
     while (!glfwWindowShouldClose(window))
     {
         processInput(window);
+        camera.processInput(window);
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         shader.use();
 
-        glm::mat4 view = glm::mat4(1.0f); 
-        glm::mat4 projection = glm::mat4(1.0f); 
-        view  = glm::translate(view, glm::vec3(0.0f, 0.0f, -3.0f));
-        projection = glm::perspective(glm::radians(45.0f), WIDTH / HEIGHT, 0.1f, 100.0f);
-
-        shader.setMat4("view", view);
-        shader.setMat4("projection", projection);
+        shader.setMat4("view", camera.lookAt());
 
         glBindVertexArray(VAO);
         for(unsigned int i = 0; i < 10; i++)
         {
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::translate(model, cubePositions[i]);
-            model = glm::rotate(model, (float)glfwGetTime() * glm::radians(20.0f * (i + 1)), glm::vec3(0.5f, 1.0f, 0.0f));  
             
             shader.setMat4("model", model);
             glDrawArrays(GL_TRIANGLES, 0, 36);

@@ -1,8 +1,4 @@
-#include <iostream>
-#include "glad/glad.h"
-#include "GLFW/glfw3.h"
 #include "texture.hpp"
-#include "stb_image.h"
 
 Texture::Texture(std::string imagePath, unsigned int RGB_CONFIG)
 {
