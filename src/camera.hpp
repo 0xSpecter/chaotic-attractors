@@ -8,22 +8,51 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+enum Camera_Movement {
+    FORWARD,
+    BACKWARD,
+    LEFT,
+    RIGHT
+};
+
+const float YAW         = -90.0f;
+const float PITCH       =  0.0f;
+const float SPEED       =  2.5f;
+const float SENSITIVITY =  0.1f;
+const float FOV         =  45.0f;
+
 class Camera
 {
     public:
         Camera();
+        glm::mat4 GetViewMatrix();
 
-        glm::mat4 rotate();
-
-        glm::mat4 lookAt();
-
-        void processInput(GLFWwindow* window);
+        void ProcessInput(GLFWwindow* window, float deltaTime);
+        void ProcessMouseInput(double xpos, double ypos);
+        void ProcessMouseScroll(double yoffset);
 
     private:
-        glm::vec3 cameraPos = glm::vec3(0.0f, 0.0f, 3.0f);
-        glm::vec3 cameraFront = glm::vec3(0.0f, 0.0f, -1.0f);
-        glm::vec3 cameraTarget = glm::vec3(0.0f, 0.0f, 0.0f);
-        glm::vec3 cameraDirection = glm::normalize(cameraPos - cameraTarget);
-        glm::vec3 cameraRight = glm::normalize(glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), cameraDirection));
-        glm::vec3 cameraUp = glm::cross(cameraDirection, cameraRight);
+        glm::vec3 Position = glm::vec3(0.0f, 0.0f, 0.0f);
+        glm::vec3 Front = glm::vec3(0.0f, 0.0f, -1.0f);
+        glm::vec3 WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
+        glm::vec3 Up;
+        glm::vec3 Right;
+
+        // euler Angles
+        float Yaw = YAW;
+        float Pitch = PITCH;
+
+        // camera options
+        float MovementSpeed = SPEED;
+        float MouseSensitivity = SENSITIVITY;
+        float Fov = FOV;
+            // mouse values
+            bool firstMouseMovement = true;
+            double lastX;
+            double lastY;
+
+        float deltaTime = 0.0f;	
+        float lastFrame = 0.0f; 
+
+        void updateCameraVectors();
 };

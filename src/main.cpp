@@ -3,11 +3,15 @@
 const float WIDTH = 800.0f;
 const float HEIGHT = 600.0f;
 
+float deltaTime = 0.0f;
+float lastFrame = 0.0f;
+
+Camera camera;
+Shader shader("shader.vert", "shader.frag");
+
 int main()
 {
     GLFWwindow* window = init();
-
-    Shader shader("shader.vert", "shader.frag");
 
     float vertices[] = {
         -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
@@ -95,19 +99,20 @@ int main()
     projection = glm::perspective(glm::radians(45.0f), WIDTH / HEIGHT, 0.1f, 100.0f);
     shader.setMat4("projection", projection);
 
-    Camera camera;
-
     while (!glfwWindowShouldClose(window))
     {
+        float currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+
         processInput(window);
-        camera.processInput(window);
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         shader.use();
 
-        shader.setMat4("view", camera.lookAt());
+        shader.setMat4("view", camera.GetViewMatrix());
 
         glBindVertexArray(VAO);
         for(unsigned int i = 0; i < 10; i++)
@@ -126,7 +131,7 @@ int main()
 
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
-    cleanup();
+    glfwTerminate();
     return 0;
 }
 
@@ -146,25 +151,35 @@ GLFWwindow* init()
 
     gladLoadGL();
 
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
+    glfwSetCursorPosCallback(window, mouse_callback);
+    glfwSetScrollCallback(window, scroll_callback);
+
     glEnable(GL_DEPTH_TEST);  
 
     return window;
 }
 
-
-void cleanup()
+void framebuffer_size_callback(GLFWwindow* window, int width, int height) 
 {
-    glfwTerminate();
+    glViewport(0, 0, width, height);
 }
-
 
 void processInput(GLFWwindow* window) 
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
     }
+
+    camera.ProcessInput(window, deltaTime);
 }
 
-void framebuffer_size_callback(GLFWwindow* window, int width, int height) {
-    glViewport(0, 0, width, height);
+void mouse_callback(GLFWwindow* window, double xpos, double ypos)
+{
+    camera.ProcessMouseInput(xpos, ypos);
+}
+
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
+{
+    camera.ProcessMouseScroll(yoffset);
 }
