@@ -51,8 +51,5 @@ class Camera
             double lastX;
             double lastY;
 
-        float deltaTime = 0.0f;	
-        float lastFrame = 0.0f; 
-
         void updateCameraVectors();
 };
