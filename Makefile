@@ -1,5 +1,5 @@
 CXX = clang++ -std=c++11
-CFLAGS = -g -O -I./include -I./include/**  -Wall -Wno-unused 
+CFLAGS = -O -I./include -I./include/**  -Wall -Wno-unused 
 FRAMEWORKS = -framework OpenGL -framework Cocoa -framework IOKit -framework CoreVideo
 	
 all: 

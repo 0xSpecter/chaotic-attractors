@@ -12,7 +12,7 @@ int main()
 {
     GLFWwindow* window = init();
 
-    Shader shader("shader.vert", "shader.frag");
+    Shader shader("shaders/shader.vert", "shaders/shader.frag");
 
     float vertices[] = {
         -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
