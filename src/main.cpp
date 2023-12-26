@@ -149,11 +149,11 @@ GLFWwindow* init()
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-    gladLoadGL();
-
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
     glfwSetCursorPosCallback(window, mouse_callback);
     glfwSetScrollCallback(window, scroll_callback);
+
+    gladLoadGL();
 
     glEnable(GL_DEPTH_TEST);  
 
