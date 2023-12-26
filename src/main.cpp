@@ -7,11 +7,12 @@ float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
 Camera camera;
-Shader shader("shader.vert", "shader.frag");
 
 int main()
 {
     GLFWwindow* window = init();
+
+    Shader shader("shader.vert", "shader.frag");
 
     float vertices[] = {
         -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
@@ -88,7 +89,7 @@ int main()
     glEnableVertexAttribArray(1);
 
     
-    Texture texture("social-media-monitoring-app.jpg", GL_RGB); 
+    Texture texture("container.jpg", GL_RGB); 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture.ID);
 

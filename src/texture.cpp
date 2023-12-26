@@ -16,10 +16,10 @@ Texture::Texture(std::string imagePath, unsigned int RGB_CONFIG)
 void Texture::loadTexture(std::string imagePath, unsigned int RGB_CONFIG)
 {
     int width, height, nrChannels;
+    stbi_set_flip_vertically_on_load(true);  
     unsigned char *data = stbi_load(imagePath.c_str(), &width, &height, &nrChannels, 0);
     
     if (data) {
-        stbi_set_flip_vertically_on_load(true);  
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, RGB_CONFIG, GL_UNSIGNED_BYTE, data);
         glGenerateMipmap(GL_TEXTURE_2D);
     }
