@@ -15,7 +15,7 @@ glm::mat4 Camera::GetViewMatrix()
 // processes keyboard input
 void Camera::ProcessInput(GLFWwindow* window, float deltaTime)
 {
-    float velocity = MovementSpeed * deltaTime;
+    float velocity = deltaTime * MovementSpeed * (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS ? 3.0 : 1.0);
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) Position += Front * velocity;
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) Position -= Front * velocity;
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) Position -= Right * velocity;

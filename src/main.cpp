@@ -1,20 +1,19 @@
 #include "main.hpp"
 
-
 const float WIDTH = 800.0f;
 const float HEIGHT = 600.0f;
 
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
+GLFWwindow* window = init();
+
 Camera camera;
+Shader shader("shaders/shader.vert", "shaders/shader.frag");
+Gui gui(window);
 
 int main()
 {
-    GLFWwindow* window = init();
-
-    Shader shader("shaders/shader.vert", "shaders/shader.frag");
-
     float vertices[] = {
         -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
         0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
@@ -89,7 +88,6 @@ int main()
     glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
-    
     Texture texture("container.jpg", GL_RGB); 
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, texture.ID);
@@ -101,8 +99,7 @@ int main()
     projection = glm::perspective(glm::radians(45.0f), WIDTH / HEIGHT, 0.1f, 100.0f);
     shader.setMat4("projection", projection);
 
-    ImGui::CreateContext();
-
+    float scalar = 1.0f;
 
     while (!glfwWindowShouldClose(window))
     {
@@ -110,7 +107,8 @@ int main()
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
-        processInput(window);
+        processInput();
+        gui.newframe();
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -123,12 +121,14 @@ int main()
         for(unsigned int i = 0; i < 10; i++)
         {
             glm::mat4 model = glm::mat4(1.0f);
-            model = glm::translate(model, cubePositions[i]);
+            model = glm::translate(model, cubePositions[i] * scalar);
             
             shader.setMat4("model", model);
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
 
+        gui.render(&scalar);
+        
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
@@ -136,6 +136,8 @@ int main()
 
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
+    ImGui::DestroyContext();
+    ImGui_ImplGlfw_Shutdown();
     glfwTerminate();
     return 0;
 }
@@ -170,18 +172,22 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     glViewport(0, 0, width, height);
 }
 
-void processInput(GLFWwindow* window) 
+void processInput() 
 {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, true);
     }
 
     camera.ProcessInput(window, deltaTime);
+    gui.ProcessInput();
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
-    camera.ProcessMouseInput(xpos, ypos);
+    if (!gui.open) 
+    {
+        camera.ProcessMouseInput(xpos, ypos);
+    }
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)

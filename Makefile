@@ -8,4 +8,4 @@ all:
 	@rm -f main
 
 clean:
-	@rm -f main 
+	@rm -f main imgui.ini
