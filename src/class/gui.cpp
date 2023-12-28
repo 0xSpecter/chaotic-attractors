@@ -18,7 +18,7 @@ void Gui::newframe()
     ImGui::NewFrame();
 }
 
-void Gui::render(float* scalar)
+void Gui::render(float* scalar, float* speed, int* lossCount, float* pointSize)
 {
     if (open)
     {
@@ -36,8 +36,18 @@ void Gui::render(float* scalar)
         }
 
 
-        ImGui::SliderFloat("float", scalar, 0.0, 10.0);
+        ImGui::SliderFloat("Scalar", scalar, 0.1, 10.0);
+        ImGui::SliderFloat("speed", speed, 0.0, 10.0);
+        ImGui::SliderFloat("Point Size", pointSize, 0.1, 100.0);
 
+        ImGui::Text("Loss Count");
+        ImGui::TextColored(ImVec4(0.0f, 0.8f, 0.2f, 1.0f), "Loss %s / %s Total", std::to_string(*lossCount).c_str(), std::to_string(PointsInital.size()).c_str());
+
+        if (ImGui::Button("Reset")) {
+            *Points = PointsInital;
+            *lossCount = 0; 
+        }
+        
         ImGui::End();
     } 
     else glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -49,4 +59,10 @@ void Gui::render(float* scalar)
 void Gui::ProcessInput()
 {
     if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_PRESS) open = true;
+}
+
+void Gui::setPointsArray(std::vector<glm::vec3>* PointsRef)
+{
+    Points = PointsRef;
+    PointsInital = *PointsRef;
 }

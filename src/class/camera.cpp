@@ -1,8 +1,11 @@
 #include "camera.hpp"
 
 
-Camera::Camera()
+Camera::Camera(GLFWwindow* window, float cameraInitalDistance)
 {
+    Camera::window = window;
+    Position.z = cameraInitalDistance;
+
     updateCameraVectors();
 }
 
@@ -13,9 +16,10 @@ glm::mat4 Camera::GetViewMatrix()
 }
 
 // processes keyboard input
-void Camera::ProcessInput(GLFWwindow* window, float deltaTime)
+void Camera::ProcessInput(float deltaTime)
 {
-    float velocity = deltaTime * MovementSpeed * (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS ? 3.0 : 1.0);
+    float sprint = (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS ? 20.0 : (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS ? 3.0 : 1.0));
+    float velocity = deltaTime * MovementSpeed * sprint;
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) Position += Front * velocity;
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) Position -= Front * velocity;
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) Position -= Right * velocity;
@@ -23,8 +27,13 @@ void Camera::ProcessInput(GLFWwindow* window, float deltaTime)
 }
 
 // processes mouse input
-void Camera::ProcessMouseInput(double xpos, double ypos)
-{
+void Camera::ProcessMouseInput(double xpos, double ypos, bool IgnoreMouse)
+{   
+    if (IgnoreMouse) {
+        firstMouseMovement = true;
+        return;
+    }
+
     if (firstMouseMovement) {
         lastX = xpos;
         lastY = ypos;

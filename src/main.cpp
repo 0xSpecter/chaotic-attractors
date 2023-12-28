@@ -1,4 +1,5 @@
 #include "main.hpp"
+#include <vector>
 
 const float WIDTH = 800.0f;
 const float HEIGHT = 600.0f;
@@ -8,68 +9,36 @@ float lastFrame = 0.0f;
 
 GLFWwindow* window = init();
 
-Camera camera;
+Camera camera(window, 100.0f);
 Shader shader("shaders/shader.vert", "shaders/shader.frag");
 Gui gui(window);
 
 int main()
 {
-    float vertices[] = {
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-        0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-        0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-        0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-        0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+    float point[] = {
+        -0.5f, -0.5f, -0.5f,  
     };
 
-    glm::vec3 cubePositions[] = {
-        glm::vec3( 0.0f,  0.0f,  0.0f), 
-        glm::vec3( 2.0f,  5.0f, -15.0f), 
-        glm::vec3(-1.5f, -2.2f, -2.5f),  
-        glm::vec3(-3.8f, -2.0f, -12.3f),  
-        glm::vec3( 2.4f, -0.4f, -3.5f),  
-        glm::vec3(-1.7f,  3.0f, -7.5f),  
-        glm::vec3( 1.3f, -2.0f, -2.5f),  
-        glm::vec3( 1.5f,  2.0f, -2.5f), 
-        glm::vec3( 1.5f,  0.2f, -1.5f), 
-        glm::vec3(-1.3f,  1.0f, -1.5f)  
-    };
+    std::vector<glm::vec3> Points;
+    
+    if (true) {
+        for(float vx = -5.0f; vx < 5.0f; vx += 0.3f) {
+            for(float vy = -5.0f; vy < 5.0f; vy += 0.3) {
+                for(float vz = -5.0f; vz < 5.0f; vz += 0.3f) {
+                    Points.push_back(glm::vec3(vx, vy, vz));
+                }
+            }
+        }
+    } else {
+        for(float vx = -2.0f; vx < 2.0f; vx += 1.0f) {
+            for(float vy = -2.0f; vy < 2.0f; vy += 1.0) {
+                for(float vz = -2.0f; vz < 2.0f; vz += 1.0f) {
+                    Points.push_back(glm::vec3(vx, vy, vz));
+                }
+            }
+        }
+    }
+    
 
     unsigned int VBO, VAO;
     glGenVertexArrays(1, &VAO);
@@ -78,29 +47,24 @@ int main()
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(point), point, GL_STATIC_DRAW);
 
     // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
-    // texture coord attribute
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-
-    Texture texture("container.jpg", GL_RGB); 
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, texture.ID);
-
     shader.use();
-    shader.setInt("texture1", 0);
     
     glm::mat4 projection = glm::mat4(1.0f); 
-    projection = glm::perspective(glm::radians(45.0f), WIDTH / HEIGHT, 0.1f, 100.0f);
+    projection = glm::perspective(glm::radians(45.0f), WIDTH / HEIGHT, 0.1f, 10000.0f);
     shader.setMat4("projection", projection);
 
     float scalar = 1.0f;
+    float speed = 1.0f;
+    float pointSize = 1.0f;
+    int lossCount = 0;
 
+    gui.setPointsArray(&Points);
     while (!glfwWindowShouldClose(window))
     {
         float currentFrame = glfwGetTime();
@@ -110,24 +74,39 @@ int main()
         processInput();
         gui.newframe();
 
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         shader.use();
-
         shader.setMat4("view", camera.GetViewMatrix());
 
-        glBindVertexArray(VAO);
-        for(unsigned int i = 0; i < 10; i++)
+        float timestep = deltaTime * speed;
+        glPointSize(pointSize);
+        for(unsigned int i = 0; i < Points.size(); i++)
         {
+            if (glm::length(Points[i]) > 100000) {
+                lossCount++;
+                Points.erase(Points.begin() + i);
+                continue;
+            }
+
+            Points[i].x += (10 * (Points[i].y - Points[i].x)) * timestep;
+            Points[i].y += (Points[i].x * (28 - Points[i].z) - Points[i].y) * timestep;
+            Points[i].z += (Points[i].x * Points[i].y - 8/3 * Points[i].z) * timestep;
+            shader.setVec3("globalPosition", Points[i]);
+
+            
             glm::mat4 model = glm::mat4(1.0f);
-            model = glm::translate(model, cubePositions[i] * scalar);
+            model = glm::scale(model, glm::vec3(scalar));
+            model = glm::translate(model, Points[i]);
             
             shader.setMat4("model", model);
-            glDrawArrays(GL_TRIANGLES, 0, 36);
+            glBindVertexArray(VAO);
+            glDrawArrays(GL_POINTS, 0, 36);
         }
 
-        gui.render(&scalar);
+        gui.render(&scalar, &speed, &lossCount, &pointSize);
+
         
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -164,6 +143,10 @@ GLFWwindow* init()
 
     glEnable(GL_DEPTH_TEST);  
 
+    if (true) {
+        glEnable(GL_BLEND);
+    }
+
     return window;
 }
 
@@ -178,16 +161,13 @@ void processInput()
         glfwSetWindowShouldClose(window, true);
     }
 
-    camera.ProcessInput(window, deltaTime);
+    camera.ProcessInput(deltaTime);
     gui.ProcessInput();
 }
 
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
-    if (!gui.open) 
-    {
-        camera.ProcessMouseInput(xpos, ypos);
-    }
+    camera.ProcessMouseInput(xpos, ypos, gui.open);
 }
 
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)

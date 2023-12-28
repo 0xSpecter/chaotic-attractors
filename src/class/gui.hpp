@@ -19,11 +19,15 @@ class Gui
 
         void newframe();
 
-        void render(float* scalar);
+        void render(float* scalar, float* speed, int* lossCount, float* pointSize);
 
         void ProcessInput();
 
+        void setPointsArray(std::vector<glm::vec3>* PointsRef);
+
     private:
         GLFWwindow* window;
+        std::vector<glm::vec3>* Points;
+        std::vector<glm::vec3> PointsInital;
 };
 

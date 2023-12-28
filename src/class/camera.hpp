@@ -24,15 +24,17 @@ const float FOV         =  45.0f;
 class Camera
 {
     public:
-        Camera();
+        Camera(GLFWwindow* window, float cameraInitalDistance = 5.0f);
         glm::mat4 GetViewMatrix();
 
-        void ProcessInput(GLFWwindow* window, float deltaTime);
-        void ProcessMouseInput(double xpos, double ypos);
+        void ProcessInput(float deltaTime);
+        void ProcessMouseInput(double xpos, double ypos, bool IgnoreMouse);
         void ProcessMouseScroll(double yoffset);
 
     private:
-        glm::vec3 Position = glm::vec3(0.0f, 0.0f, 0.0f);
+        GLFWwindow* window;
+
+        glm::vec3 Position = glm::vec3(0.0f, 0.0f, 5.0f);
         glm::vec3 Front = glm::vec3(0.0f, 0.0f, -1.0f);
         glm::vec3 WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
         glm::vec3 Up;
