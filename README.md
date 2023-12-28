@@ -22,6 +22,8 @@ make
 
 ---
 
+**Say No** to any extension popups, (they *will* break stuff) 
+
 #### Useful Resources
 
 
