@@ -31,4 +31,6 @@
 *.out
 *.app
 
+imgui.ini
+main
 main.o.dSYM
