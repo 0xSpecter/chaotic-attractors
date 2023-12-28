@@ -12,9 +12,9 @@
 
 #### **Only runs on MAC**
 
-after downloading the repo run **'make'** in the project root
-
 > All libraries are already setup (VScode superiority)
+
+after downloading the repo run **'make'** in bash at the project root
 
 ``` bash
 make
