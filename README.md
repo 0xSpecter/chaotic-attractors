@@ -10,7 +10,7 @@
 
 ## *Running the simulation*
 
-##### **Only runs on MAC**
+#### **Only runs on MAC**
 
 after downloading the repo run **'make'** in the project root
 
@@ -22,7 +22,7 @@ make
 
 ---
 
-##### Useful Resources
+#### Useful Resources
 
 
 <a href="https://www.youtube.com/watch?v=idpOunnpKTo" target="_blank">
