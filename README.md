@@ -1,5 +1,5 @@
 # chaotic-attractors
 
-## GOAL
+## Lorenz Attractor
 
-![my goal](./md/goal.png)
+![Lorenz Attractor](./md/video.webp)
