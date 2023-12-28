@@ -22,9 +22,9 @@ make
 
 **Say No** to any extension popups, (they *will* break stuff) 
 
-#### Useful Resources
-
 ---
+
+### Useful Resources
 
 <a href="https://www.youtube.com/watch?v=idpOunnpKTo" target="_blank">
     Video about Chaotic Attractors by "<b>Orfeas Liossatos</b>"
