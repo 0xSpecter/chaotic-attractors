@@ -1,6 +1,6 @@
 # chaotic-attractors
 
-> This is only my first attempt, will hopefully be expanded and improved
+> This is only my first attempt, will hopefully be expanded and improved!
 
 ## Lorenz Attractor
 
@@ -21,6 +21,27 @@ make
 ```
 
 **Say No** to any extension popups, (they *will* break stuff) 
+
+---
+
+## *Controls*
+
+#### Movement
+
+<div style="display: flex; flex-direction: column; width: 300px">
+    <div style="display: flex; justify-content: space-around; width: 50%;">
+        <img src="./md/w.png" alt="W key" />
+    </div>
+    <div style="">
+        <img src="./md/a.png" alt="A key" />
+        <img src="./md/s.png" alt="S key" />
+        <img src="./md/d.png" alt="D key" />
+    </div>
+</div>
+
+#### Look
+
+<img src="./md/mouse.png" alt="use mouse">
 
 ---
 
