@@ -28,20 +28,63 @@ make
 
 #### Movement
 
-<div style="display: flex; flex-direction: column; width: 300px">
-    <div style="display: flex; justify-content: space-around; width: 50%;">
-        <img src="./md/w.png" alt="W key" />
+<div>
+    <div>
+        <img src="./md/padding.png"/>
+        <img src="./md/controles/w.png" alt="W key" />
     </div>
-    <div style="">
-        <img src="./md/a.png" alt="A key" />
-        <img src="./md/s.png" alt="S key" />
-        <img src="./md/d.png" alt="D key" />
+    <div>
+        <img src="./md/controles/a.png" alt="A key" />
+        <img src="./md/controles/s.png" alt="S key" />
+        <img src="./md/controles/d.png" alt="D key" />
     </div>
 </div>
 
+<br/>
+<br/>
+
 #### Look
 
-<img src="./md/mouse.png" alt="use mouse">
+<img src="./md/controles/mouse.png" alt="use mouse">
+
+<br/>
+<br/>
+
+#### Zoom
+
+<img src="./md/controles/arrowup.png" alt="use mouse">
+<br/>
+<img src="./md/controles/arrowdown.png" alt="use mouse">
+
+<br/>
+<br/>
+
+#### Speed
+
+##### 3x speed
+
+<img src="./md/controles/shift.png" alt="use mouse">
+
+##### 20x speed
+
+<img src="./md/controles/space.png" alt="use mouse">
+
+<br/>
+<br/>
+
+#### Gui
+
+##### Open
+
+<img src="./md/controles/tab.png" alt="use mouse">
+
+<br/>
+<br/>
+
+
+#### Close App
+
+<img src="./md/controles/esc.png" alt="use mouse">
 
 ---
 
