@@ -13,6 +13,11 @@ Camera camera(window, 100.0f);
 Shader shader("shaders/shader.vert", "shaders/shader.frag");
 Gui gui(window);
 
+enum equations {
+    lorenze,
+    cube
+};
+
 int main()
 {
     float point[] = {
@@ -54,10 +59,6 @@ int main()
     glEnableVertexAttribArray(0);
 
     shader.use();
-    
-    glm::mat4 projection = glm::mat4(1.0f); 
-    projection = glm::perspective(glm::radians(45.0f), WIDTH / HEIGHT, 0.1f, 10000.0f);
-    shader.setMat4("projection", projection);
 
     float scalar = 1.0f;
     float speed = 1.0f;
@@ -65,6 +66,8 @@ int main()
     int lossCount = 0;
 
     gui.setPointsArray(&Points);
+
+    gui.addConstant("f", 28.0, 0.0, 100.0);
     while (!glfwWindowShouldClose(window))
     {
         float currentFrame = glfwGetTime();
@@ -80,19 +83,56 @@ int main()
         shader.use();
         shader.setMat4("view", camera.GetViewMatrix());
 
+        glm::mat4 projection = glm::mat4(1.0f); 
+        projection = glm::perspective(glm::radians(camera.getFov()), WIDTH / HEIGHT, 0.1f, 10000.0f);
+        shader.setMat4("projection", projection);
+
         float timestep = deltaTime * speed;
         glPointSize(pointSize);
         for(unsigned int i = 0; i < Points.size(); i++)
         {
-            if (glm::length(Points[i]) > 100000) {
+            if (glm::length(Points[i]) > 100000 && gui.doCull) {
                 lossCount++;
                 Points.erase(Points.begin() + i);
                 continue;
             }
 
-            Points[i].x += (10 * (Points[i].y - Points[i].x)) * timestep;
-            Points[i].y += (Points[i].x * (28 - Points[i].z) - Points[i].y) * timestep;
-            Points[i].z += (Points[i].x * Points[i].y - 8/3 * Points[i].z) * timestep;
+            switch(gui.equation) {
+                case lorenze:
+                    Points[i].x += (10 * (Points[i].y - Points[i].x)) * timestep;
+                    Points[i].y += (Points[i].x * (gui.constants["f"].value - Points[i].z) - Points[i].y) * timestep;
+                    Points[i].z += (Points[i].x * Points[i].y - 8/3 * Points[i].z) * timestep;
+                    break;
+                case cube:
+
+                    break;
+                default:
+                    Points[i].x += Points[i].x * timestep;
+                    Points[i].y += Points[i].y * timestep;
+                    Points[i].z += Points[i].z * timestep;
+            }
+
+            if (false)
+            {
+                Points[i].x += (10 * (Points[i].y - Points[i].x)) * timestep;
+                Points[i].y += (Points[i].x * (gui.constants["f"].value - Points[i].z) - Points[i].y) * timestep;
+                Points[i].z += (Points[i].x * Points[i].y - 8/3 * Points[i].z) * timestep;
+            }
+            else 
+            {
+                Points[i].x += Points[i].x * timestep;
+                Points[i].y += Points[i].y * timestep;
+                Points[i].z += Points[i].z * timestep;
+            }   
+
+            /*
+            dx = (z-b) * x - d*y
+
+            dy = d * x + (z-b) * y
+
+            dz = c + a*z - z3 /3 - x2 + f * z * x3
+            */
+
             shader.setVec3("globalPosition", Points[i]);
 
             
@@ -137,7 +177,6 @@ GLFWwindow* init()
 
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);  
     glfwSetCursorPosCallback(window, mouse_callback);
-    glfwSetScrollCallback(window, scroll_callback);
 
     gladLoadGL();
 
@@ -168,9 +207,4 @@ void processInput()
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
     camera.ProcessMouseInput(xpos, ypos, gui.open);
-}
-
-void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
-{
-    camera.ProcessMouseScroll(yoffset);
 }

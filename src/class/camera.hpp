@@ -31,6 +31,8 @@ class Camera
         void ProcessMouseInput(double xpos, double ypos, bool IgnoreMouse);
         void ProcessMouseScroll(double yoffset);
 
+        float getFov();
+
     private:
         GLFWwindow* window;
 

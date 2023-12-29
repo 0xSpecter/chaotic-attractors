@@ -64,7 +64,9 @@
         "__verbose_abort": "cpp",
         "charconv": "cpp",
         "fstream": "cpp",
-        "iomanip": "cpp"
+        "iomanip": "cpp",
+        "__tree": "cpp",
+        "map": "cpp"
     },
     "cmake.configureOnOpen": false
 }

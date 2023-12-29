@@ -18,12 +18,18 @@ glm::mat4 Camera::GetViewMatrix()
 // processes keyboard input
 void Camera::ProcessInput(float deltaTime)
 {
-    float sprint = (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS ? 20.0 : (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS ? 3.0 : 1.0));
+    float sprint = (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS ? 20.0 : (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS ? 3.0 : 1.0));
     float velocity = deltaTime * MovementSpeed * sprint;
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) Position += Front * velocity;
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) Position -= Front * velocity;
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) Position -= Right * velocity;
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) Position += Right * velocity;
+
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) Fov -= 1.0f;
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) Fov += 1.0f;
+
+    if (Fov < 0.5f) Fov = 0.5f;
+    else if (Fov > 75.0f) Fov = 75.0f;
 }
 
 // processes mouse input
@@ -58,14 +64,6 @@ void Camera::ProcessMouseInput(double xpos, double ypos, bool IgnoreMouse)
     updateCameraVectors();
 }
 
-// processes mouse scroll input
-void Camera::ProcessMouseScroll(double yoffset)
-{
-    Fov -= yoffset;
-    if (Fov < 1.0f) Fov = 1.0f;
-    else if (Fov > 45.0f) Fov = 45.0f;
-}
-
 // update values
 void Camera::updateCameraVectors()
 {
@@ -78,4 +76,9 @@ void Camera::updateCameraVectors()
 
     Right = glm::normalize(glm::cross(Front, WorldUp));
     Up    = glm::normalize(glm::cross(Right, Front));
+}
+
+float Camera::getFov()
+{
+    return Fov;
 }
