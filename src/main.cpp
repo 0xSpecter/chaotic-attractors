@@ -1,35 +1,27 @@
 #include "main.hpp"
-#include <vector>
 
-const float WIDTH = 800.0f;
-const float HEIGHT = 600.0f;
+const float WIDTH = 1100.0f;
+const float HEIGHT = 850.0f;
 
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
 GLFWwindow* window = init();
 
-Camera camera(window, 100.0f);
+Camera camera(window, 10.0f);
 Shader shader("shaders/shader.vert", "shaders/shader.frag");
 Gui gui(window);
 
-enum equations {
-    lorenze,
-    cube
-};
-
 int main()
 {
-    float point[] = {
-        -0.5f, -0.5f, -0.5f,  
-    };
+    float point[] = { -0.5f, -0.5f, -0.5f };
 
     std::vector<glm::vec3> Points;
     
     if (true) {
-        for(float vx = -5.0f; vx < 5.0f; vx += 0.3f) {
-            for(float vy = -5.0f; vy < 5.0f; vy += 0.3) {
-                for(float vz = -5.0f; vz < 5.0f; vz += 0.3f) {
+        for(float vx = -0.18f; vx < 0.18f; vx += 0.01f) {
+            for(float vy = -0.18f; vy < 0.18f; vy += 0.01) {
+                for(float vz = -0.18f; vz < 0.18f; vz += 0.01f) {
                     Points.push_back(glm::vec3(vx, vy, vz));
                 }
             }
@@ -66,8 +58,8 @@ int main()
     int lossCount = 0;
 
     gui.setPointsArray(&Points);
-
-    gui.addConstant("f", 28.0, 0.0, 100.0);
+    gui.setEquation(AIZAWA);
+    
     while (!glfwWindowShouldClose(window))
     {
         float currentFrame = glfwGetTime();
@@ -98,43 +90,39 @@ int main()
             }
 
             switch(gui.equation) {
-                case lorenze:
-                    Points[i].x += (10 * (Points[i].y - Points[i].x)) * timestep;
-                    Points[i].y += (Points[i].x * (gui.constants["f"].value - Points[i].z) - Points[i].y) * timestep;
+                case LORENZ:
+                    Points[i].x += (gui.constants["a"].value * (Points[i].y - Points[i].x)) * timestep;
+                    Points[i].y += (Points[i].x * (gui.constants["b"].value - Points[i].z) - Points[i].y) * timestep;
                     Points[i].z += (Points[i].x * Points[i].y - 8/3 * Points[i].z) * timestep;
-                    break;
-                case cube:
 
                     break;
-                default:
+
+                case AIZAWA:
+                    Points[i].x += ((Points[i].z - gui.constants["b"].value) * Points[i].x - gui.constants["d"].value * Points[i].y) * timestep;
+                    Points[i].y += (gui.constants["d"].value * Points[i].x + (Points[i].z - gui.constants["b"].value) * Points[i].y) * timestep;
+                    Points[i].z += (gui.constants["c"].value + gui.constants["a"].value * Points[i].z - (Points[i].z * Points[i].z * Points[i].z / 3) - (Points[i].x * Points[i].x + Points[i].y * Points[i].y) * (1 + gui.constants["e"].value * Points[i].z) + gui.constants["f"].value * Points[i].z * (Points[i].x * Points[i].x * Points[i].x)) * timestep;
+                    /*
+                    dx = (z-b) * x - d*y
+
+                    dy = d * x + (z-b) * y
+
+                    dz = c + a*z - z3 /3 - x2 + f * z * x3
+                    */
+                    break;
+
+                case CUBE:
                     Points[i].x += Points[i].x * timestep;
                     Points[i].y += Points[i].y * timestep;
                     Points[i].z += Points[i].z * timestep;
+
+                    break;
+
+                default:
+                    break;
             }
 
-            if (false)
-            {
-                Points[i].x += (10 * (Points[i].y - Points[i].x)) * timestep;
-                Points[i].y += (Points[i].x * (gui.constants["f"].value - Points[i].z) - Points[i].y) * timestep;
-                Points[i].z += (Points[i].x * Points[i].y - 8/3 * Points[i].z) * timestep;
-            }
-            else 
-            {
-                Points[i].x += Points[i].x * timestep;
-                Points[i].y += Points[i].y * timestep;
-                Points[i].z += Points[i].z * timestep;
-            }   
-
-            /*
-            dx = (z-b) * x - d*y
-
-            dy = d * x + (z-b) * y
-
-            dz = c + a*z - z3 /3 - x2 + f * z * x3
-            */
 
             shader.setVec3("globalPosition", Points[i]);
-
             
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::scale(model, glm::vec3(scalar));
@@ -142,9 +130,10 @@ int main()
             
             shader.setMat4("model", model);
             glBindVertexArray(VAO);
-            glDrawArrays(GL_POINTS, 0, 36);
+            glDrawArrays(GL_POINTS, 0, 1);
         }
 
+        gui.updateScalingConstants();
         gui.render(&scalar, &speed, &lossCount, &pointSize);
 
         
@@ -156,7 +145,6 @@ int main()
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     ImGui::DestroyContext();
-    ImGui_ImplGlfw_Shutdown();
     glfwTerminate();
     return 0;
 }
@@ -169,7 +157,7 @@ GLFWwindow* init()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 1);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
+    glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
     GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "OpenGL", nullptr, nullptr); 
     glfwMakeContextCurrent(window);

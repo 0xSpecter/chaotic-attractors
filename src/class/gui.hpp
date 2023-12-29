@@ -7,8 +7,11 @@
 #include "GLFW/glfw3.h"
 #include <iostream>
 #include <map>
+#include <stdio.h>
 
 #include <glm/glm.hpp>
+
+#include "../equation.hpp"
 
 // Gui class  !! INITIATE AFTER MAIN INIT FUNCTION !!
 class Gui
@@ -23,6 +26,9 @@ class Gui
             float min;
             float max;
             float inital;
+            
+            bool scaling;
+            float scalingSpeed;
         };
         std::map<std::string, Constant> constants;
 
@@ -41,11 +47,46 @@ class Gui
 
         void setPointsArray(std::vector<glm::vec3>* PointsRef);
 
-        void addConstant(std::string name, float value, float min, float max);
+        void setEquation(equations tynewEquationpe);
+
+        void updateScalingConstants();
 
     private:
         GLFWwindow* window;
         std::vector<glm::vec3>* Points;
         std::vector<glm::vec3> PointsInital;
+
+        std::map<equations, std::vector<datapoint>> equationConstants = {
+            {LORENZ, {
+                {10.0f, 0.0f, 100.0f},
+                {28.0f, 0.0f, 100.0f}
+            }},
+            {AIZAWA, {
+                {0.95f, 0.0f, 10.0f},
+                {0.7f, 0.0f, 10.0f},
+                {0.6f, 0.0f, 10.0f},
+                {3.5f, 0.0f, 100.0f},
+                {0.25f, 0.0f, 10.0f},
+                {0.1f, 0.0f, 10.0f}
+            }},
+            {CIRCLE, {
+                {1.9f, 0.0f, 10.0f},
+                {1.4f, 0.0f, 10.0f},
+                {1.2f, 0.0f, 10.0f},
+                {7.0f, 0.0f, 100.0f},
+                {0.5f, 0.0f, 10.0f},
+                {0.2f, 0.0f, 10.0f}
+            }},
+            {CUBE, {}} 
+        };
 };
+
+/*
+                {0.95f, 0.0f, 10.0f},
+                {0.7f, 0.0f, 10.0f},
+                {0.6f, 0.0f, 10.0f},
+                {3.5f, 0.0f, 100.0f},
+                {0.25f, 0.0f, 10.0f},
+                {0.1f, 0.0f, 10.0f}
+*/
 

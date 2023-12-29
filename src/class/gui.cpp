@@ -66,6 +66,7 @@ void Gui::render(float* scalar, float* speed, int* lossCount, float* pointSize)
 
         ImGui::End();
 
+
         if (constantsOpen)
         {
             ImGui::Begin(" Constants ", nullptr, ImGuiWindowFlags_MenuBar);
@@ -79,14 +80,24 @@ void Gui::render(float* scalar, float* speed, int* lossCount, float* pointSize)
                 ImGui::EndMenuBar();
             }
 
+
             if (constants.size() > 0) {
-                for (const auto& pair : constants) {
+                for (const auto& pair : constants) 
+                {
                     ImGui::SliderFloat(pair.first.c_str(), &constants[pair.first].value, constants[pair.first].min, constants[pair.first].max);
                     if (ImGui::Button((std::string("Reset ") + pair.first).c_str())) constants[pair.first].value = constants[pair.first].inital;
+                    
+                    ImGui::SameLine(); 
+                    
+                    ImGui::Checkbox((std::string("Scale ") + pair.first).c_str(), &constants[pair.first].scaling);
+                    ImGui::SameLine(); 
+                    ImGui::SetNextItemWidth(60);
+                    ImGui::InputFloat((std::string("Speed ") + pair.first).c_str(), &constants[pair.first].scalingSpeed);
                 }
             } else ImGui::Text("No constants created");
 
             ImGui::End();
+
         }
     } 
     else glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -106,7 +117,31 @@ void Gui::setPointsArray(std::vector<glm::vec3>* PointsRef)
     PointsInital = *PointsRef;
 }
 
-void Gui::addConstant(std::string name, float value, float min, float max)
+
+void Gui::setEquation(equations newEquation)
 {
-    constants[name] = Constant{value, min, max, value};
+    equation = newEquation;
+    
+    constants.clear();
+
+    std::string letters = "abcdef";
+    for (unsigned int i = 0; i < equationConstants[newEquation].size(); i++)
+    {
+        datapoint data = equationConstants[newEquation][i];
+        constants[letters.substr(i, 1)] = Constant{data.value, data.min, data.max, data.value, false, 0.1f};
+    }
+}
+
+void Gui::updateScalingConstants()
+{
+    for (const auto& pair : constants) 
+    {
+        if (constants[pair.first].scaling) {
+            constants[pair.first].value += constants[pair.first].scalingSpeed;
+            
+            if (constants[pair.first].value > constants[pair.first].max) {
+                constants[pair.first].value = constants[pair.first].max;
+            }
+        }
+    }
 }

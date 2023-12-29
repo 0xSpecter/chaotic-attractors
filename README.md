@@ -4,7 +4,11 @@
 
 ## Lorenz Attractor
 
-![Lorenz Attractor](./md/video.webp)
+![Lorenz Attractor](./md/lorenz.webp)
+
+## Aizawa Attractor
+
+![Aizawa Attractor](./md/aizawa.webp)
 
 ---
 
