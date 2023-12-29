@@ -79,7 +79,6 @@ make
 <img src="./md/controles/tab.png" alt="use mouse">
 
 <br/>
-<br/>
 
 
 #### Close App
