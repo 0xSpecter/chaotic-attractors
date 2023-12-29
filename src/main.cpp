@@ -58,7 +58,7 @@ int main()
     int lossCount = 0;
 
     gui.setPointsArray(&Points);
-    gui.setEquation(AIZAWA);
+    gui.setEquation(LORENZ);
     
     while (!glfwWindowShouldClose(window))
     {

@@ -53,10 +53,11 @@ make
 
 
 #### Zoom
+###### (arrow keys)
 
-<img src="./md/controles/arrowup.png" alt="use mouse">
+<img src="./md/controles/arrowup.png" alt="use arrow up">
 <br/>
-<img src="./md/controles/arrowdown.png" alt="use mouse">
+<img src="./md/controles/arrowdown.png" alt="use arrow down">
 
 <br/>
 
@@ -65,11 +66,11 @@ make
 
 ##### 3x speed
 
-<img src="./md/controles/shift.png" alt="use mouse">
+<img src="./md/controles/shift.png" alt="use shift">
 
 ##### 20x speed
 
-<img src="./md/controles/space.png" alt="use mouse">
+<img src="./md/controles/space.png" alt="use space">
 
 <br/>
 
@@ -78,14 +79,14 @@ make
 
 ##### Open
 
-<img src="./md/controles/tab.png" alt="use mouse">
+<img src="./md/controles/tab.png" alt="use tab">
 
 <br/>
 
 
 #### Close App
 
-<img src="./md/controles/esc.png" alt="use mouse">
+<img src="./md/controles/esc.png" alt="use esc">
 
 ---
 
