@@ -41,14 +41,14 @@ make
 </div>
 
 <br/>
-<br/>
+
 
 #### Look
 
 <img src="./md/controles/mouse.png" alt="use mouse">
 
 <br/>
-<br/>
+
 
 #### Zoom
 
@@ -57,7 +57,7 @@ make
 <img src="./md/controles/arrowdown.png" alt="use mouse">
 
 <br/>
-<br/>
+
 
 #### Speed
 
@@ -70,7 +70,7 @@ make
 <img src="./md/controles/space.png" alt="use mouse">
 
 <br/>
-<br/>
+
 
 #### Gui
 
