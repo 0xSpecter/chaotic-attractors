@@ -28,19 +28,17 @@ make
 
 #### Movement
 
-<div>
-    <div>
+<span>
+    <span>
         <img src="./md/padding.png"/>
         <img src="./md/controles/w.png" alt="W key" />
-    </div>
+    </span>
     <div>
         <img src="./md/controles/a.png" alt="A key" />
         <img src="./md/controles/s.png" alt="S key" />
         <img src="./md/controles/d.png" alt="D key" />
     </div>
-</div>
-
-<br/>
+<span>
 
 
 #### Look
