@@ -34,6 +34,10 @@ void Gui::render(float* scalar, float* speed, int* lossCount, float* pointSize)
                 if (!constantsOpen) {
                     if (ImGui::MenuItem("View Constants")) constantsOpen = true; 
                 } else if (ImGui::MenuItem("close Constants")) constantsOpen = false; 
+
+                if (!attractorSelect) {
+                    if (ImGui::MenuItem("View Attractors")) attractorSelect = true; 
+                } else if (ImGui::MenuItem("close Attractors")) attractorSelect = false; 
                 
                 ImGui::EndMenu();
             }
@@ -50,55 +54,27 @@ void Gui::render(float* scalar, float* speed, int* lossCount, float* pointSize)
             ImGui::EndMenuBar();
         }
 
-        ImGui::SliderFloat("Scalar", scalar, 0.1, 10.0);
+        ImGui::SliderFloat("Scalar", scalar, 0.01, 100.0);
         ImGui::SliderFloat("speed", speed, 0.0, 10.0);
         ImGui::SliderFloat("Point Size", pointSize, 0.1, 100.0);
 
         if (doCull) {
             ImGui::Text("Loss Count");
             ImGui::TextColored(ImVec4(0.0f, 0.8f, 0.2f, 1.0f), "Loss %s / %s Total", std::to_string(*lossCount).c_str(), std::to_string(PointsInital.size()).c_str());
-        } else ImGui::Text("Culling is Disabled");
+        } else ImGui::Text("%s Total, Culling is disabled", std::to_string(PointsInital.size()).c_str());
 
         if (ImGui::Button("Reset")) {
             *Points = PointsInital;
-            *lossCount = 0; 
+            *lossCount = 0;
         }
 
         ImGui::End();
 
-
-        if (constantsOpen)
-        {
-            ImGui::Begin(" Constants ", nullptr, ImGuiWindowFlags_MenuBar);
-            if (ImGui::BeginMenuBar()) 
-            {
-                if (ImGui::BeginMenu("Menu")) 
-                {
-                    if (ImGui::MenuItem("Close")) constantsOpen = false; 
-                    ImGui::EndMenu();
-                }
-                ImGui::EndMenuBar();
-            }
-
-
-            if (constants.size() > 0) {
-                for (const auto& pair : constants) 
-                {
-                    ImGui::SliderFloat(pair.first.c_str(), &constants[pair.first].value, constants[pair.first].min, constants[pair.first].max);
-                    if (ImGui::Button((std::string("Reset ") + pair.first).c_str())) constants[pair.first].value = constants[pair.first].inital;
-                    
-                    ImGui::SameLine(); 
-                    
-                    ImGui::Checkbox((std::string("Scale ") + pair.first).c_str(), &constants[pair.first].scaling);
-                    ImGui::SameLine(); 
-                    ImGui::SetNextItemWidth(60);
-                    ImGui::InputFloat((std::string("Speed ") + pair.first).c_str(), &constants[pair.first].scalingSpeed);
-                }
-            } else ImGui::Text("No constants created");
-
-            ImGui::End();
-
-        }
+        if (constantsOpen) 
+            renderConstants();
+        
+        if (attractorSelect) 
+            renderAttractorSelect();
     } 
     else glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
@@ -118,7 +94,7 @@ void Gui::setPointsArray(std::vector<glm::vec3>* PointsRef)
 }
 
 
-void Gui::setEquation(equations newEquation)
+void Gui::setEquation(Equations newEquation)
 {
     equation = newEquation;
     
@@ -130,6 +106,37 @@ void Gui::setEquation(equations newEquation)
         datapoint data = equationConstants[newEquation][i];
         constants[letters.substr(i, 1)] = Constant{data.value, data.min, data.max, data.value, false, 0.1f};
     }
+}
+
+void Gui::renderConstants()
+{
+    ImGui::Begin(" Constants ", nullptr, ImGuiWindowFlags_MenuBar);
+    if (ImGui::BeginMenuBar()) 
+    {
+        if (ImGui::MenuItem("Close")) 
+            constantsOpen = false; 
+        ImGui::EndMenuBar();
+    }
+
+
+    if (constants.size() > 0) {
+        for (const auto& pair : constants) 
+        {
+            ImGui::SliderFloat(pair.first.c_str(), &constants[pair.first].value, constants[pair.first].min, constants[pair.first].max);
+            
+            if (ImGui::Button((std::string("Reset ") + pair.first).c_str())) 
+                constants[pair.first].value = constants[pair.first].inital;
+            
+            ImGui::SameLine(); 
+            
+            ImGui::Checkbox((std::string("Scale ") + pair.first).c_str(), &constants[pair.first].scaling);
+            ImGui::SameLine(); 
+            ImGui::SetNextItemWidth(60);
+            ImGui::InputFloat((std::string("Speed ") + pair.first).c_str(), &constants[pair.first].scalingSpeed);
+        }
+    } else ImGui::Text("No constants created");
+
+    ImGui::End();
 }
 
 void Gui::updateScalingConstants()
@@ -144,4 +151,30 @@ void Gui::updateScalingConstants()
             }
         }
     }
+}
+
+void Gui::renderAttractorSelect()
+{
+    ImGui::Begin(" Attractors ", nullptr, ImGuiWindowFlags_MenuBar);
+    if (ImGui::BeginMenuBar()) 
+    {
+        if (ImGui::MenuItem("Close")) 
+            attractorSelect = false; 
+        
+        ImGui::EndMenuBar();
+    }
+
+    if (ImGui::BeginCombo("Options", equationNames[equation])) {
+        for (int i = 0; i < Equations::CUBE + 1; ++i) {
+            bool isSelected = (equation == Equations(i));
+
+            if (ImGui::Selectable(equationNames[i], isSelected)) setEquation(Equations(i));
+
+            if (isSelected) ImGui::SetItemDefaultFocus();
+        }
+
+        ImGui::EndCombo();
+    }
+
+    ImGui::End();
 }

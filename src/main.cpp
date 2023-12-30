@@ -18,20 +18,10 @@ int main()
 
     std::vector<glm::vec3> Points;
     
-    if (true) {
-        for(float vx = -0.18f; vx < 0.18f; vx += 0.01f) {
-            for(float vy = -0.18f; vy < 0.18f; vy += 0.01) {
-                for(float vz = -0.18f; vz < 0.18f; vz += 0.01f) {
-                    Points.push_back(glm::vec3(vx, vy, vz));
-                }
-            }
-        }
-    } else {
-        for(float vx = -2.0f; vx < 2.0f; vx += 1.0f) {
-            for(float vy = -2.0f; vy < 2.0f; vy += 1.0) {
-                for(float vz = -2.0f; vz < 2.0f; vz += 1.0f) {
-                    Points.push_back(glm::vec3(vx, vy, vz));
-                }
+    for(float vx = -0.0017; vx < 0.0017; vx += 0.0001f) {
+        for(float vy = -0.0017; vy < 0.0017; vy += 0.0001) {
+            for(float vz = -0.0017; vz < 0.0017; vz += 0.0001f) {
+                Points.push_back(glm::vec3(vx, vy, vz));
             }
         }
     }
@@ -58,7 +48,7 @@ int main()
     int lossCount = 0;
 
     gui.setPointsArray(&Points);
-    gui.setEquation(LORENZ);
+    gui.setEquation(CHEN);
     
     while (!glfwWindowShouldClose(window))
     {
@@ -80,6 +70,7 @@ int main()
         shader.setMat4("projection", projection);
 
         float timestep = deltaTime * speed;
+        
         glPointSize(pointSize);
         for(unsigned int i = 0; i < Points.size(); i++)
         {
@@ -97,7 +88,7 @@ int main()
 
                     break;
 
-                case AIZAWA:
+                case AIZAWA: case AIZAWA_CIRCLE:
                     Points[i].x += ((Points[i].z - gui.constants["b"].value) * Points[i].x - gui.constants["d"].value * Points[i].y) * timestep;
                     Points[i].y += (gui.constants["d"].value * Points[i].x + (Points[i].z - gui.constants["b"].value) * Points[i].y) * timestep;
                     Points[i].z += (gui.constants["c"].value + gui.constants["a"].value * Points[i].z - (Points[i].z * Points[i].z * Points[i].z / 3) - (Points[i].x * Points[i].x + Points[i].y * Points[i].y) * (1 + gui.constants["e"].value * Points[i].z) + gui.constants["f"].value * Points[i].z * (Points[i].x * Points[i].x * Points[i].x)) * timestep;
@@ -109,6 +100,32 @@ int main()
                     dz = c + a*z - z3 /3 - x2 + f * z * x3
                     */
                     break;
+                
+                case CHEN:
+                    Points[i].x += (gui.constants["a"].value * (Points[i].y - Points[i].x)) * timestep;
+                    Points[i].y += ((gui.constants["c"].value - gui.constants["a"].value) * Points[i].x - Points[i].x * Points[i].z + gui.constants["c"].value * Points[i].y) * timestep;
+                    Points[i].z += (Points[i].x * Points[i].y - gui.constants["b"].value * Points[i].z) * timestep;
+                    // dx/dt = a(y - x)
+                    // dy/dt = (c - a)x - xz + cy
+                    // dz/dt = xy - bz
+                    break;
+                
+                case LUCHEN:
+                    Points[i].x += (gui.constants["a"].value * (Points[i].y - Points[i].x)) * timestep;
+                    Points[i].y += (Points[i].x - Points[i].x * Points[i].z + gui.constants["c"].value * Points[i].y + gui.constants["d"].value) * timestep;
+                    Points[i].z += (Points[i].x * Points[i].y - gui.constants["b"].value * Points[i].z) * timestep;
+                    break;
+                
+                case 100:
+                    Points[i].x += (Points[i].x) * timestep;
+                    Points[i].y += (Points[i].y) * timestep;
+                    Points[i].z += (Points[i].z) * timestep;
+                    
+                    // dx/dt = a(y - x)
+                    // dy/dt = (c - a)x - xz + cy
+                    // dz/dt = xy - bz
+                    break;
+                    
 
                 case CUBE:
                     Points[i].x += Points[i].x * timestep;

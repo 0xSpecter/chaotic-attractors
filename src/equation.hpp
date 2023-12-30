@@ -1,17 +1,12 @@
 #pragma once
 #include <map>
 
-enum equations 
+enum Equations 
 {
     LORENZ,
     AIZAWA,
-    CIRCLE,
+    AIZAWA_CIRCLE,
+    CHEN,
+    LUCHEN,
     CUBE
-};
-
-struct datapoint
-{
-    float value;
-    float min;
-    float max;
 };

@@ -18,6 +18,7 @@ class Gui
 {
     public:
         bool open = false;
+        bool attractorSelect = true;
 
         bool constantsOpen = false;
         struct Constant
@@ -47,7 +48,7 @@ class Gui
 
         void setPointsArray(std::vector<glm::vec3>* PointsRef);
 
-        void setEquation(equations tynewEquationpe);
+        void setEquation(Equations tynewEquationpe);
 
         void updateScalingConstants();
 
@@ -56,7 +57,14 @@ class Gui
         std::vector<glm::vec3>* Points;
         std::vector<glm::vec3> PointsInital;
 
-        std::map<equations, std::vector<datapoint>> equationConstants = {
+        struct datapoint
+        {
+            float value;
+            float min;
+            float max;
+        };
+
+        std::map<Equations, std::vector<datapoint>> equationConstants = {
             {LORENZ, {
                 {10.0f, 0.0f, 100.0f},
                 {28.0f, 0.0f, 100.0f}
@@ -69,7 +77,7 @@ class Gui
                 {0.25f, 0.0f, 10.0f},
                 {0.1f, 0.0f, 10.0f}
             }},
-            {CIRCLE, {
+            {AIZAWA_CIRCLE, {
                 {1.9f, 0.0f, 10.0f},
                 {1.4f, 0.0f, 10.0f},
                 {1.2f, 0.0f, 10.0f},
@@ -77,16 +85,29 @@ class Gui
                 {0.5f, 0.0f, 10.0f},
                 {0.2f, 0.0f, 10.0f}
             }},
+            {CHEN, {
+                {40.0f, 0.0f, 100.0f},
+                {3.0f, 0.0f, 10.0f},
+                {28.0f, 0.0f, 100.0f}
+            }},
+            {LUCHEN, {
+                {36.0f, 0.0f, 100.0f},
+                {3.0f, 0.0f, 10.0f},
+                {20.0f, 0.0f, 100.0f},
+                {-15.15f, -50.0f, 50.0f}
+            }},
             {CUBE, {}} 
         };
+
+        const char* equationNames[7] {
+            "Lorenz",
+            "Aizawa",
+            "Aizawa Circle",
+            "Chen",
+            "Lu Chen",
+            "Cube"
+        };
+
+        void renderConstants();
+        void renderAttractorSelect();
 };
-
-/*
-                {0.95f, 0.0f, 10.0f},
-                {0.7f, 0.0f, 10.0f},
-                {0.6f, 0.0f, 10.0f},
-                {3.5f, 0.0f, 100.0f},
-                {0.25f, 0.0f, 10.0f},
-                {0.1f, 0.0f, 10.0f}
-*/
-
