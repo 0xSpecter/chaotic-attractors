@@ -1,8 +1,9 @@
 #include "gui.hpp"
 
-Gui::Gui(GLFWwindow* window, std::string GLSL_version)
+Gui::Gui(GLFWwindow* window, Camera* camera, std::string GLSL_version)
 {
     Gui::window = window;
+    Gui::camera = camera;
 
     ImGui::CreateContext();
     ImGui_ImplGlfw_InitForOpenGL(Gui::window, true);
@@ -51,8 +52,16 @@ void Gui::render(float* scalar, float* speed, int* lossCount, float* pointSize)
                 ImGui::EndMenu();
             }
 
+            if (ImGui::BeginMenu("Camera")) 
+            {
+                if (ImGui::MenuItem("Nothing here")) std::cout << "UwU";
+                ImGui::EndMenu();
+            }
+
             ImGui::EndMenuBar();
         }
+
+        ImGui::ColorEdit4("Color", (float*)&clearColor);
 
         ImGui::SliderFloat("Scalar", scalar, 0.01, 100.0);
         ImGui::SliderFloat("speed", speed, 0.0, 10.0);

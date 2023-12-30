@@ -3,6 +3,7 @@
 #include "../imgui/imgui.h"
 #include "../imgui/imgui_impl_glfw.h"
 #include "../imgui/imgui_impl_opengl3.h"
+#include "camera.hpp"
 
 #include "GLFW/glfw3.h"
 #include <iostream>
@@ -37,8 +38,10 @@ class Gui
 
         unsigned int equation = 0;
 
+        ImVec4 clearColor = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
 
-        Gui(GLFWwindow* window, std::string GLSL_version = "#version 410");
+
+        Gui(GLFWwindow* window, Camera* camera, std::string GLSL_version = "#version 410");
 
         void newframe();
 
@@ -54,6 +57,7 @@ class Gui
 
     private:
         GLFWwindow* window;
+        Camera* camera;
         std::vector<glm::vec3>* Points;
         std::vector<glm::vec3> PointsInital;
 
@@ -96,15 +100,30 @@ class Gui
                 {20.0f, 0.0f, 100.0f},
                 {-15.15f, -50.0f, 50.0f}
             }},
+            {NEWTON_LEIPNIK, {
+                {0.4f, 0.0f, 10.0f},
+                {0.175f, 0.0f, 5.0f},
+                {10.0f, 0.0f, 100.0f},
+                {5.0f, 0.0f, 50.0f}
+            }},
+            {NOSE_HOOVER, {
+                {1.5f, 0.0f, 10.0f},
+            }},
+            {HALVORSEN, {
+                {1.4f, 0.0f, 10.0f},
+            }},
             {CUBE, {}} 
         };
 
-        const char* equationNames[7] {
+        const char* equationNames[12] {
             "Lorenz",
             "Aizawa",
             "Aizawa Circle",
             "Chen",
             "Lu Chen",
+            "Newton Leipnik",
+            "Nose Hoover",
+            "Halvorsen",
             "Cube"
         };
 

@@ -109,3 +109,7 @@ make
 <a href="https://learnopengl.com/Introduction" target="_blank">
     Learn Opengl by "<b>Joey De Vries</b>"
 </a>
+
+<a href="https://markus-x-buchholz.medium.com/3d-chaotic-attractors-in-c-c8112ac147cc" target="_blank">
+    Atrractor Formula by "<b>Markus Buchholz</b>"
+</a>

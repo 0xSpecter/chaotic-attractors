@@ -10,7 +10,7 @@ GLFWwindow* window = init();
 
 Camera camera(window, 10.0f);
 Shader shader("shaders/shader.vert", "shaders/shader.frag");
-Gui gui(window);
+Gui gui(window, &camera);
 
 int main()
 {
@@ -48,33 +48,34 @@ int main()
     int lossCount = 0;
 
     gui.setPointsArray(&Points);
-    gui.setEquation(CHEN);
+    gui.setEquation(NOSE_HOOVER);
     
     while (!glfwWindowShouldClose(window))
     {
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
+        if (deltaTime > 0.3f) deltaTime = 0.3f;
 
         processInput();
         gui.newframe();
 
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(gui.clearColor.x, gui.clearColor.y, gui.clearColor.z, gui.clearColor.w);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         shader.use();
         shader.setMat4("view", camera.GetViewMatrix());
 
         glm::mat4 projection = glm::mat4(1.0f); 
-        projection = glm::perspective(glm::radians(camera.getFov()), WIDTH / HEIGHT, 0.1f, 10000.0f);
+        projection = glm::perspective(glm::radians(camera.getFov()), WIDTH / HEIGHT, 0.01f, 100000.0f);
         shader.setMat4("projection", projection);
 
-        float timestep = deltaTime * speed;
+        float timestep = deltaTime / 2 * speed;
         
         glPointSize(pointSize);
         for(unsigned int i = 0; i < Points.size(); i++)
         {
-            if (glm::length(Points[i]) > 100000 && gui.doCull) {
+            if (glm::length(Points[i]) > 300000 && gui.doCull) {
                 lossCount++;
                 Points.erase(Points.begin() + i);
                 continue;
@@ -116,14 +117,28 @@ int main()
                     Points[i].z += (Points[i].x * Points[i].y - gui.constants["b"].value * Points[i].z) * timestep;
                     break;
                 
-                case 100:
+                case NOSE_HOOVER:
+                    Points[i].x += (Points[i].y) * timestep;
+                    Points[i].y += (-Points[i].x + Points[i].y * Points[i].z) * timestep;
+                    Points[i].z += (gui.constants["a"].value - (Points[i].y * Points[i].y)) * timestep;
+                    break;
+                
+                case HALVORSEN:
+                    Points[i].x += (-gui.constants["a"].value * Points[i].x - 4 * Points[i].y - 4 * Points[i].z - Points[i].y * Points[i].y) * timestep;
+			        Points[i].y += (-gui.constants["a"].value * Points[i].y - 4 * Points[i].z - 4 * Points[i].x - Points[i].z * Points[i].z) * timestep;
+			        Points[i].z += (-gui.constants["a"].value * Points[i].z - 4 * Points[i].x - 4 * Points[i].y - Points[i].x * Points[i].x) * timestep;
+                    break;
+                
+                case 103:
                     Points[i].x += (Points[i].x) * timestep;
                     Points[i].y += (Points[i].y) * timestep;
                     Points[i].z += (Points[i].z) * timestep;
-                    
-                    // dx/dt = a(y - x)
-                    // dy/dt = (c - a)x - xz + cy
-                    // dz/dt = xy - bz
+                    break;
+                
+                case 104:
+                    Points[i].x += (Points[i].x) * timestep;
+                    Points[i].y += (Points[i].y) * timestep;
+                    Points[i].z += (Points[i].z) * timestep;
                     break;
                     
 
