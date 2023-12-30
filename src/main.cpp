@@ -129,10 +129,10 @@ int main()
 			        Points[i].z += (-gui.constants["a"].value * Points[i].z - 4 * Points[i].x - 4 * Points[i].y - Points[i].x * Points[i].x) * timestep;
                     break;
                 
-                case 103:
-                    Points[i].x += (Points[i].x) * timestep;
-                    Points[i].y += (Points[i].y) * timestep;
-                    Points[i].z += (Points[i].z) * timestep;
+                case CHEN_LEE:
+                    Points[i].x += (gui.constants["a"].value * Points[i].x - Points[i].y * Points[i].z) * timestep;
+                    Points[i].y += (gui.constants["b"].value * Points[i].y + Points[i].x * Points[i].z) * timestep;
+                    Points[i].z += (gui.constants["c"].value * Points[i].z + Points[i].x * (Points[i].y / 3)) * timestep;
                     break;
                 
                 case 104:

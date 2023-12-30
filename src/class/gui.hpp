@@ -112,6 +112,11 @@ class Gui
             {HALVORSEN, {
                 {1.4f, 0.0f, 10.0f},
             }},
+            {CHEN_LEE, {
+                {5.0f, 0.0f, 50.0f},
+                {-10.0f, -50.0f, 50.0f},
+                {-0.38f, -1.0f, 1.0f},
+            }},
             {CUBE, {}} 
         };
 
@@ -124,6 +129,7 @@ class Gui
             "Newton Leipnik",
             "Nose Hoover",
             "Halvorsen",
+            "Chen Lee",
             "Cube"
         };
 

@@ -11,5 +11,6 @@ enum Equations
     NEWTON_LEIPNIK,
     NOSE_HOOVER,
     HALVORSEN,
+    CHEN_LEE,
     CUBE
 };
