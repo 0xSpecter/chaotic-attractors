@@ -25,6 +25,7 @@ Particles::Particles(Gui* gui, float minmax, float step)
             }
         }
     }
+    PointsInital = Points;
 }
 
 void Particles::renderPoints(float deltatime)
@@ -110,6 +111,21 @@ void Particles::renderPoints(float deltatime)
                 break;
         }
 
+        /*
+        for(unsigned int i = 0; i < TrailPoints.size(); i++)
+        {
+            shader.setVec3("globalPosition", TrailPoints[i]);
+            
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::scale(model, glm::vec3(scalar));
+            model = glm::translate(model, TrailPoints[i]);
+            
+            shader.setMat4("model", model);
+
+            glDrawArrays(GL_POINTS, 0, 1);
+        }
+        */
+
         shader.setVec3("globalPosition", Points[i].Pos);
         
         glm::mat4 model = glm::mat4(1.0f);
@@ -120,4 +136,10 @@ void Particles::renderPoints(float deltatime)
 
         glDrawArrays(GL_POINTS, 0, 1);
     }
+}
+
+void Particles::clean()
+{
+    glDeleteVertexArrays(1, &VAO);
+    glDeleteBuffers(1, &VBO);
 }

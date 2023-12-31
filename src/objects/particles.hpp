@@ -114,9 +114,11 @@ class Particles
         };
 
 
-        Particles(Gui* gui, float minmax = 0.17f, float step = 0.001f);
+        Particles(Gui* gui, float minmax = 0.017f, float step = 0.001f);
 
         void renderPoints(float deltatime);
+
+        void clean();
 
     private:
         Gui* guiPtr;
