@@ -25,11 +25,11 @@ void Camera::ProcessInput(float deltaTime)
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) Position -= Right * velocity;
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) Position += Right * velocity;
 
-    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) Fov -= 1.0f;
-    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) Fov += 1.0f;
+    if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) Zoom -= 1.0f;
+    if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) Zoom += 1.0f;
 
-    if (Fov < 0.5f) Fov = 0.5f;
-    else if (Fov > 75.0f) Fov = 75.0f;
+    if (Zoom < 0.5f) Zoom = 0.5f;
+    else if (Zoom > 75.0f) Zoom = 75.0f;
 }
 
 // processes mouse input
@@ -78,7 +78,7 @@ void Camera::updateCameraVectors()
     Up    = glm::normalize(glm::cross(Right, Front));
 }
 
-float Camera::getFov()
+float Camera::getZoom()
 {
-    return Fov;
+    return Zoom;
 }

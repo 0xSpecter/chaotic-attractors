@@ -1,6 +1,6 @@
 #include "main.hpp"
 
-const float WIDTH = 1100.0f;
+const float WIDTH = 1300.0f;
 const float HEIGHT = 850.0f;
 
 float deltaTime = 0.0f;
@@ -8,7 +8,7 @@ float lastFrame = 0.0f;
 
 GLFWwindow* window = init();
 
-Camera camera(window, 10.0f);
+Camera camera(window, 95.0f);
 Shader shader("shaders/shader.vert", "shaders/shader.frag");
 Gui gui(window, &camera);
 
@@ -48,7 +48,7 @@ int main()
     int lossCount = 0;
 
     gui.setPointsArray(&Points);
-    gui.setEquation(NOSE_HOOVER);
+    gui.setEquation(LORENZ);
     
     while (!glfwWindowShouldClose(window))
     {
@@ -67,7 +67,7 @@ int main()
         shader.setMat4("view", camera.GetViewMatrix());
 
         glm::mat4 projection = glm::mat4(1.0f); 
-        projection = glm::perspective(glm::radians(camera.getFov()), WIDTH / HEIGHT, 0.01f, 100000.0f);
+        projection = glm::perspective(glm::radians(camera.getZoom()), WIDTH / HEIGHT, 0.01f, 100000.0f);
         shader.setMat4("projection", projection);
 
         float timestep = deltaTime / 2 * speed;
@@ -201,10 +201,7 @@ GLFWwindow* init()
     gladLoadGL();
 
     glEnable(GL_DEPTH_TEST);  
-
-    if (true) {
-        glEnable(GL_BLEND);
-    }
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE);
 
     return window;
 }

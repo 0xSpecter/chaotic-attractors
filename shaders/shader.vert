@@ -12,5 +12,5 @@ out vec4 color;
 void main()
 {
     gl_Position = projection * view * model * vec4(position, 1.0);
-    color = normalize(abs(vec4(globalPosition, 1.0)));
+    color = normalize(abs(vec4(globalPosition, 0.7)));
 }

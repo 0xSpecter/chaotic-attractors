@@ -20,6 +20,8 @@ class Gui
     public:
         bool open = false;
         bool attractorSelect = true;
+        bool cameraConfig = false;
+        bool graphicsConfig = false;
 
         bool constantsOpen = false;
         struct Constant
@@ -58,6 +60,7 @@ class Gui
     private:
         GLFWwindow* window;
         Camera* camera;
+        
         std::vector<glm::vec3>* Points;
         std::vector<glm::vec3> PointsInital;
 
@@ -135,4 +138,6 @@ class Gui
 
         void renderConstants();
         void renderAttractorSelect();
+        void renderCameraConfig();
+        void renderGraphicsConfig();
 };

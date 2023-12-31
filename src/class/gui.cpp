@@ -30,7 +30,7 @@ void Gui::render(float* scalar, float* speed, int* lossCount, float* pointSize)
         {
             if (ImGui::MenuItem("Close")) open = false; 
 
-            if (ImGui::BeginMenu("Menu")) 
+            if (ImGui::BeginMenu("Tools")) 
             {
                 if (!constantsOpen) {
                     if (ImGui::MenuItem("View Constants")) constantsOpen = true; 
@@ -39,6 +39,14 @@ void Gui::render(float* scalar, float* speed, int* lossCount, float* pointSize)
                 if (!attractorSelect) {
                     if (ImGui::MenuItem("View Attractors")) attractorSelect = true; 
                 } else if (ImGui::MenuItem("close Attractors")) attractorSelect = false; 
+
+                if (!cameraConfig) {
+                    if (ImGui::MenuItem("Camera")) cameraConfig = true; 
+                } else if (ImGui::MenuItem("close Camera")) cameraConfig = false; 
+
+                if (!graphicsConfig) {
+                    if (ImGui::MenuItem("Graphics")) graphicsConfig = true; 
+                } else if (ImGui::MenuItem("close Graphics")) graphicsConfig = false; 
                 
                 ImGui::EndMenu();
             }
@@ -49,12 +57,6 @@ void Gui::render(float* scalar, float* speed, int* lossCount, float* pointSize)
                     if (ImGui::MenuItem("Disable particle Culling")) doCull = false; 
                 } else if (ImGui::MenuItem("Enable particle Culling")) doCull = true; 
                 
-                ImGui::EndMenu();
-            }
-
-            if (ImGui::BeginMenu("Camera")) 
-            {
-                if (ImGui::MenuItem("Nothing here")) std::cout << "UwU";
                 ImGui::EndMenu();
             }
 
@@ -84,8 +86,16 @@ void Gui::render(float* scalar, float* speed, int* lossCount, float* pointSize)
         
         if (attractorSelect) 
             renderAttractorSelect();
+
+        if (graphicsConfig) 
+            renderGraphicsConfig();
+        
     } 
     else glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
+    // non tab gui
+    if (cameraConfig) 
+        renderCameraConfig();
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -186,4 +196,51 @@ void Gui::renderAttractorSelect()
     }
 
     ImGui::End();
+}
+
+void Gui::renderCameraConfig()
+{
+    static bool sticky = true;
+
+    if (open || sticky) 
+    {
+        ImGui::Begin(" Camera ", nullptr, ImGuiWindowFlags_MenuBar);
+        if (ImGui::BeginMenuBar()) 
+        {
+            if (ImGui::MenuItem("Close")) 
+                cameraConfig = false; 
+            
+            ImGui::EndMenuBar();
+        }
+
+        ImGui::Text("Position: %f, %f, %f", camera->Position.x, camera->Position.y, camera->Position.z);  
+        ImGui::Text("Front: %f, %f, %f", camera->Front.x, camera->Front.y, camera->Front.z);  
+        ImGui::Text("Right: %f, %f, %f", camera->Right.x, camera->Right.y, camera->Right.z);    
+
+        ImGui::Checkbox("Sticky", &sticky);
+        ImGui::End();
+    }
+}
+
+void Gui::renderGraphicsConfig()
+{
+    static bool BLEND = glIsEnabled(GL_BLEND);
+    static bool DEPTH_TEST = glIsEnabled(GL_DEPTH_TEST);
+
+    ImGui::Begin(" Graphic ", nullptr, ImGuiWindowFlags_MenuBar);
+    if (ImGui::BeginMenuBar()) 
+    {
+        if (ImGui::MenuItem("Close")) 
+            graphicsConfig = false; 
+        
+        ImGui::EndMenuBar();
+    }
+
+    ImGui::Checkbox("GL Blend", &BLEND);
+    ImGui::Checkbox("GL Depth Test", &DEPTH_TEST);
+
+    ImGui::End();
+
+    if (BLEND != glIsEnabled(GL_BLEND)) BLEND ? glEnable(GL_BLEND) : glDisable(GL_BLEND);
+    if (DEPTH_TEST != glIsEnabled(GL_DEPTH_TEST)) DEPTH_TEST ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
 }
