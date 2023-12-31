@@ -13,6 +13,8 @@
 #include "class/texture.hpp"
 #include "class/camera.hpp"
 #include "class/gui.hpp"
+#include "objects/point.hpp"
+#include "objects/pointArray.hpp"
 
 #include "equation.hpp"
 

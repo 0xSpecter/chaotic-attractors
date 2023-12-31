@@ -16,25 +16,16 @@ int main()
 {
     float point[] = { -0.5f, -0.5f, -0.5f };
 
-    std::vector<glm::vec3> Points;
-    std::vector<glm::vec3> TrailPoints;
-    
+    std::vector<Point> Points;
+
     for(float vx = -0.0017; vx < 0.0017; vx += 0.0001f) {
         for(float vy = -0.0017; vy < 0.0017; vy += 0.0001) {
             for(float vz = -0.0017; vz < 0.0017; vz += 0.0001f) {
-                Points.push_back(glm::vec3(vx, vy, vz));
+                Points.push_back(Point(glm::vec3(vx, vy, vz)));
             }
         }
     }
-
-    Points.clear();
-    Points.push_back(glm::vec3(0.1, 0.1, 0.1));
-    Points.push_back(glm::vec3(0.2, 0.2, 0.2));
-    Points.push_back(glm::vec3(0.3, 0.3, 0.3));
-    Points.push_back(glm::vec3(-0.2, -0.2, -0.2));
-    Points.push_back(glm::vec3(-0.1, -0.1, -0.1));
     
-
     unsigned int VBO, VAO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
@@ -83,7 +74,7 @@ int main()
         glPointSize(pointSize);
         for(unsigned int i = 0; i < Points.size(); i++)
         {
-            if (gui.doCull && glm::length(Points[i]) > 300000) {
+            if (gui.doCull && Points[i].magnitude() > 300000) {
                 lossCount++;
                 Points.erase(Points.begin() + i);
                 continue;
@@ -91,16 +82,16 @@ int main()
 
             switch(gui.equation) {
                 case LORENZ:
-                    Points[i].x += (gui.constants["a"].value * (Points[i].y - Points[i].x)) * timestep;
-                    Points[i].y += (Points[i].x * (gui.constants["b"].value - Points[i].z) - Points[i].y) * timestep;
-                    Points[i].z += (Points[i].x * Points[i].y - 8/3 * Points[i].z) * timestep;
+                    Points[i].Pos.x += (gui.constants["a"].value * (Points[i].Pos.y - Points[i].Pos.x)) * timestep;
+                    Points[i].Pos.y += (Points[i].Pos.x * (gui.constants["b"].value - Points[i].Pos.z) - Points[i].Pos.y) * timestep;
+                    Points[i].Pos.z += (Points[i].Pos.x * Points[i].Pos.y - 8/3 * Points[i].Pos.z) * timestep;
 
                     break;
 
                 case AIZAWA: case AIZAWA_CIRCLE:
-                    Points[i].x += ((Points[i].z - gui.constants["b"].value) * Points[i].x - gui.constants["d"].value * Points[i].y) * timestep;
-                    Points[i].y += (gui.constants["d"].value * Points[i].x + (Points[i].z - gui.constants["b"].value) * Points[i].y) * timestep;
-                    Points[i].z += (gui.constants["c"].value + gui.constants["a"].value * Points[i].z - (Points[i].z * Points[i].z * Points[i].z / 3) - (Points[i].x * Points[i].x + Points[i].y * Points[i].y) * (1 + gui.constants["e"].value * Points[i].z) + gui.constants["f"].value * Points[i].z * (Points[i].x * Points[i].x * Points[i].x)) * timestep;
+                    Points[i].Pos.x += ((Points[i].Pos.z - gui.constants["b"].value) * Points[i].Pos.x - gui.constants["d"].value * Points[i].Pos.y) * timestep;
+                    Points[i].Pos.y += (gui.constants["d"].value * Points[i].Pos.x + (Points[i].Pos.z - gui.constants["b"].value) * Points[i].Pos.y) * timestep;
+                    Points[i].Pos.z += (gui.constants["c"].value + gui.constants["a"].value * Points[i].Pos.z - (Points[i].Pos.z * Points[i].Pos.z * Points[i].Pos.z / 3) - (Points[i].Pos.x * Points[i].Pos.x + Points[i].Pos.y * Points[i].Pos.y) * (1 + gui.constants["e"].value * Points[i].Pos.z) + gui.constants["f"].value * Points[i].Pos.z * (Points[i].Pos.x * Points[i].Pos.x * Points[i].Pos.x)) * timestep;
                     /*
                     dx = (z-b) * x - d*y
 
@@ -111,49 +102,49 @@ int main()
                     break;
                 
                 case CHEN:
-                    Points[i].x += (gui.constants["a"].value * (Points[i].y - Points[i].x)) * timestep;
-                    Points[i].y += ((gui.constants["c"].value - gui.constants["a"].value) * Points[i].x - Points[i].x * Points[i].z + gui.constants["c"].value * Points[i].y) * timestep;
-                    Points[i].z += (Points[i].x * Points[i].y - gui.constants["b"].value * Points[i].z) * timestep;
+                    Points[i].Pos.x += (gui.constants["a"].value * (Points[i].Pos.y - Points[i].Pos.x)) * timestep;
+                    Points[i].Pos.y += ((gui.constants["c"].value - gui.constants["a"].value) * Points[i].Pos.x - Points[i].Pos.x * Points[i].Pos.z + gui.constants["c"].value * Points[i].Pos.y) * timestep;
+                    Points[i].Pos.z += (Points[i].Pos.x * Points[i].Pos.y - gui.constants["b"].value * Points[i].Pos.z) * timestep;
                     // dx/dt = a(y - x)
                     // dy/dt = (c - a)x - xz + cy
                     // dz/dt = xy - bz
                     break;
                 
                 case LUCHEN:
-                    Points[i].x += (gui.constants["a"].value * (Points[i].y - Points[i].x)) * timestep;
-                    Points[i].y += (Points[i].x - Points[i].x * Points[i].z + gui.constants["c"].value * Points[i].y + gui.constants["d"].value) * timestep;
-                    Points[i].z += (Points[i].x * Points[i].y - gui.constants["b"].value * Points[i].z) * timestep;
+                    Points[i].Pos.x += (gui.constants["a"].value * (Points[i].Pos.y - Points[i].Pos.x)) * timestep;
+                    Points[i].Pos.y += (Points[i].Pos.x - Points[i].Pos.x * Points[i].Pos.z + gui.constants["c"].value * Points[i].Pos.y + gui.constants["d"].value) * timestep;
+                    Points[i].Pos.z += (Points[i].Pos.x * Points[i].Pos.y - gui.constants["b"].value * Points[i].Pos.z) * timestep;
                     break;
                 
                 case NOSE_HOOVER:
-                    Points[i].x += (Points[i].y) * timestep;
-                    Points[i].y += (-Points[i].x + Points[i].y * Points[i].z) * timestep;
-                    Points[i].z += (gui.constants["a"].value - (Points[i].y * Points[i].y)) * timestep;
+                    Points[i].Pos.x += (Points[i].Pos.y) * timestep;
+                    Points[i].Pos.y += (-Points[i].Pos.x + Points[i].Pos.y * Points[i].Pos.z) * timestep;
+                    Points[i].Pos.z += (gui.constants["a"].value - (Points[i].Pos.y * Points[i].Pos.y)) * timestep;
                     break;
                 
                 case HALVORSEN:
-                    Points[i].x += (-gui.constants["a"].value * Points[i].x - 4 * Points[i].y - 4 * Points[i].z - Points[i].y * Points[i].y) * timestep;
-			        Points[i].y += (-gui.constants["a"].value * Points[i].y - 4 * Points[i].z - 4 * Points[i].x - Points[i].z * Points[i].z) * timestep;
-			        Points[i].z += (-gui.constants["a"].value * Points[i].z - 4 * Points[i].x - 4 * Points[i].y - Points[i].x * Points[i].x) * timestep;
+                    Points[i].Pos.x += (-gui.constants["a"].value * Points[i].Pos.x - 4 * Points[i].Pos.y - 4 * Points[i].Pos.z - Points[i].Pos.y * Points[i].Pos.y) * timestep;
+			        Points[i].Pos.y += (-gui.constants["a"].value * Points[i].Pos.y - 4 * Points[i].Pos.z - 4 * Points[i].Pos.x - Points[i].Pos.z * Points[i].Pos.z) * timestep;
+			        Points[i].Pos.z += (-gui.constants["a"].value * Points[i].Pos.z - 4 * Points[i].Pos.x - 4 * Points[i].Pos.y - Points[i].Pos.x * Points[i].Pos.x) * timestep;
                     break;
                 
                 case CHEN_LEE:
-                    Points[i].x += (gui.constants["a"].value * Points[i].x - Points[i].y * Points[i].z) * timestep;
-                    Points[i].y += (gui.constants["b"].value * Points[i].y + Points[i].x * Points[i].z) * timestep;
-                    Points[i].z += (gui.constants["c"].value * Points[i].z + Points[i].x * (Points[i].y / 3)) * timestep;
+                    Points[i].Pos.x += (gui.constants["a"].value * Points[i].Pos.x - Points[i].Pos.y * Points[i].Pos.z) * timestep;
+                    Points[i].Pos.y += (gui.constants["b"].value * Points[i].Pos.y + Points[i].Pos.x * Points[i].Pos.z) * timestep;
+                    Points[i].Pos.z += (gui.constants["c"].value * Points[i].Pos.z + Points[i].Pos.x * (Points[i].Pos.y / 3)) * timestep;
                     break;
                 
                 case 104:
-                    Points[i].x += (Points[i].x) * timestep;
-                    Points[i].y += (Points[i].y) * timestep;
-                    Points[i].z += (Points[i].z) * timestep;
+                    Points[i].Pos.x += (Points[i].Pos.x) * timestep;
+                    Points[i].Pos.y += (Points[i].Pos.y) * timestep;
+                    Points[i].Pos.z += (Points[i].Pos.z) * timestep;
                     break;
                     
 
                 case CUBE:
-                    Points[i].x += Points[i].x * timestep;
-                    Points[i].y += Points[i].y * timestep;
-                    Points[i].z += Points[i].z * timestep;
+                    Points[i].Pos.x += Points[i].Pos.x * timestep;
+                    Points[i].Pos.y += Points[i].Pos.y * timestep;
+                    Points[i].Pos.z += Points[i].Pos.z * timestep;
 
                     break;
 
@@ -162,19 +153,18 @@ int main()
             }
 
 
-            shader.setVec3("globalPosition", Points[i]);
+            shader.setVec3("globalPosition", Points[i].Pos);
             
             glm::mat4 model = glm::mat4(1.0f);
             model = glm::scale(model, glm::vec3(scalar));
-            model = glm::translate(model, Points[i]);
+            model = glm::translate(model, Points[i].Pos);
             
             shader.setMat4("model", model);
-
-            TrailPoints.push_back(Points[i]);
 
             glDrawArrays(GL_POINTS, 0, 1);
         }
 
+        /*
         for(unsigned int i = 0; i < TrailPoints.size(); i++)
         {
             shader.setVec3("globalPosition", TrailPoints[i]);
@@ -187,6 +177,7 @@ int main()
 
             glDrawArrays(GL_POINTS, 0, 1);
         }
+        */
 
         gui.updateScalingConstants();
         gui.render(&scalar, &speed, &lossCount, &pointSize);
@@ -195,6 +186,7 @@ int main()
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
+    
     
 
     glDeleteVertexArrays(1, &VAO);

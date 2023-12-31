@@ -13,6 +13,8 @@
 #include <glm/glm.hpp>
 
 #include "../equation.hpp"
+#include "../objects/point.hpp"
+#include "../objects/pointArray.hpp"
 
 // Gui class  !! INITIATE AFTER MAIN INIT FUNCTION !!
 class Gui
@@ -51,7 +53,7 @@ class Gui
 
         void ProcessInput();
 
-        void setPointsArray(std::vector<glm::vec3>* PointsRef);
+        void setPointsArray(std::vector<Point>* PointsRef);
 
         void setEquation(Equations tynewEquationpe);
 
@@ -61,8 +63,8 @@ class Gui
         GLFWwindow* window;
         Camera* camera;
         
-        std::vector<glm::vec3>* Points;
-        std::vector<glm::vec3> PointsInital;
+        std::vector<Point>* Points;
+        std::vector<Point> PointsInital;
 
         struct datapoint
         {

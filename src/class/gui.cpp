@@ -63,7 +63,7 @@ void Gui::render(float* scalar, float* speed, int* lossCount, float* pointSize)
             ImGui::EndMenuBar();
         }
 
-        ImGui::ColorEdit4("Color", (float*)&clearColor);
+        ImGui::ColorEdit4("Bg Color", (float*)&clearColor);
 
         ImGui::SliderFloat("Scalar", scalar, 0.01, 100.0);
         ImGui::SliderFloat("speed", speed, 0.0, 10.0);
@@ -106,7 +106,7 @@ void Gui::ProcessInput()
     if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_PRESS) open = true;
 }
 
-void Gui::setPointsArray(std::vector<glm::vec3>* PointsRef)
+void Gui::setPointsArray(std::vector<Point>* PointsRef)
 {
     Points = PointsRef;
     PointsInital = *PointsRef;
