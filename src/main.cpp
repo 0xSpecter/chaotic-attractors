@@ -17,6 +17,7 @@ int main()
     float point[] = { -0.5f, -0.5f, -0.5f };
 
     std::vector<glm::vec3> Points;
+    std::vector<glm::vec3> TrailPoints;
     
     for(float vx = -0.0017; vx < 0.0017; vx += 0.0001f) {
         for(float vy = -0.0017; vy < 0.0017; vy += 0.0001) {
@@ -25,6 +26,13 @@ int main()
             }
         }
     }
+
+    Points.clear();
+    Points.push_back(glm::vec3(0.1, 0.1, 0.1));
+    Points.push_back(glm::vec3(0.2, 0.2, 0.2));
+    Points.push_back(glm::vec3(0.3, 0.3, 0.3));
+    Points.push_back(glm::vec3(-0.2, -0.2, -0.2));
+    Points.push_back(glm::vec3(-0.1, -0.1, -0.1));
     
 
     unsigned int VBO, VAO;
@@ -75,7 +83,7 @@ int main()
         glPointSize(pointSize);
         for(unsigned int i = 0; i < Points.size(); i++)
         {
-            if (glm::length(Points[i]) > 300000 && gui.doCull) {
+            if (gui.doCull && glm::length(Points[i]) > 300000) {
                 lossCount++;
                 Points.erase(Points.begin() + i);
                 continue;
@@ -161,7 +169,22 @@ int main()
             model = glm::translate(model, Points[i]);
             
             shader.setMat4("model", model);
-            glBindVertexArray(VAO);
+
+            TrailPoints.push_back(Points[i]);
+
+            glDrawArrays(GL_POINTS, 0, 1);
+        }
+
+        for(unsigned int i = 0; i < TrailPoints.size(); i++)
+        {
+            shader.setVec3("globalPosition", TrailPoints[i]);
+            
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::scale(model, glm::vec3(scalar));
+            model = glm::translate(model, TrailPoints[i]);
+            
+            shader.setMat4("model", model);
+
             glDrawArrays(GL_POINTS, 0, 1);
         }
 
