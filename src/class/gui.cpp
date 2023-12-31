@@ -19,7 +19,7 @@ void Gui::newframe()
     ImGui::NewFrame();
 }
 
-void Gui::render(float* scalar, float* speed, int* lossCount, float* pointSize)
+void Gui::render()
 {
     if (open)
     {
@@ -53,9 +53,9 @@ void Gui::render(float* scalar, float* speed, int* lossCount, float* pointSize)
 
             if (ImGui::BeginMenu("Settings")) 
             {
-                if (doCull) {
-                    if (ImGui::MenuItem("Disable particle Culling")) doCull = false; 
-                } else if (ImGui::MenuItem("Enable particle Culling")) doCull = true; 
+                if (ParticlesPtr->doCull) {
+                    if (ImGui::MenuItem("Disable particle Culling")) ParticlesPtr->doCull = false; 
+                } else if (ImGui::MenuItem("Enable particle Culling")) ParticlesPtr->doCull = true; 
                 
                 ImGui::EndMenu();
             }
@@ -65,18 +65,18 @@ void Gui::render(float* scalar, float* speed, int* lossCount, float* pointSize)
 
         ImGui::ColorEdit4("Bg Color", (float*)&clearColor);
 
-        ImGui::SliderFloat("Scalar", scalar, 0.01, 100.0);
-        ImGui::SliderFloat("speed", speed, 0.0, 10.0);
-        ImGui::SliderFloat("Point Size", pointSize, 0.1, 100.0);
+        ImGui::SliderFloat("Scalar", &ParticlesPtr->Scale, 0.01, 100.0);
+        ImGui::SliderFloat("speed", &ParticlesPtr->Speed, 0.0, 10.0);
+        ImGui::SliderFloat("Point Size", &ParticlesPtr->PointSize, 0.1, 100.0);
 
-        if (doCull) {
+        if (ParticlesPtr->doCull) {
             ImGui::Text("Loss Count");
-            ImGui::TextColored(ImVec4(0.0f, 0.8f, 0.2f, 1.0f), "Loss %s / %s Total", std::to_string(*lossCount).c_str(), std::to_string(PointsInital.size()).c_str());
-        } else ImGui::Text("%s Total, Culling is disabled", std::to_string(PointsInital.size()).c_str());
+            ImGui::TextColored(ImVec4(0.0f, 0.8f, 0.2f, 1.0f), "Loss %s / %s Total", std::to_string(ParticlesPtr->LossCount).c_str(), std::to_string(ParticlesPtr->PointsInital.size()).c_str());
+        } else ImGui::Text("%s Total, Culling is disabled", std::to_string(ParticlesPtr->PointsInital.size()).c_str());
 
         if (ImGui::Button("Reset")) {
-            *Points = PointsInital;
-            *lossCount = 0;
+            ParticlesPtr->PointsInital;
+            ParticlesPtr->LossCount = 0;
         }
 
         ImGui::End();
@@ -106,24 +106,23 @@ void Gui::ProcessInput()
     if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_PRESS) open = true;
 }
 
-void Gui::setPointsArray(std::vector<Point>* PointsRef)
+void Gui::setParticles(Particles* ParticlesPtr)
 {
-    Points = PointsRef;
-    PointsInital = *PointsRef;
+    Gui::ParticlesPtr = ParticlesPtr;
 }
 
 
 void Gui::setEquation(Equations newEquation)
 {
-    equation = newEquation;
+    ParticlesPtr->equation = newEquation;
     
-    constants.clear();
+    ParticlesPtr->constants.clear();
 
     std::string letters = "abcdef";
-    for (unsigned int i = 0; i < equationConstants[newEquation].size(); i++)
+    for (unsigned int i = 0; i < ParticlesPtr->equationConstants[newEquation].size(); i++)
     {
-        datapoint data = equationConstants[newEquation][i];
-        constants[letters.substr(i, 1)] = Constant{data.value, data.min, data.max, data.value, false, 0.1f};
+        datapoint data = ParticlesPtr->equationConstants[newEquation][i];
+        ParticlesPtr->constants[letters.substr(i, 1)] = Constant{data.value, data.min, data.max, data.value, false, 0.1f};
     }
 }
 
@@ -138,20 +137,20 @@ void Gui::renderConstants()
     }
 
 
-    if (constants.size() > 0) {
-        for (const auto& pair : constants) 
+    if (ParticlesPtr->constants.size() > 0) {
+        for (const auto& pair : ParticlesPtr->constants) 
         {
-            ImGui::SliderFloat(pair.first.c_str(), &constants[pair.first].value, constants[pair.first].min, constants[pair.first].max);
+            ImGui::SliderFloat(pair.first.c_str(), &ParticlesPtr->constants[pair.first].value, ParticlesPtr->constants[pair.first].min, ParticlesPtr->constants[pair.first].max);
             
             if (ImGui::Button((std::string("Reset ") + pair.first).c_str())) 
-                constants[pair.first].value = constants[pair.first].inital;
+                ParticlesPtr->constants[pair.first].value = ParticlesPtr->constants[pair.first].inital;
             
             ImGui::SameLine(); 
             
-            ImGui::Checkbox((std::string("Scale ") + pair.first).c_str(), &constants[pair.first].scaling);
+            ImGui::Checkbox((std::string("Scale ") + pair.first).c_str(), &ParticlesPtr->constants[pair.first].scaling);
             ImGui::SameLine(); 
             ImGui::SetNextItemWidth(60);
-            ImGui::InputFloat((std::string("Speed ") + pair.first).c_str(), &constants[pair.first].scalingSpeed);
+            ImGui::InputFloat((std::string("Speed ") + pair.first).c_str(), &ParticlesPtr->constants[pair.first].scalingSpeed);
         }
     } else ImGui::Text("No constants created");
 
@@ -160,13 +159,13 @@ void Gui::renderConstants()
 
 void Gui::updateScalingConstants()
 {
-    for (const auto& pair : constants) 
+    for (const auto& pair : ParticlesPtr->constants) 
     {
-        if (constants[pair.first].scaling) {
-            constants[pair.first].value += constants[pair.first].scalingSpeed;
+        if (ParticlesPtr->constants[pair.first].scaling) {
+            ParticlesPtr->constants[pair.first].value += ParticlesPtr->constants[pair.first].scalingSpeed;
             
-            if (constants[pair.first].value > constants[pair.first].max) {
-                constants[pair.first].value = constants[pair.first].max;
+            if (ParticlesPtr->constants[pair.first].value > ParticlesPtr->constants[pair.first].max) {
+                ParticlesPtr->constants[pair.first].value = ParticlesPtr->constants[pair.first].max;
             }
         }
     }
@@ -183,11 +182,11 @@ void Gui::renderAttractorSelect()
         ImGui::EndMenuBar();
     }
 
-    if (ImGui::BeginCombo("Options", equationNames[equation])) {
+    if (ImGui::BeginCombo("Options", ParticlesPtr->equationNames[ParticlesPtr->equation])) {
         for (int i = 0; i < Equations::CUBE + 1; ++i) {
-            bool isSelected = (equation == Equations(i));
+            bool isSelected = (ParticlesPtr->equation == Equations(i));
 
-            if (ImGui::Selectable(equationNames[i], isSelected)) setEquation(Equations(i));
+            if (ImGui::Selectable(ParticlesPtr->equationNames[i], isSelected)) setEquation(Equations(i));
 
             if (isSelected) ImGui::SetItemDefaultFocus();
         }
