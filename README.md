@@ -1,6 +1,6 @@
 # chaotic-attractors
 
-> This Fucking branch, for some reason i have tanked the preformance by a shitTON so trying to fix it or somtin, runs with like 10 points
+> 🥺 👉 👈
 
 ## Lorenz Attractor
 
