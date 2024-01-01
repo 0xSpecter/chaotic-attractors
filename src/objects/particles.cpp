@@ -42,23 +42,7 @@ void Particles::renderPoints(float deltatime)
 
         moveByEquation(timestep, i);
         Points[i].addTrailPoint();
-
-        /*
-        for(unsigned int j = 0; j < Points[i].trail.size(); j++)
-        {
-            shader.setVec3("globalPosition", Points[i].trail[j]);
-            
-            glm::mat4 model = glm::mat4(1.0f);
-            model = glm::translate(model, Points[i].trail[j]);
-            
-            shader.setMat4("model", model);
-
-            glDrawArrays(GL_POINTS, 0, 1);
-        }
-        */
-        
-
-        shader.setVec3("globalPosition", Points[i].Pos);
+        Points[i].renderTrail(&shader);
         
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::scale(model, glm::vec3(Scale));
