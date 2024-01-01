@@ -22,7 +22,8 @@ int main()
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
-        if (deltaTime > 0.3f) deltaTime = 0.3f;
+        
+        std::cout << ("Fps: %f", 1.0f / deltaTime) << std::endl; // FPS
 
         processInput();
         gui.newframe();

@@ -125,4 +125,6 @@ class Particles
 
         float point[3] = { -0.5f, -0.5f, -0.5f };
         unsigned int VBO, VAO;
+
+        void moveByEquation(float timestep, unsigned int i);
 };

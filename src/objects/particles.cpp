@@ -34,97 +34,29 @@ void Particles::renderPoints(float deltatime)
     float timestep = deltatime * Speed;
     for(unsigned int i = 0; i < Points.size(); i++)
     {
-        if (doCull && Points[i].magnitude() > 300000) {
+        if (doCull && Points[i].magnitude() > 300000) { // random high number. higher = more time until lost point is culled
             LossCount++;
             Points.erase(Points.begin() + i);
             continue;
         }
 
-        switch(equation) {
-            case LORENZ:
-                Points[i].Pos.x += (constants["a"].value * (Points[i].Pos.y - Points[i].Pos.x)) * timestep;
-                Points[i].Pos.y += (Points[i].Pos.x * (constants["b"].value - Points[i].Pos.z) - Points[i].Pos.y) * timestep;
-                Points[i].Pos.z += (Points[i].Pos.x * Points[i].Pos.y - 8/3 * Points[i].Pos.z) * timestep;
-
-                break;
-
-            case AIZAWA: case AIZAWA_CIRCLE:
-                Points[i].Pos.x += ((Points[i].Pos.z - constants["b"].value) * Points[i].Pos.x - constants["d"].value * Points[i].Pos.y) * timestep;
-                Points[i].Pos.y += (constants["d"].value * Points[i].Pos.x + (Points[i].Pos.z - constants["b"].value) * Points[i].Pos.y) * timestep;
-                Points[i].Pos.z += (constants["c"].value + constants["a"].value * Points[i].Pos.z - (Points[i].Pos.z * Points[i].Pos.z * Points[i].Pos.z / 3) - (Points[i].Pos.x * Points[i].Pos.x + Points[i].Pos.y * Points[i].Pos.y) * (1 + constants["e"].value * Points[i].Pos.z) + constants["f"].value * Points[i].Pos.z * (Points[i].Pos.x * Points[i].Pos.x * Points[i].Pos.x)) * timestep;
-                /*
-                dx = (z-b) * x - d*y
-
-                dy = d * x + (z-b) * y
-
-                dz = c + a*z - z3 /3 - x2 + f * z * x3
-                */
-                break;
-            
-            case CHEN:
-                Points[i].Pos.x += (constants["a"].value * (Points[i].Pos.y - Points[i].Pos.x)) * timestep;
-                Points[i].Pos.y += ((constants["c"].value - constants["a"].value) * Points[i].Pos.x - Points[i].Pos.x * Points[i].Pos.z + constants["c"].value * Points[i].Pos.y) * timestep;
-                Points[i].Pos.z += (Points[i].Pos.x * Points[i].Pos.y - constants["b"].value * Points[i].Pos.z) * timestep;
-                // dx/dt = a(y - x)
-                // dy/dt = (c - a)x - xz + cy
-                // dz/dt = xy - bz
-                break;
-            
-            case LUCHEN:
-                Points[i].Pos.x += (constants["a"].value * (Points[i].Pos.y - Points[i].Pos.x)) * timestep;
-                Points[i].Pos.y += (Points[i].Pos.x - Points[i].Pos.x * Points[i].Pos.z + constants["c"].value * Points[i].Pos.y + constants["d"].value) * timestep;
-                Points[i].Pos.z += (Points[i].Pos.x * Points[i].Pos.y - constants["b"].value * Points[i].Pos.z) * timestep;
-                break;
-            
-            case NOSE_HOOVER:
-                Points[i].Pos.x += (Points[i].Pos.y) * timestep;
-                Points[i].Pos.y += (-Points[i].Pos.x + Points[i].Pos.y * Points[i].Pos.z) * timestep;
-                Points[i].Pos.z += (constants["a"].value - (Points[i].Pos.y * Points[i].Pos.y)) * timestep;
-                break;
-            
-            case HALVORSEN:
-                Points[i].Pos.x += (-constants["a"].value * Points[i].Pos.x - 4 * Points[i].Pos.y - 4 * Points[i].Pos.z - Points[i].Pos.y * Points[i].Pos.y) * timestep;
-                Points[i].Pos.y += (-constants["a"].value * Points[i].Pos.y - 4 * Points[i].Pos.z - 4 * Points[i].Pos.x - Points[i].Pos.z * Points[i].Pos.z) * timestep;
-                Points[i].Pos.z += (-constants["a"].value * Points[i].Pos.z - 4 * Points[i].Pos.x - 4 * Points[i].Pos.y - Points[i].Pos.x * Points[i].Pos.x) * timestep;
-                break;
-            
-            case CHEN_LEE:
-                Points[i].Pos.x += (constants["a"].value * Points[i].Pos.x - Points[i].Pos.y * Points[i].Pos.z) * timestep;
-                Points[i].Pos.y += (constants["b"].value * Points[i].Pos.y + Points[i].Pos.x * Points[i].Pos.z) * timestep;
-                Points[i].Pos.z += (constants["c"].value * Points[i].Pos.z + Points[i].Pos.x * (Points[i].Pos.y / 3)) * timestep;
-                break;
-            
-            case 104:
-                Points[i].Pos.x += (Points[i].Pos.x) * timestep;
-                Points[i].Pos.y += (Points[i].Pos.y) * timestep;
-                Points[i].Pos.z += (Points[i].Pos.z) * timestep;
-                break;
-
-            case CUBE:
-                Points[i].Pos.x += Points[i].Pos.x * timestep;
-                Points[i].Pos.y += Points[i].Pos.y * timestep;
-                Points[i].Pos.z += Points[i].Pos.z * timestep;
-
-                break;
-
-            default:
-                break;
-        }
+        moveByEquation(timestep, i);
+        Points[i].addTrailPoint();
 
         /*
-        for(unsigned int i = 0; i < TrailPoints.size(); i++)
+        for(unsigned int j = 0; j < Points[i].trail.size(); j++)
         {
-            shader.setVec3("globalPosition", TrailPoints[i]);
+            shader.setVec3("globalPosition", Points[i].trail[j]);
             
             glm::mat4 model = glm::mat4(1.0f);
-            model = glm::scale(model, glm::vec3(scalar));
-            model = glm::translate(model, TrailPoints[i]);
+            model = glm::translate(model, Points[i].trail[j]);
             
             shader.setMat4("model", model);
 
             glDrawArrays(GL_POINTS, 0, 1);
         }
         */
+        
 
         shader.setVec3("globalPosition", Points[i].Pos);
         
@@ -135,6 +67,80 @@ void Particles::renderPoints(float deltatime)
         shader.setMat4("model", model);
 
         glDrawArrays(GL_POINTS, 0, 1);
+    }
+}
+
+void Particles::moveByEquation(float timestep, unsigned int i)
+{
+    switch(equation) {
+        case LORENZ:
+            Points[i].Pos.x += (constants["a"].value * (Points[i].Pos.y - Points[i].Pos.x)) * timestep;
+            Points[i].Pos.y += (Points[i].Pos.x * (constants["b"].value - Points[i].Pos.z) - Points[i].Pos.y) * timestep;
+            Points[i].Pos.z += (Points[i].Pos.x * Points[i].Pos.y - 8/3 * Points[i].Pos.z) * timestep;
+
+            break;
+
+        case AIZAWA: case AIZAWA_CIRCLE:
+            Points[i].Pos.x += ((Points[i].Pos.z - constants["b"].value) * Points[i].Pos.x - constants["d"].value * Points[i].Pos.y) * timestep;
+            Points[i].Pos.y += (constants["d"].value * Points[i].Pos.x + (Points[i].Pos.z - constants["b"].value) * Points[i].Pos.y) * timestep;
+            Points[i].Pos.z += (constants["c"].value + constants["a"].value * Points[i].Pos.z - (Points[i].Pos.z * Points[i].Pos.z * Points[i].Pos.z / 3) - (Points[i].Pos.x * Points[i].Pos.x + Points[i].Pos.y * Points[i].Pos.y) * (1 + constants["e"].value * Points[i].Pos.z) + constants["f"].value * Points[i].Pos.z * (Points[i].Pos.x * Points[i].Pos.x * Points[i].Pos.x)) * timestep;
+            /*
+            dx = (z-b) * x - d*y
+
+            dy = d * x + (z-b) * y
+
+            dz = c + a*z - z3 /3 - x2 + f * z * x3
+            */
+            break;
+        
+        case CHEN:
+            Points[i].Pos.x += (constants["a"].value * (Points[i].Pos.y - Points[i].Pos.x)) * timestep;
+            Points[i].Pos.y += ((constants["c"].value - constants["a"].value) * Points[i].Pos.x - Points[i].Pos.x * Points[i].Pos.z + constants["c"].value * Points[i].Pos.y) * timestep;
+            Points[i].Pos.z += (Points[i].Pos.x * Points[i].Pos.y - constants["b"].value * Points[i].Pos.z) * timestep;
+            // dx/dt = a(y - x)
+            // dy/dt = (c - a)x - xz + cy
+            // dz/dt = xy - bz
+            break;
+        
+        case LUCHEN:
+            Points[i].Pos.x += (constants["a"].value * (Points[i].Pos.y - Points[i].Pos.x)) * timestep;
+            Points[i].Pos.y += (Points[i].Pos.x - Points[i].Pos.x * Points[i].Pos.z + constants["c"].value * Points[i].Pos.y + constants["d"].value) * timestep;
+            Points[i].Pos.z += (Points[i].Pos.x * Points[i].Pos.y - constants["b"].value * Points[i].Pos.z) * timestep;
+            break;
+        
+        case NOSE_HOOVER:
+            Points[i].Pos.x += (Points[i].Pos.y) * timestep;
+            Points[i].Pos.y += (-Points[i].Pos.x + Points[i].Pos.y * Points[i].Pos.z) * timestep;
+            Points[i].Pos.z += (constants["a"].value - (Points[i].Pos.y * Points[i].Pos.y)) * timestep;
+            break;
+        
+        case HALVORSEN:
+            Points[i].Pos.x += (-constants["a"].value * Points[i].Pos.x - 4 * Points[i].Pos.y - 4 * Points[i].Pos.z - Points[i].Pos.y * Points[i].Pos.y) * timestep;
+            Points[i].Pos.y += (-constants["a"].value * Points[i].Pos.y - 4 * Points[i].Pos.z - 4 * Points[i].Pos.x - Points[i].Pos.z * Points[i].Pos.z) * timestep;
+            Points[i].Pos.z += (-constants["a"].value * Points[i].Pos.z - 4 * Points[i].Pos.x - 4 * Points[i].Pos.y - Points[i].Pos.x * Points[i].Pos.x) * timestep;
+            break;
+        
+        case CHEN_LEE:
+            Points[i].Pos.x += (constants["a"].value * Points[i].Pos.x - Points[i].Pos.y * Points[i].Pos.z) * timestep;
+            Points[i].Pos.y += (constants["b"].value * Points[i].Pos.y + Points[i].Pos.x * Points[i].Pos.z) * timestep;
+            Points[i].Pos.z += (constants["c"].value * Points[i].Pos.z + Points[i].Pos.x * (Points[i].Pos.y / 3)) * timestep;
+            break;
+        
+        case 104:
+            Points[i].Pos.x += (Points[i].Pos.x) * timestep;
+            Points[i].Pos.y += (Points[i].Pos.y) * timestep;
+            Points[i].Pos.z += (Points[i].Pos.z) * timestep;
+            break;
+
+        case CUBE:
+            Points[i].Pos.x += Points[i].Pos.x * timestep;
+            Points[i].Pos.y += Points[i].Pos.y * timestep;
+            Points[i].Pos.z += Points[i].Pos.z * timestep;
+
+            break;
+
+        default:
+            break;
     }
 }
 

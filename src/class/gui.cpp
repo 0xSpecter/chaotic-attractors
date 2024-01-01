@@ -75,7 +75,7 @@ void Gui::render()
         } else ImGui::Text("%s Total, Culling is disabled", std::to_string(ParticlesPtr->PointsInital.size()).c_str());
 
         if (ImGui::Button("Reset")) {
-            ParticlesPtr->PointsInital;
+            ParticlesPtr->Points = ParticlesPtr->PointsInital;
             ParticlesPtr->LossCount = 0;
         }
 

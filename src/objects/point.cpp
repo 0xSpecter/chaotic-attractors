@@ -5,11 +5,11 @@ Point::Point(glm::vec3 Position)
     Pos = Position;
 }
 
-void Point::addTrailPoint(glm::vec3 Position)
+void Point::addTrailPoint()
 {
     if (trail.size() >= capacity) trail.erase(trail.begin());
     
-    trail.push_back(Position);
+    trail.push_back(Pos);
 }
 
 float Point::magnitude()
