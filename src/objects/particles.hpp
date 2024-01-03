@@ -43,10 +43,9 @@ class Particles
 
         bool doCull = true;
 
-
         std::map<std::string, Constant> constants;
 
-        unsigned int equation = 0;
+        Equations equation = LORENZ;
 
         std::map<Equations, std::vector<datapoint>> equationConstants = {
             {LORENZ, {

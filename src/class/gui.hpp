@@ -25,7 +25,6 @@ class Gui
         bool attractorSelect = true;
         bool cameraConfig = false;
         bool graphicsConfig = false;
-
         bool constantsOpen = false;
 
         ImVec4 clearColor = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
@@ -50,6 +49,59 @@ class Gui
         Camera* camera;
         
         Particles* ParticlesPtr;
+
+        std::map<Equations, std::map<std::string, glm::vec3>> optimalCameraPositions = {
+            {LORENZ, {
+                {"Position", glm::vec3(0.0f, 0.0f, 95.0f)},
+                {"Front", glm::vec3(0.0f, 0.0f, -1.0f)},
+                {"Right", glm::vec3(-1.0f, 0.0f, 0.0f)}
+            }},
+            {AIZAWA, {
+                {"Position", glm::vec3(-4.67f, -0.14f, 0.33f)},
+                {"Front", glm::vec3(0.995f, -0.078f, -0.056f)},
+                {"Right", glm::vec3(0.03f, 0.0f, 0.99f)}
+            }},
+            {AIZAWA_CIRCLE, {
+                {"Position", glm::vec3(-0.528f, 0.611f, -3.235f)},
+                {"Front", glm::vec3(-0.001f, -0.225f, 0.974f)},
+                {"Right", glm::vec3(-0.999f, 0.0f, -0.001f)}
+            }},
+            {CHEN, {
+                {"Position", glm::vec3(0.0f, 0.0f, 95.0f)},
+                {"Front", glm::vec3(0.0f, 0.0f, -1.0f)},
+                {"Right", glm::vec3(-1.0f, 0.0f, 0.0f)}
+            }},
+            {LUCHEN, {
+                {"Position", glm::vec3(0.0f, 0.0f, 95.0f)},
+                {"Front", glm::vec3(0.0f, 0.0f, -1.0f)},
+                {"Right", glm::vec3(-1.0f, 0.0f, 0.0f)}
+            }},
+            {NEWTON_LEIPNIK, {
+                {"Position", glm::vec3(0.0f, 0.0f, 95.0f)},
+                {"Front", glm::vec3(0.0f, 0.0f, -1.0f)},
+                {"Right", glm::vec3(-1.0f, 0.0f, 0.0f)}
+            }},
+            {NOSE_HOOVER, {
+                {"Position", glm::vec3(-11.17f, 5.219f, 15.39f)},
+                {"Front", glm::vec3(0.509f, -0.307f, -0.803f)},
+                {"Right", glm::vec3(0.844f, 0.0f, 0.535f)}
+            }},
+            {HALVORSEN, {
+                {"Position", glm::vec3(12.67f, 16.55f, 15.107f)},
+                {"Front", glm::vec3(0.53f, -0.596f, -0.596f)},
+                {"Right", glm::vec3(0.742f, 0.0f, -0.669f)}
+            }},
+            {CHEN_LEE, {
+                {"Position", glm::vec3(-94.59f, 6.52f, 11.0f)},
+                {"Front", glm::vec3(0.984f, -0.078f, -0.157f)},
+                {"Right", glm::vec3(0.158f, 0.0f, 0.987f)}
+            }},
+            {CUBE, {
+                {"Position", glm::vec3(0.0f, 0.0f, 95.0f)},
+                {"Front", glm::vec3(0.0f, 0.0f, -1.0f)},
+                {"Right", glm::vec3(-1.0f, 0.0f, 0.0f)}
+            }}
+        };
 
         void renderConstants();
         void renderAttractorSelect();

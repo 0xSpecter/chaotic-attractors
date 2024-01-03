@@ -194,6 +194,12 @@ void Gui::renderAttractorSelect()
         ImGui::EndCombo();
     }
 
+    if (ImGui::Button("Optimal Camera Position")) {
+        camera->Position = optimalCameraPositions[ParticlesPtr->equation]["Position"];
+        camera->Front = optimalCameraPositions[ParticlesPtr->equation]["Front"];
+        camera->Right = optimalCameraPositions[ParticlesPtr->equation]["Right"];
+    }
+
     ImGui::End();
 }
 

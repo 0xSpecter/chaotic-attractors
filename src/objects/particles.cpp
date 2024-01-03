@@ -34,6 +34,7 @@ void Particles::renderPoints(float deltatime)
     float timestep = deltatime * Speed;
     for(unsigned int i = 0; i < Points.size(); i++)
     {
+        std::cout << Points[i].Pos.length() << std::endl;
         if (doCull && Points[i].magnitude() > 300000) { // random high number. higher = more time until lost point is culled
             LossCount++;
             Points.erase(Points.begin() + i);
@@ -42,7 +43,7 @@ void Particles::renderPoints(float deltatime)
 
         moveByEquation(timestep, i);
         Points[i].addTrailPoint();
-        Points[i].renderTrail(&shader);
+        // Points[i].renderTrail(&shader);
         
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::scale(model, glm::vec3(Scale));
