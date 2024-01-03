@@ -34,7 +34,6 @@ void Particles::renderPoints(float deltatime)
     float timestep = deltatime * Speed;
     for(unsigned int i = 0; i < Points.size(); i++)
     {
-        std::cout << Points[i].Pos.length() << std::endl;
         if (doCull && Points[i].magnitude() > 300000) { // random high number. higher = more time until lost point is culled
             LossCount++;
             Points.erase(Points.begin() + i);

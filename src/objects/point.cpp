@@ -14,7 +14,7 @@ void Point::addTrailPoint()
 
 float Point::magnitude()
 {
-    return Pos.length();
+    return glm::length(Pos);
 }
 
 void Point::renderTrail(Shader* shader)
