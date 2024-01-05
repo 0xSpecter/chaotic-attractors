@@ -10,6 +10,6 @@ vec3 point = vec3(1.0, 1.0, 1.0);
 
 void main()
 {
-    gl_Position = projection * view * instanceModel[gl_InstanceID] * vec4(point, 1.0);
-    color = normalize(abs(instanceModel[gl_InstanceID] * vec4(point, 0.7)));
+    gl_Position = projection * view * instanceModel * vec4(point, 1.0);
+    color = normalize(abs(instanceModel * vec4(point, 0.7)));
 }

@@ -17,7 +17,7 @@ void Point::addTrailPoint()
     trail.push_back(Pos);
 }
 
-
+// bruh this this is outdated AS fuck
 void Point::renderTrail(Shader* shader)
 {
     glLineWidth(5.0f);

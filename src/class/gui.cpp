@@ -19,7 +19,7 @@ void Gui::newframe()
     ImGui::NewFrame();
 }
 
-void Gui::render()
+void Gui::render(float deltaTime)
 {
     if (open)
     {
@@ -60,6 +60,8 @@ void Gui::render()
                 ImGui::EndMenu();
             }
 
+            ImGui::TextColored(ImVec4(0.5f, 0.2f, 0.5f, 1.0f), "Fps: %f", 1.0f / deltaTime);
+            
             ImGui::EndMenuBar();
         }
 
@@ -71,8 +73,8 @@ void Gui::render()
 
         if (ParticlesPtr->doCull) {
             ImGui::Text("Loss Count");
-            ImGui::TextColored(ImVec4(0.0f, 0.8f, 0.2f, 1.0f), "Loss %s / %s Total", std::to_string(ParticlesPtr->LossCount).c_str(), std::to_string(ParticlesPtr->PointsInital.size()).c_str());
-        } else ImGui::Text("%s Total, Culling is disabled", std::to_string(ParticlesPtr->PointsInital.size()).c_str());
+            ImGui::TextColored(ImVec4(0.0f, 0.8f, 0.2f, 1.0f), "Loss %i / %lu Total", ParticlesPtr->LossCount, ParticlesPtr->PointsInital.size());
+        } else ImGui::Text("%lu Total, Culling is disabled", ParticlesPtr->PointsInital.size());
 
         if (ImGui::Button("Reset")) {
             ParticlesPtr->Points = ParticlesPtr->PointsInital;

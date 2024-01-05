@@ -38,13 +38,11 @@ Particles::Particles(Gui* gui, float minmax, float step)
 void Particles::renderPoints(float deltatime)
 {
     glPointSize(PointSize);
-    float timestep = deltatime * Speed;
-    int amount = Points.size();
-    
-    glm::mat4* modelMatrices;
-    modelMatrices = new glm::mat4[amount];
+    float timestep = deltatime * Speed;    
 
-    for(unsigned int i = 0; i < amount; i++)
+    std::vector<glm::mat4> modelMatrices;
+
+    for(unsigned int i = 0; i < Points.size(); i++)
     {
         if (doCull && Points[i].magnitude() > 300000) { // random high number. higher = more time until lost point is culled
             LossCount++;
@@ -59,14 +57,14 @@ void Particles::renderPoints(float deltatime)
         model = glm::scale(model, glm::vec3(Scale));
         model = glm::translate(model, Points[i].Pos);
         
-        modelMatrices[i] = model;
+        modelMatrices.push_back(model);
     }
 
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, Points.size() * sizeof(glm::mat4), &modelMatrices[0], GL_DYNAMIC_DRAW);
 
-    glDrawArraysInstanced(GL_POINTS, 0, 1, amount);
+    glDrawArraysInstanced(GL_POINTS, 0, 1, Points.size());
 }
 
 /*

@@ -22,8 +22,6 @@ int main()
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
-        
-        std::cout << ("Fps: %f", 1.0f / deltaTime) << std::endl; // FPS
 
         processInput();
         gui.newframe();
@@ -41,7 +39,7 @@ int main()
         particles.renderPoints(deltaTime);
 
         gui.updateScalingConstants();
-        gui.render();
+        gui.render(deltaTime);
 
         
         glfwSwapBuffers(window);
