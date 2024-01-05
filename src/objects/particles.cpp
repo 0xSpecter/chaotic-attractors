@@ -10,13 +10,6 @@ Particles::Particles(Gui* gui, float minmax, float step)
 
     glBindVertexArray(VAO);
 
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(point), point, GL_STATIC_DRAW);
-
-    // position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
 
     for(float vx = -minmax; vx < minmax; vx += step) {
         for(float vy = -minmax; vy < minmax; vy += step) {
@@ -40,9 +33,9 @@ void Particles::renderPoints(float deltatime)
             continue;
         }
 
-        moveByEquation(timestep, i);
+        movePointByEquation(timestep, i);
+
         Points[i].addTrailPoint();
-        // Points[i].renderTrail(&shader);
         
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::scale(model, glm::vec3(Scale));
@@ -54,7 +47,7 @@ void Particles::renderPoints(float deltatime)
     }
 }
 
-void Particles::moveByEquation(float timestep, unsigned int i)
+void Particles::movePointByEquation(float timestep, unsigned int i)
 {
     switch(equation) {
         case LORENZ:
