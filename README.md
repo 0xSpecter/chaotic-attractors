@@ -1,6 +1,6 @@
 # chaotic-attractors
 
-> Now rendering 340,000 Particles!
+> Now rendering **340,000** Particles!
 
 ## Lorenz Attractor
 
