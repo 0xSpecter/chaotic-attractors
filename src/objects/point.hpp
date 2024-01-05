@@ -12,18 +12,18 @@ class Point
 {
     public:
         glm::vec3 Pos;
-        int capacity = 10; // max lenght of trail
 
+        int capacity = 10; // max lenght of trail
         std::vector<glm::vec3> trail;
 
         Point(glm::vec3 Position);
 
-        void addTrailPoint();
-
         float magnitude();
+
+        void addTrailPoint();
 
         void renderTrail(Shader* shader);
     
     private:
-
+        
 };
