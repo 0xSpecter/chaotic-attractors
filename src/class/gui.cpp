@@ -59,8 +59,8 @@ void Gui::render(float deltaTime)
                 
                 ImGui::EndMenu();
             }
-
-            ImGui::TextColored(ImVec4(0.5f, 0.2f, 0.5f, 1.0f), "Fps: %f", 1.0f / deltaTime);
+            
+            ImGui::TextColored(ImVec4(0.5f, 0.0f, 0.5f, 1.0f), "Fps: %i", (int)(1.0f / deltaTime));
             
             ImGui::EndMenuBar();
         }
