@@ -67,34 +67,6 @@ void Particles::renderPoints(float deltatime)
     glDrawArraysInstanced(GL_POINTS, 0, 1, Points.size());
 }
 
-/*
-void Particles::renderPoints(float deltatime)
-{
-    glPointSize(PointSize);
-    float timestep = deltatime * Speed;
-    for(unsigned int i = 0; i < Points.size(); i++)
-    {
-        if (doCull && Points[i].magnitude() > 300000) { // random high number. higher = more time until lost point is culled
-            LossCount++;
-            Points.erase(Points.begin() + i);
-            continue;
-        }
-
-        movePointByEquation(timestep, &Points[i]);
-
-        Points[i].addTrailPoint();
-        
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::scale(model, glm::vec3(Scale));
-        model = glm::translate(model, Points[i].Pos);
-
-        shader.setMat4("model", model);
-
-        glDrawArrays(GL_POINTS, 0, 1);
-    }
-}
-*/
-
 void Particles::movePointByEquation(float timestep, Point* point)
 {
     switch(equation) {
