@@ -125,4 +125,5 @@ class Particles
         unsigned int VBO, VAO;
 
         void movePointByEquation(float timestep, Point* point);
+        void updateScalingConstants();
 };

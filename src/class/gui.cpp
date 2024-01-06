@@ -159,19 +159,6 @@ void Gui::renderConstants()
     ImGui::End();
 }
 
-void Gui::updateScalingConstants()
-{
-    for (const auto& pair : ParticlesPtr->constants) 
-    {
-        if (ParticlesPtr->constants[pair.first].scaling) {
-            ParticlesPtr->constants[pair.first].value += ParticlesPtr->constants[pair.first].scalingSpeed;
-            
-            if (ParticlesPtr->constants[pair.first].value > ParticlesPtr->constants[pair.first].max) {
-                ParticlesPtr->constants[pair.first].value = ParticlesPtr->constants[pair.first].max;
-            }
-        }
-    }
-}
 
 void Gui::renderAttractorSelect()
 {

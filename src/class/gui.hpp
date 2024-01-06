@@ -42,8 +42,6 @@ class Gui
 
         void setEquation(Equations tynewEquationpe);
 
-        void updateScalingConstants();
-
     private:
         GLFWwindow* window;
         Camera* camera;

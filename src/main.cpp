@@ -38,9 +38,7 @@ int main()
 
         particles.renderPoints(deltaTime);
 
-        gui.updateScalingConstants();
         gui.render(deltaTime);
-
         
         glfwSwapBuffers(window);
         glfwPollEvents();

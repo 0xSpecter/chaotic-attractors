@@ -37,6 +37,8 @@ Particles::Particles(Gui* gui, float minmax, float step)
 
 void Particles::renderPoints(float deltatime)
 {
+    updateScalingConstants();
+
     glPointSize(PointSize);
     float timestep = deltatime * Speed;    
 
@@ -138,6 +140,20 @@ void Particles::movePointByEquation(float timestep, Point* point)
 
         default:
             break;
+    }
+}
+
+void Particles::updateScalingConstants()
+{
+    for (const auto& pair : constants) 
+    {
+        if (constants[pair.first].scaling) {
+            constants[pair.first].value += constants[pair.first].scalingSpeed;
+            
+            if (constants[pair.first].value > constants[pair.first].max) {
+                constants[pair.first].value = constants[pair.first].max;
+            }
+        }
     }
 }
 
