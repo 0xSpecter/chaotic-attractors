@@ -19,10 +19,6 @@ class Point
         Point(glm::vec3 Position);
 
         float magnitude();
-
-        void addTrailPoint();
-
-        void renderTrail(Shader* shader);
     
     private:
         

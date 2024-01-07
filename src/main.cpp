@@ -61,7 +61,7 @@ GLFWwindow* init()
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
     glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
-    GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "OpenGL", nullptr, nullptr); 
+    GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Chaotic Attractors", nullptr, nullptr); 
     glfwMakeContextCurrent(window);
     glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 

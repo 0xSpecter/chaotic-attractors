@@ -68,7 +68,7 @@ void Gui::render(float deltaTime)
         ImGui::ColorEdit4("Bg Color", (float*)&clearColor);
 
         ImGui::SliderFloat("Scalar", &ParticlesPtr->Scale, 0.01, 100.0);
-        ImGui::SliderFloat("speed", &ParticlesPtr->Speed, 0.0, 10.0);
+        ImGui::SliderFloat("Speed", &ParticlesPtr->Speed, 0.0, 10.0);
         ImGui::SliderFloat("Point Size", &ParticlesPtr->PointSize, 0.1, 100.0);
 
         if (ParticlesPtr->doCull) {
@@ -80,6 +80,9 @@ void Gui::render(float deltaTime)
             ParticlesPtr->Points = ParticlesPtr->PointsInital;
             ParticlesPtr->LossCount = 0;
         }
+        ImGui::SameLine();
+        if (!ParticlesPtr->Paused && ImGui::Button("Pause")) ParticlesPtr->Paused = true;
+        if (ParticlesPtr->Paused && ImGui::Button("Start")) ParticlesPtr->Paused = false;
 
         ImGui::End();
 

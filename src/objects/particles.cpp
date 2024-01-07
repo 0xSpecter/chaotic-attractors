@@ -40,7 +40,7 @@ void Particles::renderPoints(float deltatime)
     updateScalingConstants();
 
     glPointSize(PointSize);
-    float timestep = deltatime * Speed;    
+    float timestep = deltatime * (Paused ? 0 : Speed);    
 
     std::vector<glm::mat4> modelMatrices;
 
@@ -53,7 +53,6 @@ void Particles::renderPoints(float deltatime)
         }
 
         movePointByEquation(timestep, &Points[i]);
-        Points[i].addTrailPoint();
         
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::scale(model, glm::vec3(Scale));

@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "class/shaders.hpp"
-#include "class/texture.hpp"
 #include "class/camera.hpp"
 #include "class/gui.hpp"
 #include "objects/point.hpp"

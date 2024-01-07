@@ -15,12 +15,6 @@ enum Camera_Movement {
     RIGHT
 };
 
-const float YAW         = -90.0f;
-const float PITCH       =  0.0f;
-const float SPEED       =  2.5f;
-const float SENSITIVITY =  0.1f;
-const float ZOOM         =  45.0f;
-
 class Camera
 {
     public:
@@ -30,16 +24,15 @@ class Camera
         glm::vec3 Right;
 
         // camera options
-        float MovementSpeed = SPEED;
-        float MouseSensitivity = SENSITIVITY;
-        float Zoom = ZOOM;
+        float MovementSpeed = 2.5f;
+        float MouseSensitivity = 0.1f;
+        float Zoom = 45.0f;
 
         Camera(GLFWwindow* window, float cameraInitalDistance = 5.0f);
         glm::mat4 GetViewMatrix();
 
         void ProcessInput(float deltaTime);
         void ProcessMouseInput(double xpos, double ypos, bool IgnoreMouse);
-        void ProcessMouseScroll(double yoffset);
 
         float getZoom();
 
@@ -48,8 +41,8 @@ class Camera
         glm::vec3 WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
 
         // euler Angles
-        float Yaw = YAW;
-        float Pitch = PITCH;
+        float Yaw = -90.0f;
+        float Pitch = 0.0f;
 
         // mouse values
         bool firstMouseMovement = true;

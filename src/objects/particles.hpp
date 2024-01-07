@@ -38,6 +38,7 @@ class Particles
 
         float Scale = 1.0f;
         float Speed = 1.0f;
+        bool Paused = false;
         float PointSize = 1.0f;
         int LossCount = 0;
 
@@ -113,7 +114,7 @@ class Particles
         };
 
 
-        Particles(Gui* gui, float minmax = 0.017f, float step = 0.0005f);
+        Particles(Gui* gui, float minmax = 0.017f, float step = 0.0008f);
 
         void renderPoints(float deltatime);
 

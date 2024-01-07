@@ -2,7 +2,7 @@
 
 Shader::Shader()
 {
-    
+    // this needs to be here for initalizing the class without defining it
 }
 
 Shader::Shader(const char* vertexPath, const char* fragmentPath)
