@@ -3,7 +3,7 @@
 Particles::Particles(Gui* gui, float minmax, float step)
 {
     guiPtr = gui;
-    shader = Shader("shaders/shader.vert", "shaders/shader.frag");
+    shader = Shader("shaders/particle.vert", "shaders/particle.frag");
 
     for(float vx = -minmax; vx < minmax; vx += step) {
         for(float vy = -minmax; vy < minmax; vy += step) {
@@ -40,7 +40,7 @@ void Particles::renderPoints(float deltatime)
     updateScalingConstants();
 
     glPointSize(PointSize);
-    float timestep = deltatime * Speed;    
+    float timestep = deltatime / 2 * Speed;    
 
     std::vector<glm::mat4> modelMatrices;
 
@@ -134,6 +134,18 @@ void Particles::movePointByEquation(float timestep, Point* point)
             point->Pos.x += (point->Pos.x * (4 - point->Pos.y) + constants["a"].value * point->Pos.z) * timestep;
             point->Pos.y += (-point->Pos.y * (1 - point->Pos.x * point->Pos.x)) * timestep;
             point->Pos.z += (-point->Pos.x * (1.5 - constants["b"].value * point->Pos.z) - 0.05 * point->Pos.z) * timestep;
+            break;
+        
+        case FINANCE: 
+            point->Pos.x += ((1 / constants["b"].value - constants["a"].value) * point->Pos.x + point->Pos.z + point->Pos.x * point->Pos.y) * timestep;
+            point->Pos.y += (-constants["b"].value * point->Pos.y - point->Pos.x * point->Pos.x) * timestep;
+            point->Pos.z += (-point->Pos.x - constants["c"].value * point->Pos.z) * timestep;
+            break;
+
+        case THOMAS: 
+            point->Pos.x += (-constants["a"].value * point->Pos.x + sin(point->Pos.y)) * timestep;
+            point->Pos.y += (-constants["a"].value * point->Pos.y + sin(point->Pos.z)) * timestep;
+            point->Pos.z += (-constants["a"].value * point->Pos.z + sin(point->Pos.x)) * timestep;
             break;
 
         case CUBE:

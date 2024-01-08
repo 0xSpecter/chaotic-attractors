@@ -99,21 +99,31 @@ class Particles
                 {0.3f, 0.0f, 10.0f},
                 {1.0f, 0.0f, 10.0f},
             }},
+            {FINANCE, {
+                {0.001f, 0.0f, 0.1f},
+                {0.2f, 0.0f, 1.0f},
+                {1.1f, 0.0f, 10.0f}
+            }},
+            {THOMAS, {
+                {0.19f, 0.0f, 1.0f},
+            }},
             {CUBE, {}} 
         };
 
-        const char* equationNames[12] {
-            "Lorenz",
-            "Aizawa",
-            "Aizawa Circle",
-            "Chen",
-            "Lu Chen",
-            "Newton Leipnik",
-            "Nose Hoover",
-            "Halvorsen",
-            "Chen Lee",
-            "Bouali",
-            "Cube"
+        const char* equationInfo[15][2] {
+            {"Lorenz", "basic"},
+            {"Aizawa", "cool but small"},
+            {"Aizawa Circle", "isa cricle"},
+            {"Chen", "might need a speed decrease"},
+            {"Lu Chen", "might need a speed decrease"},
+            {"Newton Leipnik", "is cool"},
+            {"Nose Hoover", "very cool"},
+            {"Halvorsen", "triangle"},
+            {"Chen Lee", "takes a sec"},
+            {"Bouali", "don't memebr"},
+            {"Finance", "my finace"},
+            {"Thomas", "might need a speed increase at start, takes awile"},
+            {"Cube", "CUBBBEBBEBE"}
         };
 
 

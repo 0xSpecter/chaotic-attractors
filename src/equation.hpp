@@ -13,5 +13,7 @@ enum Equations
     HALVORSEN,
     CHEN_LEE,
     BOUALI,
+    FINANCE,
+    THOMAS,
     CUBE
 };

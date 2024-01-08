@@ -174,13 +174,11 @@ void Gui::renderAttractorSelect()
         ImGui::EndMenuBar();
     }
 
-    if (ImGui::BeginCombo("Options", ParticlesPtr->equationNames[ParticlesPtr->equation])) {
+    if (ImGui::BeginCombo("Options", ParticlesPtr->equationInfo[ParticlesPtr->equation][0])) {
         for (int i = 0; i < Equations::CUBE + 1; ++i) {
             bool isSelected = (ParticlesPtr->equation == Equations(i));
 
-            if (ImGui::Selectable(ParticlesPtr->equationNames[i], isSelected)) setEquation(Equations(i));
-
-            if (isSelected) ImGui::SetItemDefaultFocus();
+            if (ImGui::Selectable(ParticlesPtr->equationInfo[i][0], isSelected)) setEquation(Equations(i));
         }
 
         ImGui::EndCombo();
@@ -191,6 +189,8 @@ void Gui::renderAttractorSelect()
         camera->Front = optimalCameraPositions[ParticlesPtr->equation]["Front"];
         camera->Right = optimalCameraPositions[ParticlesPtr->equation]["Right"];
     }
+
+    ImGui::Text("%s", ParticlesPtr->equationInfo[ParticlesPtr->equation][1]);
 
     ImGui::End();
 }
