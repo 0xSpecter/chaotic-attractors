@@ -94,6 +94,11 @@ class Gui
                 {"Front", glm::vec3(0.984f, -0.078f, -0.157f)},
                 {"Right", glm::vec3(0.158f, 0.0f, 0.987f)}
             }},
+            {CHEN_LEE, {
+                {"Position", glm::vec3(-94.59f, 6.52f, 11.0f)},
+                {"Front", glm::vec3(0.984f, -0.078f, -0.157f)},
+                {"Right", glm::vec3(0.158f, 0.0f, 0.987f)}
+            }},
             {CUBE, {
                 {"Position", glm::vec3(0.0f, 0.0f, 95.0f)},
                 {"Front", glm::vec3(0.0f, 0.0f, -1.0f)},

@@ -12,5 +12,6 @@ enum Equations
     NOSE_HOOVER,
     HALVORSEN,
     CHEN_LEE,
+    BOUALI,
     CUBE
 };

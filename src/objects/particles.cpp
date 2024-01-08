@@ -130,10 +130,10 @@ void Particles::movePointByEquation(float timestep, Point* point)
             point->Pos.z += (constants["c"].value * point->Pos.z + point->Pos.x * (point->Pos.y / 3)) * timestep;
             break;
         
-        case 104:
-            point->Pos.x += (point->Pos.x) * timestep;
-            point->Pos.y += (point->Pos.y) * timestep;
-            point->Pos.z += (point->Pos.z) * timestep;
+        case BOUALI:
+            point->Pos.x += (point->Pos.x * (4 - point->Pos.y) + constants["a"].value * point->Pos.z) * timestep;
+            point->Pos.y += (-point->Pos.y * (1 - point->Pos.x * point->Pos.x)) * timestep;
+            point->Pos.z += (-point->Pos.x * (1.5 - constants["b"].value * point->Pos.z) - 0.05 * point->Pos.z) * timestep;
             break;
 
         case CUBE:

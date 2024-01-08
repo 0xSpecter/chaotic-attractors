@@ -95,6 +95,10 @@ class Particles
                 {-10.0f, -50.0f, 50.0f},
                 {-0.38f, -1.0f, 1.0f},
             }},
+            {BOUALI, {
+                {0.3f, 0.0f, 10.0f},
+                {1.0f, 0.0f, 10.0f},
+            }},
             {CUBE, {}} 
         };
 
@@ -108,6 +112,7 @@ class Particles
             "Nose Hoover",
             "Halvorsen",
             "Chen Lee",
+            "Bouali",
             "Cube"
         };
 
