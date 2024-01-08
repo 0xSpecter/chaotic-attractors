@@ -47,6 +47,10 @@ void Gui::render(float deltaTime)
                 if (!graphicsConfig) {
                     if (ImGui::MenuItem("Graphics")) graphicsConfig = true; 
                 } else if (ImGui::MenuItem("close Graphics")) graphicsConfig = false; 
+
+                if (!worldTransform) {
+                    if (ImGui::MenuItem("World Transform")) worldTransform = true; 
+                } else if (ImGui::MenuItem("close World Transform")) worldTransform = false; 
                 
                 ImGui::EndMenu();
             }
@@ -94,6 +98,9 @@ void Gui::render(float deltaTime)
 
         if (graphicsConfig) 
             renderGraphicsConfig();
+        
+        if (worldTransform) 
+            renderWorldTransform();
         
     } 
     else glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -240,4 +247,22 @@ void Gui::renderGraphicsConfig()
 
     if (BLEND != glIsEnabled(GL_BLEND)) BLEND ? glEnable(GL_BLEND) : glDisable(GL_BLEND);
     if (DEPTH_TEST != glIsEnabled(GL_DEPTH_TEST)) DEPTH_TEST ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
+}
+
+void Gui::renderWorldTransform()
+{
+    ImGui::Begin(" World Transform ", nullptr, ImGuiWindowFlags_MenuBar);
+    if (ImGui::BeginMenuBar()) 
+    {
+        if (ImGui::MenuItem("Close")) 
+            worldTransform = false; 
+        
+        ImGui::EndMenuBar();
+    }
+
+    ImGui::SliderFloat("Rotate X", &camera->RotateX, 0.0f, 360.0f);
+    ImGui::SliderFloat("Rotate Y", &camera->RotateY, 0.0f, 360.0f);
+    ImGui::SliderFloat("Rotate Z", &camera->RotateZ, 0.0f, 360.0f);
+
+    ImGui::End();
 }

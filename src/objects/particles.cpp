@@ -147,12 +147,17 @@ void Particles::movePointByEquation(float timestep, Point* point)
             point->Pos.y += (-constants["a"].value * point->Pos.y + sin(point->Pos.z)) * timestep;
             point->Pos.z += (-constants["a"].value * point->Pos.z + sin(point->Pos.x)) * timestep;
             break;
+        
+        case ROSSLER:
+            point->Pos.x += (-point->Pos.y - point->Pos.z) * timestep;
+            point->Pos.y += (point->Pos.x + constants["a"].value * point->Pos.y) * timestep;
+            point->Pos.z += (constants["b"].value + point->Pos.z * (point->Pos.x - constants["c"].value)) * timestep;
+            break;
 
         case CUBE:
             point->Pos.x += point->Pos.x * timestep;
             point->Pos.y += point->Pos.y * timestep;
             point->Pos.z += point->Pos.z * timestep;
-
             break;
 
         default:

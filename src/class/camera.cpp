@@ -12,7 +12,12 @@ Camera::Camera(GLFWwindow* window, float cameraInitalDistance)
 // returns the view matrix
 glm::mat4 Camera::GetViewMatrix()
 {
-    return glm::lookAt(Position, Position + Front, Up);
+    glm::mat4 view = glm::lookAt(Position, Position + Front, Up);
+    view = glm::rotate(view, glm::radians(RotateX), glm::vec3(1.0f, 0.0f, 0.0f));
+    view = glm::rotate(view, glm::radians(RotateY), glm::vec3(0.0f, 1.0f, 0.0f));
+    view = glm::rotate(view, glm::radians(RotateZ), glm::vec3(0.0f, 0.0f, 1.0f));
+
+    return view;
 }
 
 // processes keyboard input

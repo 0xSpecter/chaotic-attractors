@@ -26,6 +26,7 @@ class Gui
         bool cameraConfig = false;
         bool graphicsConfig = false;
         bool constantsOpen = false;
+        bool worldTransform = false;
 
         ImVec4 clearColor = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
 
@@ -109,6 +110,11 @@ class Gui
                 {"Front", glm::vec3(-0.600f, -0.074f, -0.796f)}, // tbd
                 {"Right", glm::vec3(0.798f, 0.0f, -0.601f)}
             }},
+            {ROSSLER, {
+                {"Position", glm::vec3(41.86f, 13.89f, 52.87f)},
+                {"Front", glm::vec3(-0.600f, -0.074f, -0.796f)}, // tbd
+                {"Right", glm::vec3(0.798f, 0.0f, -0.601f)}
+            }},
             {CUBE, {
                 {"Position", glm::vec3(0.0f, 0.0f, 95.0f)},
                 {"Front", glm::vec3(0.0f, 0.0f, -1.0f)},
@@ -120,4 +126,5 @@ class Gui
         void renderAttractorSelect();
         void renderCameraConfig();
         void renderGraphicsConfig();
+        void renderWorldTransform();
 };

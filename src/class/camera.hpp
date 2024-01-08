@@ -28,6 +28,10 @@ class Camera
         float MouseSensitivity = 0.1f;
         float Zoom = 45.0f;
 
+        float RotateX = 0.0f;
+        float RotateY = 0.0f; // is deg
+        float RotateZ = 0.0f;
+
         Camera(GLFWwindow* window, float cameraInitalDistance = 5.0f);
         glm::mat4 GetViewMatrix();
 

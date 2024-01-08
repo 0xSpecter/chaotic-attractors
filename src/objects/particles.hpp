@@ -107,6 +107,11 @@ class Particles
             {THOMAS, {
                 {0.19f, 0.0f, 1.0f},
             }},
+            {ROSSLER, {
+                {0.2f, 0.0f, 1.0f},
+                {0.2f, 0.0f, 1.0f},
+                {5.7f, 0.0f, 25.0f},
+            }},
             {CUBE, {}} 
         };
 
@@ -123,6 +128,7 @@ class Particles
             {"Bouali", "don't memebr"},
             {"Finance", "my finace"},
             {"Thomas", "might need a speed increase at start, takes awile"},
+            {"Rössler", "stupid"},
             {"Cube", "CUBBBEBBEBE"}
         };
 

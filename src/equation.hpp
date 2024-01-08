@@ -15,5 +15,6 @@ enum Equations
     BOUALI,
     FINANCE,
     THOMAS,
+    ROSSLER,
     CUBE
 };

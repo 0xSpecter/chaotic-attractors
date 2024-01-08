@@ -123,5 +123,4 @@ make
 <a href="https://asliceofrendering.com/scene%20helper/2020/01/05/InfiniteGrid/" target="_blank">
     grid cratation "<b>Marie</b>"
 </a>
-
 ---
