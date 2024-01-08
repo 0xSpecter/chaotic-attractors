@@ -40,19 +40,19 @@ void Particles::renderPoints(float deltatime)
     updateScalingConstants();
 
     glPointSize(PointSize);
-    float timestep = deltatime * (Paused ? 0 : Speed);    
+    float timestep = deltatime * Speed;    
 
     std::vector<glm::mat4> modelMatrices;
 
     for(unsigned int i = 0; i < Points.size(); i++)
     {
-        if (doCull && Points[i].magnitude() > 300000) { // random high number. higher = more time until lost point is culled
+        if (doCull && Points[i].magnitude() > 30000) { // random high number. higher = more time until lost point is culled
             LossCount++;
             Points.erase(Points.begin() + i);
             continue;
         }
 
-        movePointByEquation(timestep, &Points[i]);
+        if (!Paused) movePointByEquation(timestep, &Points[i]);
         
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::scale(model, glm::vec3(Scale));
@@ -104,6 +104,12 @@ void Particles::movePointByEquation(float timestep, Point* point)
             point->Pos.x += (constants["a"].value * (point->Pos.y - point->Pos.x)) * timestep;
             point->Pos.y += (point->Pos.x - point->Pos.x * point->Pos.z + constants["c"].value * point->Pos.y + constants["d"].value) * timestep;
             point->Pos.z += (point->Pos.x * point->Pos.y - constants["b"].value * point->Pos.z) * timestep;
+            break;
+        
+        case NEWTON_LEIPNIK:
+            point->Pos.x += (-constants["a"].value * point->Pos.x + point->Pos.y + 10 * point->Pos.y * point->Pos.z) * timestep;
+            point->Pos.y += (-point->Pos.x - 0.4 * point->Pos.y + 5 * point->Pos.x * point->Pos.z) * timestep;
+            point->Pos.z += (constants["b"].value * point->Pos.z - 5 * point->Pos.x * point->Pos.y) * timestep;
             break;
         
         case NOSE_HOOVER:

@@ -82,9 +82,7 @@ class Particles
             }},
             {NEWTON_LEIPNIK, {
                 {0.4f, 0.0f, 10.0f},
-                {0.175f, 0.0f, 5.0f},
-                {10.0f, 0.0f, 100.0f},
-                {5.0f, 0.0f, 50.0f}
+                {0.175f, 0.0f, 5.0f}
             }},
             {NOSE_HOOVER, {
                 {1.5f, 0.0f, 10.0f},
