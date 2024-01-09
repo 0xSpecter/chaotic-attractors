@@ -114,6 +114,10 @@ make
     Atrractor Formula by "<b>Markus Buchholz</b>"
 </a>
 
+<a href="https://www.dynamicmath.xyz/strange-attractors/" target="_blank">
+    More Atrractor Formulas by "<b>Juan Carlos Ponce</b>"
+</a>
+
 <a href="https://edeleastar.github.io/opengl-programming/topic02/pdf/3.Points_Circles_and_Lines.pdf" target="_blank">
     Drawing circles and lines in opengl "<b>Eamonn de Leastar</b>"
 </a>
