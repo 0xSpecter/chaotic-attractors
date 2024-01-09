@@ -154,6 +154,36 @@ void Particles::movePointByEquation(float timestep, Point* point)
             point->Pos.z += (constants["b"].value + point->Pos.z * (point->Pos.x - constants["c"].value)) * timestep;
             break;
 
+        case DADRAS:
+            point->Pos.x += (point->Pos.y - constants["a"].value * point->Pos.x + constants["b"].value * point->Pos.y * point->Pos.z) * timestep;
+            point->Pos.y += (constants["c"].value * point->Pos.y - point->Pos.x * point->Pos.z + point->Pos.z) * timestep;
+            point->Pos.z += (constants["d"].value * point->Pos.x * point->Pos.y - constants["e"].value * point->Pos.z) * timestep;
+            break;
+        
+        case RABINOVICH_FABRIKANT:
+            point->Pos.x += (point->Pos.y * (point->Pos.z - 1 + point->Pos.x * point->Pos.x) + constants["a"].value * point->Pos.x) * timestep;
+            point->Pos.y += (point->Pos.x * (3 * point->Pos.z + 1 - point->Pos.x * point->Pos.x) + constants["a"].value * point->Pos.y) * timestep;
+            point->Pos.z += (-2 * point->Pos.z * (constants["b"].value + point->Pos.x * point->Pos.y)) * timestep;
+            break;
+        
+        case THREE_SCROLL_UNIFIED_CHAOTIC_SYSTEM:
+            point->Pos.x += (constants["a"].value * (point->Pos.y - point->Pos.x) + constants["d"].value * point->Pos.x * point->Pos.z) * timestep;
+            point->Pos.y += (constants["b"].value * point->Pos.x - point->Pos.x * point->Pos.z + constants["f"].value * point->Pos.y) * timestep;
+            point->Pos.z += (constants["c"].value * point->Pos.z + point->Pos.x * point->Pos.y - constants["e"].value * (point->Pos.x * point->Pos.x)) * timestep;
+            break;
+        
+        case SPROTT:
+            point->Pos.x += (point->Pos.y + constants["a"].value * point->Pos.x * point->Pos.y + point->Pos.x * point->Pos.z) * timestep;
+            point->Pos.y += (1 - constants["b"].value * (point->Pos.x * point->Pos.x) + point->Pos.y * point->Pos.z) * timestep;
+            point->Pos.z += (point->Pos.x - point->Pos.x * point->Pos.x - point->Pos.y * point->Pos.y) * timestep;
+            break;
+        
+        case FOUR_WING:
+            point->Pos.x += (constants["a"].value * point->Pos.x + point->Pos.y * point->Pos.z) * timestep;
+            point->Pos.y += (constants["b"].value * point->Pos.x + constants["c"].value * point->Pos.y - point->Pos.x * point->Pos.z) * timestep;
+            point->Pos.z += (-point->Pos.z - point->Pos.x * point->Pos.y) * timestep;
+            break;
+
         case CUBE:
             point->Pos.x += point->Pos.x * timestep;
             point->Pos.y += point->Pos.y * timestep;

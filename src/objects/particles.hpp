@@ -112,10 +112,38 @@ class Particles
                 {0.2f, 0.0f, 1.0f},
                 {5.7f, 0.0f, 25.0f},
             }},
+            {DADRAS, {
+                {3.0f, 0.0f, 10.0f},
+                {2.7f, 0.0f, 10.0f},
+                {1.7f, 0.0f, 10.0f},
+                {2.0f, 0.0f, 10.0f},
+                {9.0f, 0.0f, 100.0f},
+            }},
+            {RABINOVICH_FABRIKANT, {
+                {0.14f, 0.0f, 1.0f},
+                {0.10f, 0.0f, 1.0f},
+            }},
+            {THREE_SCROLL_UNIFIED_CHAOTIC_SYSTEM, {
+                {32.48f, 0.0f, 100.0f},
+                {45.84f, 0.0f, 100.0f},
+                {1.18f, 0.0f, 10.0f},
+                {0.13f, 0.0f, 1.0f},
+                {0.57f, 0.0f, 1.0f},
+                {14.7f, 0.0f, 100.0f},
+            }},
+            {SPROTT, {
+                {2.07f, 0.0f, 10.0f},
+                {1.79f, 0.0f, 10.0f},
+            }},
+            {FOUR_WING, {
+                {0.2f, 0.0f, 1.0f},
+                {0.01f, 0.0f, 1.0f},
+                {-0.4f, -1.0f, 1.0f},
+            }},
             {CUBE, {}} 
         };
 
-        const char* equationInfo[15][2] {
+        const char* equationInfo[20][2] {
             {"Lorenz", "basic"},
             {"Aizawa", "cool but small"},
             {"Aizawa Circle", "isa cricle"},
@@ -129,6 +157,11 @@ class Particles
             {"Finance", "my finace"},
             {"Thomas", "might need a speed increase at start, takes awile"},
             {"Rössler", "stupid"},
+            {"Dadras", "tbd"},
+            {"Rabinovich Fabrikant", "tbd"},
+            {"Three Scroll Unified Chaotic System", "tbd"},
+            {"Sprott", "tbd"},
+            {"Four Wing", "tbd"},
             {"Cube", "CUBBBEBBEBE"}
         };
 
