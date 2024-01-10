@@ -12,4 +12,4 @@ void main()
 {
     gl_Position = projection * view * instanceModel * vec4(point, 1.0);
     color = normalize(abs(instanceModel * vec4(point, 0.7)));
-} 
+}
