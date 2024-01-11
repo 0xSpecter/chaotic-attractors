@@ -33,6 +33,9 @@ Particles::Particles(Gui* gui, float minmax, float step)
     glVertexAttribDivisor(1, 1);
     glVertexAttribDivisor(2, 1);
     glVertexAttribDivisor(3, 1);
+
+
+    glEnable(GL_POINT_SMOOTH);
 }
 
 void Particles::renderPoints(float deltatime)
@@ -60,9 +63,9 @@ void Particles::renderPoints(float deltatime)
         
         modelMatrices.push_back(model);
     }
-
+    
     glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO); 
     glBufferData(GL_ARRAY_BUFFER, Points.size() * sizeof(glm::mat4), &modelMatrices[0], GL_DYNAMIC_DRAW);
 
     glDrawArraysInstanced(GL_POINTS, 0, 1, Points.size());
