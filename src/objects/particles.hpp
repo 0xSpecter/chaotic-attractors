@@ -6,6 +6,7 @@ class Gui;
 
 #include <glm/glm.hpp>
 #include <vector>
+#include <math.h>
 
 #include "point.hpp"
 #include "../class/gui.hpp"
@@ -179,4 +180,5 @@ class Particles
 
         void movePointByEquation(float timestep, Point* point);
         void updateScalingConstants();
+        void getSphereVertices();
 };

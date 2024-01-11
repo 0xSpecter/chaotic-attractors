@@ -20,19 +20,31 @@ Particles::Particles(Gui* gui, float minmax, float step)
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4)));
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(2 * sizeof(glm::vec4)));
-    glEnableVertexAttribArray(3);
-    glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(3 * sizeof(glm::vec4)));
+    float vertices[] = {
+        -0.5f, -0.5f, 0.0f,
+        0.5f, -0.5f, 0.0f,
+        0.0f,  0.5f, 0.0f
+    };  
 
-    glVertexAttribDivisor(0, 1);
+    getSphereVertices();
+
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    glEnableVertexAttribArray(1);
+    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
+    glEnableVertexAttribArray(2);
+    glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4)));
+    glEnableVertexAttribArray(3);
+    glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(2 * sizeof(glm::vec4)));
+    glEnableVertexAttribArray(4);
+    glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(3 * sizeof(glm::vec4)));
+
     glVertexAttribDivisor(1, 1);
     glVertexAttribDivisor(2, 1);
     glVertexAttribDivisor(3, 1);
+    glVertexAttribDivisor(4, 1);
 
 
     glEnable(GL_POINT_SMOOTH);
@@ -68,7 +80,7 @@ void Particles::renderPoints(float deltatime)
     glBindBuffer(GL_ARRAY_BUFFER, VBO); 
     glBufferData(GL_ARRAY_BUFFER, Points.size() * sizeof(glm::mat4), &modelMatrices[0], GL_DYNAMIC_DRAW);
 
-    glDrawArraysInstanced(GL_POINTS, 0, 1, Points.size());
+    glDrawArraysInstanced(GL_TRIANGLES, 0, 3, Points.size());
 }
 
 void Particles::movePointByEquation(float timestep, Point* point)
@@ -216,4 +228,20 @@ void Particles::clean()
 {
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
+}
+
+void Particles::getSphereVertices()
+{
+    std::vector<float> Sphere;
+
+    for (float x = 0; x < M_PI * 2; x += M_PI * 2 / 360){
+        for (float y = 0; y < M_PI * 2; y += M_PI * 2 / 360){
+            for (float z = 0; z < M_PI * 2; z += M_PI * 2 / 360)
+            {
+                Sphere.push_back(x);
+                Sphere.push_back(y);
+                Sphere.push_back(z);
+            }
+        }
+    }
 }
