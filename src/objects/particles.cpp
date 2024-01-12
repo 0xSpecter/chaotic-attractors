@@ -20,7 +20,8 @@ Particles::Particles(Gui* gui, float minmax, float step)
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
-    vectorVertices = getSphereVertices();
+    // is just set in shader does nothing as of rn
+    vectorVertices = {0.5, 0.5, 0.5};
 
 
     glBufferData(GL_ARRAY_BUFFER, sizeof(vectorVertices.data()), vectorVertices.data(), GL_STATIC_DRAW);
@@ -72,7 +73,7 @@ void Particles::renderPoints(float deltatime)
     glBindBuffer(GL_ARRAY_BUFFER, VBO); 
     glBufferData(GL_ARRAY_BUFFER, Points.size() * sizeof(glm::mat4), &modelMatrices[0], GL_DYNAMIC_DRAW);
 
-    glDrawArraysInstanced(GL_TRIANGLES, 0, 3, Points.size());
+    glDrawArraysInstanced(GL_POINTS, 0, vectorVertices.size(), Points.size());
 }
 
 void Particles::movePointByEquation(float timestep, Point* point)

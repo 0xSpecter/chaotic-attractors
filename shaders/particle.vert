@@ -7,8 +7,11 @@ uniform mat4 projection;
 
 out vec4 color;
 
+//placeholder
+vec3 point = vec3(0.5, 0.5, 0.5);
+
 void main()
 {
-    gl_Position = projection * view * instanceModel * vec4(Pos, 1.0);
-    color = normalize(abs(instanceModel * vec4(Pos, 0.7)));
+    gl_Position = projection * view * instanceModel * vec4(point, 1.0);
+    color = normalize(abs(instanceModel * vec4(point, 0.7)));
 }
