@@ -20,15 +20,10 @@ Particles::Particles(Gui* gui, float minmax, float step)
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
-    float vertices[] = {
-        -0.5f, -0.5f, 0.0f,
-        0.5f, -0.5f, 0.0f,
-        0.0f,  0.5f, 0.0f
-    };  
+    vectorVertices = getSphereVertices();
 
-    getSphereVertices();
 
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vectorVertices.data()), vectorVertices.data(), GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
@@ -45,9 +40,6 @@ Particles::Particles(Gui* gui, float minmax, float step)
     glVertexAttribDivisor(2, 1);
     glVertexAttribDivisor(3, 1);
     glVertexAttribDivisor(4, 1);
-
-
-    glEnable(GL_POINT_SMOOTH);
 }
 
 void Particles::renderPoints(float deltatime)
@@ -230,18 +222,44 @@ void Particles::clean()
     glDeleteBuffers(1, &VBO);
 }
 
-void Particles::getSphereVertices()
+std::vector<float> Particles::getSphereVertices()
 {
     std::vector<float> Sphere;
 
-    for (float x = 0; x < M_PI * 2; x += M_PI * 2 / 360){
-        for (float y = 0; y < M_PI * 2; y += M_PI * 2 / 360){
-            for (float z = 0; z < M_PI * 2; z += M_PI * 2 / 360)
-            {
-                Sphere.push_back(x);
-                Sphere.push_back(y);
-                Sphere.push_back(z);
-            }
+    const float PI = 3.14f;
+
+    for (float angle = 0.0f; angle <= (2.0f * PI); angle += 0.01f)
+    {
+        Sphere.push_back(50.0f * sin(angle));
+        Sphere.push_back(50.0f * cos(angle));
+        Sphere.push_back(0.0);
+    }   
+    
+    /*
+    int stacks = 20;
+    int slices = 20;
+    const float PI = 3.14f;
+
+    for (int i = 0; i <= stacks; ++i){
+
+        float V = (float)i / (float)stacks;
+        float phi = V * PI;
+
+        for (int j = 0; j <= slices; ++j){
+
+            float U = (float)j / (float)slices;
+            float theta = U * (PI * 2);
+
+            float x = cos(theta) * sin(phi);
+            float y = cos(phi);
+            float z = sin(theta) * sin(phi);
+
+            Sphere.push_back(x);
+            Sphere.push_back(y);
+            Sphere.push_back(z);
         }
     }
+    */
+
+    return Sphere;
 }

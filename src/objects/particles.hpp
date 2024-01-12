@@ -177,8 +177,9 @@ class Particles
         Gui* guiPtr;
 
         unsigned int VBO, VAO;
+        std::vector<float> vectorVertices;
 
         void movePointByEquation(float timestep, Point* point);
         void updateScalingConstants();
-        void getSphereVertices();
+        std::vector<float> getSphereVertices();
 };
