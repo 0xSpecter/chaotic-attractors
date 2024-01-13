@@ -51,7 +51,7 @@ void Particles::renderPoints(float deltatime)
     float timestep = deltatime / 2 * Speed;    
 
     std::vector<glm::mat4> particalModels;
-    std::vector<glm::vec3> trailPoss;
+    std::vector<float> trailPoss;
 
     for(unsigned int i = 0; i < Points.size(); i++)
     {
@@ -72,7 +72,12 @@ void Particles::renderPoints(float deltatime)
         particalModels.push_back(model);
         
         if (!Paused) Points[i].trailCompute();
-        trailPoss.insert(trailPoss.end(), Points[i].trail.begin(), Points[i].trail.end());
+        
+        for (auto f : Points[i].trail) {
+            trailPoss.push_back(f.x);
+            trailPoss.push_back(f.y);
+            trailPoss.push_back(f.z);
+        }
     }
 
     particleShader.use();
@@ -86,9 +91,10 @@ void Particles::renderPoints(float deltatime)
     trailShader.setMat4("model", glm::mat4(1.0f));
     glBindVertexArray(trailVAO);
     glBindBuffer(GL_ARRAY_BUFFER, trailVBO); 
-    glBufferData(GL_ARRAY_BUFFER, trailPoss.size() * sizeof(glm::vec3), &trailPoss[0], GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, trailPoss.size() * sizeof(float), trailPoss.data(), GL_DYNAMIC_DRAW);
 
-    glDrawArraysInstanced(GL_LINE_STRIP, 0, Points[0].capacity, Points.size());
+
+    glDrawArraysInstanced(GL_LINE_STRIP, 0, Points[0].trail.size(), Points.size());
 }
 
 void Particles::movePointByEquation(float timestep, Point* point)

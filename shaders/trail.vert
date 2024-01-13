@@ -7,8 +7,6 @@ uniform mat4 model;
 
 out vec4 color;
 
-vec3 point = vec3(0.5, 0.5, 0.5);
-
 void main()
 {
     gl_Position = projection * view * model * vec4(Pos, 1.0);
