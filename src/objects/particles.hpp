@@ -35,7 +35,8 @@ class Particles
     public:
         std::vector<Point> Points;
         std::vector<Point> PointsInital;
-        Shader shader;
+        Shader particleShader;
+        Shader trailShader;
 
         float Scale = 1.0f;
         float Speed = 1.0f;
@@ -171,15 +172,19 @@ class Particles
 
         void renderPoints(float deltatime);
 
+        void assignUniforms(glm::mat4 view, glm::mat4 projection);
+
         void clean();
 
     private:
         Gui* guiPtr;
 
-        unsigned int VBO, VAO;
+        unsigned int particleVBO, particleVAO, trailVBO, trailVAO;
         std::vector<float> vectorVertices;
 
         void movePointByEquation(float timestep, Point* point);
         void updateScalingConstants();
         std::vector<float> getSphereVertices();
+
+        void configureShaderModelMatrix(unsigned int location = 0);
 };

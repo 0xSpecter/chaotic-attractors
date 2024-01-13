@@ -3,7 +3,8 @@
 Particles::Particles(Gui* gui, float minmax, float step)
 {
     guiPtr = gui;
-    shader = Shader("shaders/particle.vert", "shaders/particle.frag");
+    particleShader = Shader("shaders/particle.vert", "shaders/particle.frag");
+    trailShader = Shader("shaders/trail.vert", "shaders/trail.frag");
 
     for(float vx = -minmax; vx < minmax; vx += step) {
         for(float vy = -minmax; vy < minmax; vy += step) {
@@ -13,34 +14,31 @@ Particles::Particles(Gui* gui, float minmax, float step)
         }
     }
     PointsInital = Points;
-
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
     
-    glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    
+    glGenVertexArrays(1, &particleVAO);
+    glGenBuffers(1, &particleVBO);
+
+    glBindVertexArray(particleVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, particleVBO);
 
     // is just set in shader does nothing as of rn
     vectorVertices = {0.5, 0.5, 0.5};
-
 
     glBufferData(GL_ARRAY_BUFFER, sizeof(vectorVertices.data()), vectorVertices.data(), GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
-    glEnableVertexAttribArray(1);
-    glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
-    glEnableVertexAttribArray(2);
-    glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4)));
-    glEnableVertexAttribArray(3);
-    glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(2 * sizeof(glm::vec4)));
-    glEnableVertexAttribArray(4);
-    glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(3 * sizeof(glm::vec4)));
+    configureShaderModelMatrix(1);
 
-    glVertexAttribDivisor(1, 1);
-    glVertexAttribDivisor(2, 1);
-    glVertexAttribDivisor(3, 1);
-    glVertexAttribDivisor(4, 1);
+
+    glGenVertexArrays(1, &trailVAO);
+    glGenBuffers(1, &trailVBO);
+
+    glBindVertexArray(trailVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, trailVBO);
+
+    configureShaderModelMatrix();
 }
 
 void Particles::renderPoints(float deltatime)
@@ -50,7 +48,8 @@ void Particles::renderPoints(float deltatime)
     glPointSize(PointSize);
     float timestep = deltatime / 2 * Speed;    
 
-    std::vector<glm::mat4> modelMatrices;
+    std::vector<glm::mat4> particalModels;
+    std::vector<glm::mat4> trailModels;
 
     for(unsigned int i = 0; i < Points.size(); i++)
     {
@@ -60,20 +59,33 @@ void Particles::renderPoints(float deltatime)
             continue;
         }
 
-        if (!Paused) movePointByEquation(timestep, &Points[i]);
+        if (!Paused) {
+            movePointByEquation(timestep, &Points[i]);
+        }
         
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::scale(model, glm::vec3(Scale));
         model = glm::translate(model, Points[i].Pos);
         
-        modelMatrices.push_back(model);
+        particalModels.push_back(model);
+        
+        if (!Paused) Points[i].trailCompute(model);
+        trailModels.insert(trailModels.end(), Points[i].trail.begin(), Points[i].trail.end());
     }
-    
-    glBindVertexArray(VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO); 
-    glBufferData(GL_ARRAY_BUFFER, Points.size() * sizeof(glm::mat4), &modelMatrices[0], GL_DYNAMIC_DRAW);
+
+    particleShader.use();
+    glBindVertexArray(particleVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, particleVBO); 
+    glBufferData(GL_ARRAY_BUFFER, Points.size() * sizeof(glm::mat4), &particalModels[0], GL_DYNAMIC_DRAW);
 
     glDrawArraysInstanced(GL_POINTS, 0, vectorVertices.size(), Points.size());
+
+    trailShader.use();
+    glBindVertexArray(trailVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, trailVBO); 
+    glBufferData(GL_ARRAY_BUFFER, trailModels.size() * sizeof(glm::mat4), &trailModels[0], GL_DYNAMIC_DRAW);
+
+    glDrawArraysInstanced(GL_POINTS, 0, 1, Points.size() * Points[0].trail.size());
 }
 
 void Particles::movePointByEquation(float timestep, Point* point)
@@ -219,8 +231,8 @@ void Particles::updateScalingConstants()
 
 void Particles::clean()
 {
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
+    glDeleteVertexArrays(1, &particleVAO);
+    glDeleteBuffers(1, &particleVBO);
 }
 
 std::vector<float> Particles::getSphereVertices()
@@ -263,4 +275,35 @@ std::vector<float> Particles::getSphereVertices()
     */
 
     return Sphere;
+}
+
+void Particles::assignUniforms(glm::mat4 view, glm::mat4 projection)
+{
+    particleShader.use();
+    particleShader.setMat4("view", view);
+    particleShader.setMat4("projection", projection);
+
+    trailShader.use();
+    trailShader.setMat4("view", view);
+    trailShader.setMat4("projection", projection);
+}
+
+void Particles::configureShaderModelMatrix(unsigned int location)
+{
+    glEnableVertexAttribArray(location);
+    glVertexAttribPointer(location, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
+    
+    glEnableVertexAttribArray(location + 1);
+    glVertexAttribPointer(location + 1, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4)));
+    
+    glEnableVertexAttribArray(location + 2);
+    glVertexAttribPointer(location + 2, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(2 * sizeof(glm::vec4)));
+    
+    glEnableVertexAttribArray(location + 3);
+    glVertexAttribPointer(location + 3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(3 * sizeof(glm::vec4)));
+
+    glVertexAttribDivisor(location, 1);
+    glVertexAttribDivisor(location + 1, 1);
+    glVertexAttribDivisor(location + 2, 1);
+    glVertexAttribDivisor(location + 3, 1);
 }

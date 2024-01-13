@@ -10,10 +10,12 @@ GLFWwindow* window = init();
 
 Camera camera(window, 95.0f);
 Gui gui(window, &camera);
-Particles particles(&gui);
+Particles particles(&gui, 1, 2);
 
 int main()
 {    
+    glLineWidth(10.0);
+
     gui.setParticles(&particles);
     gui.setEquation(LORENZ);
     
@@ -29,12 +31,10 @@ int main()
         glClearColor(gui.clearColor.x, gui.clearColor.y, gui.clearColor.z, gui.clearColor.w);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        particles.shader.use();
-        particles.shader.setMat4("view", camera.GetViewMatrix());
-
         glm::mat4 projection = glm::mat4(1.0f); 
         projection = glm::perspective(glm::radians(camera.getZoom()), WIDTH / HEIGHT, 0.01f, 100000.0f);
-        particles.shader.setMat4("projection", projection);
+
+        particles.assignUniforms(camera.GetViewMatrix(), projection);
 
         particles.renderPoints(deltaTime);
 
