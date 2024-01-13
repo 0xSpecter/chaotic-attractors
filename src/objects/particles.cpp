@@ -88,7 +88,7 @@ void Particles::renderPoints(float deltatime)
     glBindBuffer(GL_ARRAY_BUFFER, trailVBO); 
     glBufferData(GL_ARRAY_BUFFER, trailPoss.size() * sizeof(glm::vec3), &trailPoss[0], GL_DYNAMIC_DRAW);
 
-    glDrawArraysInstanced(GL_LINE_STRIP, 0, 100, Points.size() * Points[0].trail.size());
+    glDrawArraysInstanced(GL_LINE_STRIP, 0, Points[0].capacity, Points.size());
 }
 
 void Particles::movePointByEquation(float timestep, Point* point)

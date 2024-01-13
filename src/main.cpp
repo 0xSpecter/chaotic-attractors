@@ -10,7 +10,7 @@ GLFWwindow* window = init();
 
 Camera camera(window, 95.0f);
 Gui gui(window, &camera);
-Particles particles(&gui, 1, 0.3); // 1 point with (1, 2), 300 with (1, 0.3), 64000 with (1, 0.05) -_-
+Particles particles(&gui, 0.0001, 0.0001); // 1 point with (0.0001, 0.0002), 300 with (0.001, 0.0003), 64000 with (0.001, 0.00005) -_-
 
 int main()
 {    
