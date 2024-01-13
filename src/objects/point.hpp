@@ -14,11 +14,11 @@ class Point
         glm::vec3 Pos;
 
         int capacity = 100; // max lenght of trail
-        std::vector<glm::mat4> trail;
+        std::vector<glm::vec3> trail;
 
         Point(glm::vec3 Position);
         
-        void trailCompute(glm::mat4 model);
+        void trailCompute();
         float magnitude();
     
     private:

@@ -10,8 +10,8 @@ float Point::magnitude()
     return glm::length(Pos);
 }
 
-void Point::trailCompute(glm::mat4 model)
+void Point::trailCompute()
 {
     if (trail.size() >= capacity) trail.erase(trail.begin());
-    trail.push_back(model);
+    trail.push_back(Pos);
 }

@@ -1,8 +1,9 @@
 #version 410 core
-layout (location = 0) in mat4 instanceModel; 
+layout (location = 0) in vec3 Pos; 
   
 uniform mat4 view;
 uniform mat4 projection;
+uniform mat4 model;
 
 out vec4 color;
 
@@ -10,6 +11,6 @@ vec3 point = vec3(0.5, 0.5, 0.5);
 
 void main()
 {
-    gl_Position = projection * view * instanceModel * vec4(point, 1.0);
-    color = normalize(abs(instanceModel * vec4(point, 0.7)));
+    gl_Position = projection * view * model * vec4(Pos, 1.0);
+    color = normalize(abs(model * vec4(Pos, 0.7)));
 }

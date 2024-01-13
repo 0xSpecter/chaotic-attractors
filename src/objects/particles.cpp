@@ -14,6 +14,7 @@ Particles::Particles(Gui* gui, float minmax, float step)
         }
     }
     PointsInital = Points;
+    std::cout << Points.size() << " Points" << std::endl;
     
     
     glGenVertexArrays(1, &particleVAO);
@@ -38,7 +39,8 @@ Particles::Particles(Gui* gui, float minmax, float step)
     glBindVertexArray(trailVAO);
     glBindBuffer(GL_ARRAY_BUFFER, trailVBO);
 
-    configureShaderModelMatrix();
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
 }
 
 void Particles::renderPoints(float deltatime)
@@ -49,7 +51,7 @@ void Particles::renderPoints(float deltatime)
     float timestep = deltatime / 2 * Speed;    
 
     std::vector<glm::mat4> particalModels;
-    std::vector<glm::mat4> trailModels;
+    std::vector<glm::vec3> trailPoss;
 
     for(unsigned int i = 0; i < Points.size(); i++)
     {
@@ -69,8 +71,8 @@ void Particles::renderPoints(float deltatime)
         
         particalModels.push_back(model);
         
-        if (!Paused) Points[i].trailCompute(model);
-        trailModels.insert(trailModels.end(), Points[i].trail.begin(), Points[i].trail.end());
+        if (!Paused) Points[i].trailCompute();
+        trailPoss.insert(trailPoss.end(), Points[i].trail.begin(), Points[i].trail.end());
     }
 
     particleShader.use();
@@ -81,11 +83,12 @@ void Particles::renderPoints(float deltatime)
     glDrawArraysInstanced(GL_POINTS, 0, vectorVertices.size(), Points.size());
 
     trailShader.use();
+    trailShader.setMat4("model", glm::mat4(1.0f));
     glBindVertexArray(trailVAO);
     glBindBuffer(GL_ARRAY_BUFFER, trailVBO); 
-    glBufferData(GL_ARRAY_BUFFER, trailModels.size() * sizeof(glm::mat4), &trailModels[0], GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, trailPoss.size() * sizeof(glm::vec3), &trailPoss[0], GL_DYNAMIC_DRAW);
 
-    glDrawArraysInstanced(GL_POINTS, 0, 1, Points.size() * Points[0].trail.size());
+    glDrawArraysInstanced(GL_LINE_STRIP, 0, 100, Points.size() * Points[0].trail.size());
 }
 
 void Particles::movePointByEquation(float timestep, Point* point)
