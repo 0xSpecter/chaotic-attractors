@@ -186,5 +186,5 @@ class Particles
         void updateScalingConstants();
         std::vector<float> getSphereVertices();
 
-        void configureShaderModelMatrix(unsigned int location = 0);
+        void configureShaderMatrix(unsigned int location = 0);
 };

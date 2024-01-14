@@ -30,7 +30,7 @@ Particles::Particles(Gui* gui, float minmax, float step)
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
-    configureShaderModelMatrix(1);
+    configureShaderMatrix(1);
 
 
     glGenVertexArrays(1, &trailVAO);
@@ -82,17 +82,17 @@ void Particles::renderPoints(float deltatime)
 
     particleShader.use();
     glBindVertexArray(particleVAO);
-    glBindBuffer(GL_ARRAY_BUFFER, particleVBO); 
+    glBindBuffer(GL_ARRAY_BUFFER, particleVBO);
     glBufferData(GL_ARRAY_BUFFER, Points.size() * sizeof(glm::mat4), &particalModels[0], GL_DYNAMIC_DRAW);
 
     glDrawArraysInstanced(GL_POINTS, 0, vectorVertices.size(), Points.size());
 
+
     trailShader.use();
     trailShader.setMat4("model", glm::mat4(1.0f));
     glBindVertexArray(trailVAO);
-    glBindBuffer(GL_ARRAY_BUFFER, trailVBO); 
-    glBufferData(GL_ARRAY_BUFFER, trailPoss.size() * sizeof(float), trailPoss.data(), GL_DYNAMIC_DRAW);
-
+    glBindBuffer(GL_ARRAY_BUFFER, trailVBO);
+    glBufferData(GL_ARRAY_BUFFER, trailPoss.size() * sizeof(float), &trailPoss[0], GL_DYNAMIC_DRAW);
 
     glDrawArraysInstanced(GL_LINE_STRIP, 0, Points[0].trail.size(), Points.size());
 }
@@ -297,7 +297,7 @@ void Particles::assignUniforms(glm::mat4 view, glm::mat4 projection)
     trailShader.setMat4("projection", projection);
 }
 
-void Particles::configureShaderModelMatrix(unsigned int location)
+void Particles::configureShaderMatrix(unsigned int location)
 {
     glEnableVertexAttribArray(location);
     glVertexAttribPointer(location, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
