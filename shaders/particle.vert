@@ -8,7 +8,7 @@ uniform mat4 projection;
 out vec4 color;
 
 //placeholder
-vec3 point = vec3(0.5, 0.5, 0.5);
+vec3 point = vec3(1.0, 1.0, 1.0);
 
 void main()
 {
