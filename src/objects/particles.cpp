@@ -39,7 +39,7 @@ Particles::Particles(Gui* gui, float minmax, float step)
     glBindVertexArray(trailVAO);
     glBindBuffer(GL_ARRAY_BUFFER, trailVBO);
 
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, (void*)0);
     glEnableVertexAttribArray(0);
 }
 
@@ -81,15 +81,26 @@ void Particles::renderPoints(float deltatime)
 
     glDrawArraysInstanced(GL_POINTS, 0, vectorVertices.size(), Points.size());
 
-    if (false) 
-    {
-        trailShader.use();
-        trailShader.setMat4("model", glm::mat4(1.0f));
-        glBindVertexArray(trailVAO);
-        glBindBuffer(GL_ARRAY_BUFFER, trailVBO);
-        glBufferData(GL_ARRAY_BUFFER, trailPoss.size() * sizeof(float), &trailPoss[0], GL_DYNAMIC_DRAW);
 
-        glDrawArraysInstanced(GL_LINE_STRIP, 0, Points[0].trail.size(), Points.size());
+    trailShader.use();
+    trailShader.setMat4("model", glm::mat4(1.0f));
+    glBindVertexArray(trailVAO);
+    glBindBuffer(GL_ARRAY_BUFFER, trailVBO);
+
+    for(unsigned int i = 0; i < Points.size(); i++)
+    {
+        size_t length = Points[i].trail.size();
+        std::vector<float> vertacies;
+        
+        for(unsigned int j = 0; j < length; ++j)
+        {
+            vertacies.push_back(Points[i].trail[j].x);
+            vertacies.push_back(Points[i].trail[j].y);
+            vertacies.push_back(Points[i].trail[j].z);
+        }
+
+        glBufferData(GL_ARRAY_BUFFER, length * 3 * sizeof(float), vertacies.data(), GL_DYNAMIC_DRAW);
+        glDrawArrays(GL_LINE_STRIP, 0, length);
     }
 }
 
