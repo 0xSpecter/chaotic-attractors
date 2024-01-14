@@ -72,12 +72,6 @@ void Particles::renderPoints(float deltatime)
         particalModels.push_back(model);
         
         if (!Paused) Points[i].trailCompute();
-        
-        for (auto f : Points[i].trail) {
-            trailPoss.push_back(f.x);
-            trailPoss.push_back(f.y);
-            trailPoss.push_back(f.z);
-        }
     }
 
     particleShader.use();
@@ -87,14 +81,16 @@ void Particles::renderPoints(float deltatime)
 
     glDrawArraysInstanced(GL_POINTS, 0, vectorVertices.size(), Points.size());
 
+    if (false) 
+    {
+        trailShader.use();
+        trailShader.setMat4("model", glm::mat4(1.0f));
+        glBindVertexArray(trailVAO);
+        glBindBuffer(GL_ARRAY_BUFFER, trailVBO);
+        glBufferData(GL_ARRAY_BUFFER, trailPoss.size() * sizeof(float), &trailPoss[0], GL_DYNAMIC_DRAW);
 
-    trailShader.use();
-    trailShader.setMat4("model", glm::mat4(1.0f));
-    glBindVertexArray(trailVAO);
-    glBindBuffer(GL_ARRAY_BUFFER, trailVBO);
-    glBufferData(GL_ARRAY_BUFFER, trailPoss.size() * sizeof(float), &trailPoss[0], GL_DYNAMIC_DRAW);
-
-    glDrawArraysInstanced(GL_LINE_STRIP, 0, Points[0].trail.size(), Points.size());
+        glDrawArraysInstanced(GL_LINE_STRIP, 0, Points[0].trail.size(), Points.size());
+    }
 }
 
 void Particles::movePointByEquation(float timestep, Point* point)
