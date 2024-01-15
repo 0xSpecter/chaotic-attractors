@@ -242,6 +242,7 @@ void Gui::renderGraphicsConfig()
 
     ImGui::Checkbox("GL Depth Test", &DEPTH_TEST);
     ImGui::Checkbox("GL Blend", &BLEND);
+    
     if (ImGui::BeginCombo("sfactor", currentSfactor.name)) {
         for (int i = 0; i < sfactorOptions.size(); ++i) 
         {
@@ -259,7 +260,7 @@ void Gui::renderGraphicsConfig()
         {
             if (ImGui::Selectable(dfactorOptions[i].name)) {
                 GLint currentSstFactor;
-                glGetIntegeri_v(GL_BLEND_DST, 0, &currentSstFactor);
+                glGetIntegeri_v(GL_BLEND_SRC, 0, &currentSstFactor);
                 glBlendFunc(currentSstFactor, dfactorOptions[i].value);
                 currentDfactor = dfactorOptions[i];
             };

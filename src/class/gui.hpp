@@ -128,7 +128,7 @@ class Gui
             const char* name;
         };
 
-        BlendFactor currentSfactor = {GL_ONE, "GL_ONE"};
+        BlendFactor currentSfactor = {GL_SRC_ALPHA, "GL_SRC_ALPHA"};
         std::vector<BlendFactor> sfactorOptions = {
             {GL_ZERO, "GL_ZERO"},
             {GL_ONE, "GL_ONE"},
