@@ -10,12 +10,10 @@ GLFWwindow* window = init();
 
 Camera camera(window, 95.0f);
 Gui gui(window, &camera);
-Particles particles(&gui, 0.001, 0.0002); // 1 point with (0.0001, 0.0002), 300 with (0.001, 0.0003), 64000 with (0.001, 0.00005) -_-
+Particles particles(&gui, 0.001, 0.00015); // 1 point with (0.0001, 0.0002), 300 with (0.001, 0.0003), 64000 with (0.001, 0.00005) -_-
 
 int main()
 {    
-    glLineWidth(10.0);
-
     gui.setParticles(&particles);
     gui.setEquation(LORENZ);
     
