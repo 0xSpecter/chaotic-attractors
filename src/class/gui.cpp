@@ -294,18 +294,18 @@ void Gui::renderWorldTransform()
 
 void Gui::renderSetup(bool* confirmed)
 {
-    static float minmax = 0.001;
-    static float step = 0.00015;
+    static double minmax = 0.001;
+    static double step = 0.00015;
 
     ImGui::Begin(" Setup ");
 
-    ImGui::InputFloat("MinMax", &minmax);
-    ImGui::InputFloat("Step", &step);
+    ImGui::InputDouble("MinMax", &minmax);
+    ImGui::InputDouble("Step", &step);
 
     ImGui::Checkbox("Render Points", &ParticlesPtr->doRenderPoints);
     ImGui::Checkbox("Render Trails", &ParticlesPtr->doRenderTrails);
     if (ImGui::Button("Confirm")) {
-        ParticlesPtr->definePoints(minmax, step);
+        ParticlesPtr->definePoints(static_cast<float>(minmax), static_cast<float>(step));
         *confirmed = false;
     }
 
