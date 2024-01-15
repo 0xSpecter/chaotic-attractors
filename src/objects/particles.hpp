@@ -173,6 +173,7 @@ class Particles
         Particles(Gui* gui, float minmax = 0.017f, float step = 0.0008f);
 
         void renderPoints(float deltatime);
+        void definePoints(float minmax, float step);
 
         void assignUniforms(glm::mat4 view, glm::mat4 projection);
 

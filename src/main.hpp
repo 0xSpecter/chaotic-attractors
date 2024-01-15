@@ -17,7 +17,7 @@
 
 #include "equation.hpp"
 
-void Setup();
+void Launcher();
 void Mainloop();
 
 GLFWwindow* init();

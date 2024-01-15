@@ -6,14 +6,7 @@ Particles::Particles(Gui* gui, float minmax, float step)
     particleShader = Shader("shaders/particle.vert", "shaders/particle.frag");
     trailShader = Shader("shaders/trail.vert", "shaders/trail.frag");
 
-    for(float vx = -minmax; vx < minmax; vx += step) {
-        for(float vy = -minmax; vy < minmax; vy += step) {
-            for(float vz = -minmax; vz < minmax; vz += step) {
-                Points.push_back(Point(glm::vec3(vx, vy, vz)));
-            }
-        }
-    }
-    PointsInital = Points;
+    definePoints(minmax, step);
     std::cout << Points.size() << " Points" << std::endl;
     
     
@@ -329,4 +322,17 @@ void Particles::configureShaderMatrix(unsigned int location)
     glVertexAttribDivisor(location + 1, 1);
     glVertexAttribDivisor(location + 2, 1);
     glVertexAttribDivisor(location + 3, 1);
+}
+
+void Particles::definePoints(float minmax, float step)
+{
+    Points.clear();
+    for(float vx = -minmax; vx < minmax; vx += step) {
+        for(float vy = -minmax; vy < minmax; vy += step) {
+            for(float vz = -minmax; vz < minmax; vz += step) {
+                Points.push_back(Point(glm::vec3(vx, vy, vz)));
+            }
+        }
+    }
+    PointsInital = Points;
 }

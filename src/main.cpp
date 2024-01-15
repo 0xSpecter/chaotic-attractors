@@ -17,8 +17,8 @@ int main()
     gui.setParticles(&particles);
     gui.setEquation(LORENZ);
 
-    // setup window
-    Setup();
+    // Launcher window
+    Launcher();
     
     // mainloop
     Mainloop();
@@ -29,21 +29,19 @@ int main()
     return 0;
 }
 
-void Setup()
+void Launcher()
 {
-    bool inSetup = true;
+    bool inLauncher = true;
     glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
-    while (inSetup && !glfwWindowShouldClose(window))
+    while (inLauncher && !glfwWindowShouldClose(window))
     {
-        if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
-            glfwSetWindowShouldClose(window, true);
-        }
+        processInput();
         gui.newframe();
 
         glClearColor(gui.clearColor.x, gui.clearColor.y, gui.clearColor.z, gui.clearColor.w);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        gui.renderSetup(&inSetup);
+        gui.renderSetup(&inLauncher);
         
         glfwSwapBuffers(window);
         glfwPollEvents();
