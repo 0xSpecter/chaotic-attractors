@@ -122,6 +122,49 @@ class Gui
             }}
         };
 
+
+        struct BlendFactor {
+            GLenum value;
+            const char* name;
+        };
+
+        BlendFactor currentSfactor = {GL_ONE, "GL_ONE"};
+        std::vector<BlendFactor> sfactorOptions = {
+            {GL_ZERO, "GL_ZERO"},
+            {GL_ONE, "GL_ONE"},
+            {GL_SRC_COLOR, "GL_SRC_COLOR"},
+            {GL_ONE_MINUS_SRC_COLOR, "GL_ONE_MINUS_SRC_COLOR"},
+            {GL_DST_COLOR, "GL_DST_COLOR"},
+            {GL_ONE_MINUS_DST_COLOR, "GL_ONE_MINUS_DST_COLOR"},
+            {GL_SRC_ALPHA, "GL_SRC_ALPHA"},
+            {GL_ONE_MINUS_SRC_ALPHA, "GL_ONE_MINUS_SRC_ALPHA"},
+            {GL_DST_ALPHA, "GL_DST_ALPHA"},
+            {GL_ONE_MINUS_DST_ALPHA, "GL_ONE_MINUS_DST_ALPHA"},
+            {GL_CONSTANT_COLOR, "GL_CONSTANT_COLOR"},
+            {GL_ONE_MINUS_CONSTANT_COLOR, "GL_ONE_MINUS_CONSTANT_COLOR"},
+            {GL_CONSTANT_ALPHA, "GL_CONSTANT_ALPHA"},
+            {GL_ONE_MINUS_CONSTANT_ALPHA, "GL_ONE_MINUS_CONSTANT_ALPHA"},
+            {GL_SRC_ALPHA_SATURATE, "GL_SRC_ALPHA_SATURATE"}
+        };
+
+        BlendFactor currentDfactor = {GL_ONE, "GL_ONE"};
+        std::vector<BlendFactor> dfactorOptions = {
+            {GL_ZERO, "GL_ZERO"},
+            {GL_ONE, "GL_ONE"},
+            {GL_SRC_COLOR, "GL_SRC_COLOR"},
+            {GL_ONE_MINUS_SRC_COLOR, "GL_ONE_MINUS_SRC_COLOR"},
+            {GL_DST_COLOR, "GL_DST_COLOR"},
+            {GL_ONE_MINUS_DST_COLOR, "GL_ONE_MINUS_DST_COLOR"},
+            {GL_SRC_ALPHA, "GL_SRC_ALPHA"},
+            {GL_ONE_MINUS_SRC_ALPHA, "GL_ONE_MINUS_SRC_ALPHA"},
+            {GL_DST_ALPHA, "GL_DST_ALPHA"},
+            {GL_ONE_MINUS_DST_ALPHA, "GL_ONE_MINUS_DST_ALPHA"},
+            {GL_CONSTANT_COLOR, "GL_CONSTANT_COLOR"},
+            {GL_ONE_MINUS_CONSTANT_COLOR, "GL_ONE_MINUS_CONSTANT_COLOR"},
+            {GL_CONSTANT_ALPHA, "GL_CONSTANT_ALPHA"},
+            {GL_ONE_MINUS_CONSTANT_ALPHA, "GL_ONE_MINUS_CONSTANT_ALPHA"}
+        };
+
         void renderConstants();
         void renderAttractorSelect();
         void renderCameraConfig();

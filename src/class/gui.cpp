@@ -240,8 +240,32 @@ void Gui::renderGraphicsConfig()
         ImGui::EndMenuBar();
     }
 
-    ImGui::Checkbox("GL Blend", &BLEND);
     ImGui::Checkbox("GL Depth Test", &DEPTH_TEST);
+    ImGui::Checkbox("GL Blend", &BLEND);
+    if (ImGui::BeginCombo("sfactor", currentSfactor.name)) {
+        for (int i = 0; i < sfactorOptions.size(); ++i) 
+        {
+            if (ImGui::Selectable(sfactorOptions[i].name)) {
+                GLint currentDstFactor;
+                glGetIntegeri_v(GL_BLEND_DST, 0, &currentDstFactor);
+                glBlendFunc(sfactorOptions[i].value, currentDstFactor);
+                currentSfactor = sfactorOptions[i];
+            };
+        }
+        ImGui::EndCombo();
+    }
+    if (ImGui::BeginCombo("dfactor", currentDfactor.name)) {
+        for (int i = 0; i < dfactorOptions.size(); ++i) 
+        {
+            if (ImGui::Selectable(dfactorOptions[i].name)) {
+                GLint currentSstFactor;
+                glGetIntegeri_v(GL_BLEND_DST, 0, &currentSstFactor);
+                glBlendFunc(currentSstFactor, dfactorOptions[i].value);
+                currentDfactor = dfactorOptions[i];
+            };
+        }
+        ImGui::EndCombo();
+    }
 
     ImGui::End();
 
