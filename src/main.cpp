@@ -16,7 +16,43 @@ int main()
 {    
     gui.setParticles(&particles);
     gui.setEquation(LORENZ);
+
+    // setup window
+    Setup();
     
+    // mainloop
+    Mainloop();
+
+    particles.clean();
+    ImGui::DestroyContext();
+    glfwTerminate();
+    return 0;
+}
+
+void Setup()
+{
+    bool inSetup = true;
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+    while (inSetup && !glfwWindowShouldClose(window))
+    {
+        if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+            glfwSetWindowShouldClose(window, true);
+        }
+        gui.newframe();
+
+        glClearColor(gui.clearColor.x, gui.clearColor.y, gui.clearColor.z, gui.clearColor.w);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        gui.renderSetup(&inSetup);
+        
+        glfwSwapBuffers(window);
+        glfwPollEvents();
+    }
+    glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+}
+
+void Mainloop()
+{
     while (!glfwWindowShouldClose(window))
     {
         float currentFrame = glfwGetTime();
@@ -41,13 +77,8 @@ int main()
         glfwSwapBuffers(window);
         glfwPollEvents();
     }
-    
-
-    particles.clean();
-    ImGui::DestroyContext();
-    glfwTerminate();
-    return 0;
 }
+
 
 GLFWwindow* init()
 {

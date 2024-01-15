@@ -36,6 +36,7 @@ class Gui
         void newframe();
 
         void render(float deltatime);
+        void renderSetup(bool* confirmed);
 
         void ProcessInput();
 

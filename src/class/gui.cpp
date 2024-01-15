@@ -291,3 +291,17 @@ void Gui::renderWorldTransform()
 
     ImGui::End();
 }
+
+void Gui::renderSetup(bool* confirmed)
+{
+    ImGui::Begin(" Setup ");
+
+    ImGui::Checkbox("Render Points", &ParticlesPtr->doRenderPoints);
+    ImGui::Checkbox("Render Trails", &ParticlesPtr->doRenderTrails);
+    if (ImGui::Button("Confirm")) *confirmed = false;
+
+    ImGui::End();
+
+    ImGui::Render();
+    ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+}

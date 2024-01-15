@@ -63,7 +63,7 @@ void Particles::renderPoints(float deltatime)
 
         if (!Paused) {
             movePointByEquation(timestep, &Points[i]);
-            Points[i].trailCompute();
+            if (doRenderTrails) Points[i].trailCompute();
         }
         
         glm::mat4 model = glm::mat4(1.0f);
@@ -71,39 +71,43 @@ void Particles::renderPoints(float deltatime)
         model = glm::translate(model, Points[i].Pos);
         
         particalModels.push_back(model);
-        
     }
 
-    particleShader.use();
-    glBindVertexArray(particleVAO);
-    glBindBuffer(GL_ARRAY_BUFFER, particleVBO);
-    glBufferData(GL_ARRAY_BUFFER, Points.size() * sizeof(glm::mat4), &particalModels[0], GL_DYNAMIC_DRAW);
-
-    glDrawArraysInstanced(GL_POINTS, 0, 1, Points.size());
-
-
-    trailShader.use();
-    glm::mat4 model = glm::mat4(1.0f);
-    model = glm::scale(model, glm::vec3(Scale));
-    trailShader.setMat4("model", model);
-    
-    glBindVertexArray(trailVAO);
-    glBindBuffer(GL_ARRAY_BUFFER, trailVBO);
-
-    for(unsigned int i = 0; i < Points.size(); i++)
+    if (doRenderPoints)
     {
-        size_t length = Points[i].trail.size();
-        std::vector<float> vertacies;
-        
-        for(unsigned int j = 0; j < length; ++j)
-        {
-            vertacies.push_back(Points[i].trail[j].x);
-            vertacies.push_back(Points[i].trail[j].y);
-            vertacies.push_back(Points[i].trail[j].z);
-        }
+        particleShader.use();
+        glBindVertexArray(particleVAO);
+        glBindBuffer(GL_ARRAY_BUFFER, particleVBO);
+        glBufferData(GL_ARRAY_BUFFER, Points.size() * sizeof(glm::mat4), &particalModels[0], GL_DYNAMIC_DRAW);
 
-        glBufferData(GL_ARRAY_BUFFER, length * 3 * sizeof(float), vertacies.data(), GL_DYNAMIC_DRAW);
-        glDrawArrays(GL_LINE_STRIP, 0, length);
+        glDrawArraysInstanced(GL_POINTS, 0, 1, Points.size());
+    }
+
+    if (doRenderTrails)
+    {
+        trailShader.use();
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::scale(model, glm::vec3(Scale));
+        trailShader.setMat4("model", model);
+        
+        glBindVertexArray(trailVAO);
+        glBindBuffer(GL_ARRAY_BUFFER, trailVBO);
+
+        for(unsigned int i = 0; i < Points.size(); i++)
+        {
+            size_t length = Points[i].trail.size();
+            std::vector<float> vertacies;
+            
+            for(unsigned int j = 0; j < length; ++j)
+            {
+                vertacies.push_back(Points[i].trail[j].x);
+                vertacies.push_back(Points[i].trail[j].y);
+                vertacies.push_back(Points[i].trail[j].z);
+            }
+
+            glBufferData(GL_ARRAY_BUFFER, length * 3 * sizeof(float), vertacies.data(), GL_DYNAMIC_DRAW);
+            glDrawArrays(GL_LINE_STRIP, 0, length);
+        }
     }
 }
 
