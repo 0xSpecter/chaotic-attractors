@@ -205,9 +205,11 @@ void Gui::renderAttractorSelect()
     }
 
     if (ImGui::Button("Optimal Camera Position")) {
-        camera->Position = optimalCameraPositions[ParticlesPtr->equation]["Position"];
-        camera->Front = optimalCameraPositions[ParticlesPtr->equation]["Front"];
-        camera->Right = optimalCameraPositions[ParticlesPtr->equation]["Right"];
+        camera->Position = optimalCameraPositions[ParticlesPtr->equation].Position;
+        camera->Right = optimalCameraPositions[ParticlesPtr->equation].Right;
+        camera->Yaw = optimalCameraPositions[ParticlesPtr->equation].Yaw;
+        camera->Pitch = optimalCameraPositions[ParticlesPtr->equation].Pitch;
+        open = false;
     }
 
     ImGui::Text("%s", ParticlesPtr->equationInfo[ParticlesPtr->equation][1]);
@@ -231,8 +233,8 @@ void Gui::renderCameraConfig()
         }
 
         ImGui::Text("Position: %f, %f, %f", camera->Position.x, camera->Position.y, camera->Position.z);  
-        ImGui::Text("Front: %f, %f, %f", camera->Front.x, camera->Front.y, camera->Front.z);  
-        ImGui::Text("Right: %f, %f, %f", camera->Right.x, camera->Right.y, camera->Right.z);    
+        ImGui::Text("Right: %f, %f, %f", camera->Right.x, camera->Right.y, camera->Right.z);  
+        ImGui::Text("Yaw: %f, Pitch, %f", camera->Yaw, camera->Pitch);    
 
         ImGui::Checkbox("Sticky", &sticky);
         ImGui::End();

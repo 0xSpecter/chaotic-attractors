@@ -23,6 +23,10 @@ class Camera
         glm::vec3 Up;
         glm::vec3 Right;
 
+        // euler Angles
+        float Yaw = -90.0f;
+        float Pitch = 0.0f;
+
         // camera options
         float MovementSpeed = 2.5f;
         float MouseSensitivity = 0.1f;
@@ -43,10 +47,6 @@ class Camera
     private:
         GLFWwindow* window;
         glm::vec3 WorldUp = glm::vec3(0.0f, 1.0f, 0.0f);
-
-        // euler Angles
-        float Yaw = -90.0f;
-        float Pitch = 0.0f;
 
         // mouse values
         bool firstMouseMovement = true;

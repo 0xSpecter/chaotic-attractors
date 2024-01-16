@@ -50,76 +50,99 @@ class Gui
         
         Particles* ParticlesPtr;
 
-        std::map<Equations, std::map<std::string, glm::vec3>> optimalCameraPositions = {
+        struct positionData
+        {
+            glm::vec3 Position;
+            glm::vec3 Right;
+            float Yaw;
+            float Pitch;
+        };
+        
+
+        std::map<Equations, positionData> optimalCameraPositions = {
             {LORENZ, {
-                {"Position", glm::vec3(0.0f, 0.0f, 95.0f)},
-                {"Front", glm::vec3(0.0f, 0.0f, -1.0f)},
-                {"Right", glm::vec3(-1.0f, 0.0f, 0.0f)}
+                glm::vec3(0.0f, 0.0f, 95.0f),
+                glm::vec3(-1.0f, 0.0f, 0.0f), 
+                -90.0f, 
+                0.0f
             }},
             {AIZAWA, {
-                {"Position", glm::vec3(-4.67f, -0.14f, 0.33f)},
-                {"Front", glm::vec3(0.995f, -0.078f, -0.056f)},
-                {"Right", glm::vec3(0.03f, 0.0f, 0.99f)}
+                glm::vec3(-4.67f, -0.14f, 0.33f),
+                glm::vec3(0.03f, 0.0f, 0.99f), 
+                4.0f, 
+                2.0f
             }},
             {AIZAWA_CIRCLE, {
-                {"Position", glm::vec3(-0.528f, 0.611f, -3.235f)},
-                {"Front", glm::vec3(-0.001f, -0.225f, 0.974f)},
-                {"Right", glm::vec3(-0.999f, 0.0f, -0.001f)}
+                glm::vec3(-0.528f, 0.611f, -3.235f),
+                glm::vec3(-0.999f, 0.0f, -0.001f), 
+                -285.0f, 
+                -10.0f
             }},
             {CHEN, {
-                {"Position", glm::vec3(0.0f, 0.0f, 95.0f)},
-                {"Front", glm::vec3(0.0f, 0.0f, -1.0f)},
-                {"Right", glm::vec3(-1.0f, 0.0f, 0.0f)}
+                glm::vec3(0.0f, 0.0f, 95.0f),
+                glm::vec3(-1.0f, 0.0f, 0.0f), 
+                -90.0f, 
+                0.0f
             }},
             {LUCHEN, {
-                {"Position", glm::vec3(0.0f, 0.0f, 95.0f)},
-                {"Front", glm::vec3(0.0f, 0.0f, -1.0f)},
-                {"Right", glm::vec3(-1.0f, 0.0f, 0.0f)}
+                glm::vec3(0.0f, 0.0f, 95.0f),
+                glm::vec3(-1.0f, 0.0f, 0.0f),
+                -90.0f,
+                0.0f
             }},
             {NEWTON_LEIPNIK, {
-                {"Position", glm::vec3(0.0f, 0.0f, 95.0f)},
-                {"Front", glm::vec3(0.0f, 0.0f, -1.0f)},
-                {"Right", glm::vec3(-1.0f, 0.0f, 0.0f)}
+                glm::vec3(0.0f, 0.0f, 95.0f),
+                glm::vec3(-1.0f, 0.0f, 0.0f),
+                -90.0f,
+                3.0f
             }},
             {NOSE_HOOVER, {
-                {"Position", glm::vec3(-11.17f, 5.219f, 15.39f)},
-                {"Front", glm::vec3(0.509f, -0.307f, -0.803f)},
-                {"Right", glm::vec3(0.844f, 0.0f, 0.535f)}
+                glm::vec3(-11.17f, 5.219f, 15.39f),
+                glm::vec3(0.844f, 0.0f, 0.535f),
+                -90.0f,
+                6.0f
             }},
             {HALVORSEN, {
-                {"Position", glm::vec3(12.67f, 16.55f, 15.107f)},
-                {"Front", glm::vec3(0.53f, -0.596f, -0.596f)},
-                {"Right", glm::vec3(0.742f, 0.0f, -0.669f)}
+                glm::vec3(12.67f, 16.55f, 15.107f),
+                glm::vec3(0.742f, 0.0f, -0.669f),
+                -135.0f,
+                -32.0f
             }},
             {CHEN_LEE, {
-                {"Position", glm::vec3(-94.59f, 6.52f, 11.0f)},
-                {"Front", glm::vec3(0.984f, -0.078f, -0.157f)},
-                {"Right", glm::vec3(0.158f, 0.0f, 0.987f)}
+                glm::vec3(-94.59f, 6.52f, 11.0f),
+                glm::vec3(0.158f, 0.0f, 0.987f),
+                -8.0f,
+                -8.0f
             }},
             {BOUALI, {
-                {"Position", glm::vec3(41.86f, 13.89f, 52.87f)},
-                {"Front", glm::vec3(-0.600f, -0.074f, -0.796f)},
-                {"Right", glm::vec3(0.798f, 0.0f, -0.601f)}
+                glm::vec3(41.86f, 13.89f, 52.87f),
+                glm::vec3(0.798f, 0.0f, -0.601f),
+                -130.0f,
+                -8.0f
             }},
             {FINANCE, {
-                {"Position", glm::vec3(41.86f, 13.89f, 52.87f)},
-                {"Front", glm::vec3(-0.600f, -0.074f, -0.796f)}, // tbd
-                {"Right", glm::vec3(0.798f, 0.0f, -0.601f)}
+                glm::vec3(41.86f, 13.89f, 52.87f),
+                glm::vec3(0.798f, 0.0f, -0.601f),
+                0.0f,
+                0.0f
             }},
             {THOMAS, {
-                {"Position", glm::vec3(41.86f, 13.89f, 52.87f)},
-                {"Front", glm::vec3(-0.600f, -0.074f, -0.796f)}, // tbd
-                {"Right", glm::vec3(0.798f, 0.0f, -0.601f)}
+                glm::vec3(41.86f, 13.89f, 52.87f),
+                glm::vec3(0.798f, 0.0f, -0.601f),
+                0.0f,
+                0.0f
             }},
             {ROSSLER, {
-                {"Position", glm::vec3(41.86f, 13.89f, 52.87f)},
-                {"Front", glm::vec3(-0.600f, -0.074f, -0.796f)}, // tbd
-                {"Right", glm::vec3(0.798f, 0.0f, -0.601f)}
+                glm::vec3(41.86f, 13.89f, 52.87f),
+                glm::vec3(0.798f, 0.0f, -0.601f),
+                0.0f,
+                0.0f
             }},
             {CUBE, {
-                {"Position", glm::vec3(0.0f, 0.0f, 95.0f)},
-                {"Front", glm::vec3(0.0f, 0.0f, -1.0f)},
-                {"Right", glm::vec3(-1.0f, 0.0f, 0.0f)}
+                glm::vec3(0.0f, 0.0f, 95.0f),
+                glm::vec3(-1.0f, 0.0f, 0.0f),
+                0.0f,
+                0.0f
             }}
         };
 
