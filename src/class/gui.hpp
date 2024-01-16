@@ -123,19 +123,19 @@ class Gui
             {FINANCE, {
                 glm::vec3(41.86f, 13.89f, 52.87f),
                 glm::vec3(0.798f, 0.0f, -0.601f),
-                0.0f,
+                -90.0f,
                 0.0f
             }},
             {THOMAS, {
                 glm::vec3(41.86f, 13.89f, 52.87f),
                 glm::vec3(0.798f, 0.0f, -0.601f),
-                0.0f,
+                -90.0f,
                 0.0f
             }},
             {ROSSLER, {
                 glm::vec3(41.86f, 13.89f, 52.87f),
                 glm::vec3(0.798f, 0.0f, -0.601f),
-                0.0f,
+                -90.0f,
                 0.0f
             }},
             {CUBE, {
