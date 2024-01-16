@@ -21,6 +21,9 @@ void Gui::newframe()
 
 void Gui::render(float deltaTime)
 {
+    static double minmax = ParticlesPtr->setMinmax;
+    static double step = ParticlesPtr->setStep;
+
     if (open)
     {
         glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
@@ -71,7 +74,7 @@ void Gui::render(float deltaTime)
 
         ImGui::ColorEdit4("Bg Color", (float*)&clearColor);
 
-        ImGui::SliderFloat("Scalar", &ParticlesPtr->Scale, 0.01, 100.0);
+        ImGui::SliderFloat("Scalar", &ParticlesPtr->Scale, 0.1, 10.0);
         ImGui::SliderFloat("Speed", &ParticlesPtr->Speed, 0.0, 10.0);
         ImGui::SliderFloat("Point Size", &ParticlesPtr->PointSize, 0.1, 100.0);
 
@@ -80,13 +83,23 @@ void Gui::render(float deltaTime)
             ImGui::TextColored(ImVec4(0.0f, 0.8f, 0.2f, 1.0f), "Loss %i / %lu Total", ParticlesPtr->LossCount, ParticlesPtr->PointsInital.size());
         } else ImGui::Text("%lu Total, Culling is disabled", ParticlesPtr->PointsInital.size());
 
-        if (ImGui::Button("Reset")) {
+        if (!ParticlesPtr->Paused && ImGui::Button("Pause")) ParticlesPtr->Paused = true;
+        if (ParticlesPtr->Paused && ImGui::Button("Start")) ParticlesPtr->Paused = false;
+
+        ImGui::Checkbox("Render Points", &ParticlesPtr->doRenderPoints);
+        ImGui::Checkbox("Render Trails", &ParticlesPtr->doRenderTrails);
+
+        if (ImGui::Button("Reset Points")) {
             ParticlesPtr->Points = ParticlesPtr->PointsInital;
             ParticlesPtr->LossCount = 0;
         }
         ImGui::SameLine();
-        if (!ParticlesPtr->Paused && ImGui::Button("Pause")) ParticlesPtr->Paused = true;
-        if (ParticlesPtr->Paused && ImGui::Button("Start")) ParticlesPtr->Paused = false;
+        if (ImGui::Button("Redefine Points")) {
+            ParticlesPtr->definePoints(static_cast<float>(minmax), static_cast<float>(step));
+        }
+
+        ImGui::InputDouble("MinMax", &minmax);
+        ImGui::InputDouble("Step", &step);
 
         ImGui::End();
 
@@ -294,8 +307,8 @@ void Gui::renderWorldTransform()
 
 void Gui::renderSetup(bool* confirmed)
 {
-    static double minmax = 0.001;
-    static double step = 0.00015;
+    static double minmax = ParticlesPtr->setMinmax;
+    static double step = ParticlesPtr->setStep;
 
     ImGui::Begin(" Setup ");
 

@@ -335,4 +335,6 @@ void Particles::definePoints(float minmax, float step)
         }
     }
     PointsInital = Points;
+    setMinmax = minmax;
+    setStep = step;
 }

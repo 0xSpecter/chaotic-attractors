@@ -45,8 +45,11 @@ class Particles
         int LossCount = 0;
 
         bool doCull = true;
-        bool doRenderPoints = true;
-        bool doRenderTrails = false;
+        bool doRenderPoints = false;
+        bool doRenderTrails = true;
+
+        float setMinmax;
+        float setStep;
 
         std::map<std::string, Constant> constants;
 
