@@ -110,13 +110,22 @@ make
     Learn Opengl by "<b>Joey De Vries</b>"
 </a>
 
+<br/>
+<br/>
+
 <a href="https://markus-x-buchholz.medium.com/3d-chaotic-attractors-in-c-c8112ac147cc" target="_blank">
     Atrractor Formula by "<b>Markus Buchholz</b>"
 </a>
 
+<br/>
+<br/>
+
 <a href="https://www.dynamicmath.xyz/strange-attractors/" target="_blank">
     More Atrractor Formulas by "<b>Juan Carlos Ponce</b>"
 </a>
+
+<br/>
+<br/>
 
 <a href="https://edeleastar.github.io/opengl-programming/topic02/pdf/3.Points_Circles_and_Lines.pdf" target="_blank">
     Drawing circles and lines in opengl "<b>Eamonn de Leastar</b>"
