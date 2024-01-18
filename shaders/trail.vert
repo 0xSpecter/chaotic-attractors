@@ -21,7 +21,7 @@ void main()
     }
     else
     {   
-        vec3 tf_color = normalize((model * from_color).xyz * fromScale + (model * to_color).xyz * (length(model * vec4(Pos, 1.0)) * length(model * vec4(Pos, 1.0)) * length(model * vec4(Pos, 1.0))));
+        vec3 tf_color = normalize((model * from_color).xyz * fromScale + (model * to_color).xyz * pow(length(model * vec4(Pos, 1.0)), 3));
         color = vec4(tf_color, 1.0);
     }
 }
