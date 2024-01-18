@@ -90,7 +90,7 @@ void Particles::renderPoints(float deltatime)
         {
             size_t length = Points[i].trail.size();
             std::vector<float> vertacies;
-            
+
             for(unsigned int j = 0; j < length; ++j)
             {
                 vertacies.push_back(Points[i].trail[j].x);

@@ -311,6 +311,7 @@ void Gui::renderSetup(bool* confirmed)
 {
     static double minmax = ParticlesPtr->setMinmax;
     static double step = ParticlesPtr->setStep;
+    static bool blend = glIsEnabled(GL_BLEND);
 
     ImGui::Begin(" Setup ");
 
@@ -319,8 +320,12 @@ void Gui::renderSetup(bool* confirmed)
 
     ImGui::Checkbox("Render Points", &ParticlesPtr->doRenderPoints);
     ImGui::Checkbox("Render Trails", &ParticlesPtr->doRenderTrails);
+
+    ImGui::Checkbox("Blending", &blend);
+
     if (ImGui::Button("Confirm")) {
         ParticlesPtr->definePoints(static_cast<float>(minmax), static_cast<float>(step));
+        if (blend) glEnable(GL_BLEND);
         *confirmed = false;
     }
 
