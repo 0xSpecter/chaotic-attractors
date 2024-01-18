@@ -82,6 +82,9 @@ void Particles::renderPoints(float deltatime)
         glm::mat4 model = glm::mat4(1.0f);
         model = glm::scale(model, glm::vec3(Scale));
         trailShader.setMat4("model", model);
+        trailShader.setVec4("from_color", from_color);
+        trailShader.setVec4("to_color", to_color);
+        trailShader.setFloat("fromScale", fromScale);
         
         glBindVertexArray(trailVAO);
         glBindBuffer(GL_ARRAY_BUFFER, trailVBO);
