@@ -27,9 +27,9 @@ class Gui
         bool graphicsConfig = false;
         bool constantsOpen = false;
         bool worldTransform = false;
+        bool setColors = false;
 
-        ImVec4 clearColor = ImVec4(0.0f, 0.0f, 0.0f, 1.0f);
-
+        glm::vec4 clearColor = glm::vec4(0.0f, 0.0f, 0.0f, 1.0f);
 
         Gui(GLFWwindow* window, Camera* camera, std::string GLSL_version = "#version 410");
 
@@ -194,4 +194,5 @@ class Gui
         void renderCameraConfig();
         void renderGraphicsConfig();
         void renderWorldTransform();
+        void renderColor();
 };

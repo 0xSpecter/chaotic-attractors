@@ -54,6 +54,10 @@ void Gui::render(float deltaTime)
                 if (!worldTransform) {
                     if (ImGui::MenuItem("World Transform")) worldTransform = true; 
                 } else if (ImGui::MenuItem("close World Transform")) worldTransform = false; 
+
+                if (!setColors) {
+                    if (ImGui::MenuItem("Colors")) setColors = true; 
+                } else if (ImGui::MenuItem("close Colors")) setColors = false;
                 
                 ImGui::EndMenu();
             }
@@ -67,27 +71,37 @@ void Gui::render(float deltaTime)
                 ImGui::EndMenu();
             }
             
-            ImGui::TextColored(ImVec4(0.5f, 0.0f, 0.5f, 1.0f), "Fps: %i", (int)(1.0f / deltaTime));
+            ImGui::TextColored(ImVec4(0.5f, 0.15f, 0.5f, 1.0f), "Fps: %i", (int)(1.0f / deltaTime));
             
             ImGui::EndMenuBar();
         }
 
-        ImGui::ColorEdit4("Bg Color", (float*)&clearColor);
+        ImGui::Text("Chaotic Attractors");
+
+        ImGui::Dummy(ImVec2(0, 15));
 
         ImGui::SliderFloat("Scalar", &ParticlesPtr->Scale, 0.1, 10.0);
         ImGui::SliderFloat("Speed", &ParticlesPtr->Speed, 0.0, 10.0);
         ImGui::SliderFloat("Point Size", &ParticlesPtr->PointSize, 0.1, 100.0);
+
+        ImGui::Dummy(ImVec2(0, 10));
 
         if (ParticlesPtr->doCull) {
             ImGui::Text("Loss Count");
             ImGui::TextColored(ImVec4(0.0f, 0.8f, 0.2f, 1.0f), "Loss %i / %lu Total", ParticlesPtr->LossCount, ParticlesPtr->PointsInital.size());
         } else ImGui::Text("%lu Total, Culling is disabled", ParticlesPtr->PointsInital.size());
 
+        ImGui::Dummy(ImVec2(0, 10));
+
         if (!ParticlesPtr->Paused && ImGui::Button("Pause")) ParticlesPtr->Paused = true;
         if (ParticlesPtr->Paused && ImGui::Button("Start")) ParticlesPtr->Paused = false;
 
+        ImGui::Dummy(ImVec2(0, 10));
+
         ImGui::Checkbox("Render Points", &ParticlesPtr->doRenderPoints);
         ImGui::Checkbox("Render Trails", &ParticlesPtr->doRenderTrails);
+
+        ImGui::Dummy(ImVec2(0, 10));
 
         if (ImGui::Button("Reset Points")) {
             ParticlesPtr->Points = ParticlesPtr->PointsInital;
@@ -114,6 +128,9 @@ void Gui::render(float deltaTime)
         
         if (worldTransform) 
             renderWorldTransform();
+        
+        if (setColors)
+            renderColor();
         
     } 
     else glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
@@ -303,6 +320,37 @@ void Gui::renderWorldTransform()
     ImGui::SliderFloat("Rotate X", &camera->RotateX, 0.0f, 360.0f);
     ImGui::SliderFloat("Rotate Y", &camera->RotateY, 0.0f, 360.0f);
     ImGui::SliderFloat("Rotate Z", &camera->RotateZ, 0.0f, 360.0f);
+
+    ImGui::End();
+}
+
+void Gui::renderColor()
+{
+    ImGui::Begin(" Color ", nullptr, ImGuiWindowFlags_MenuBar);
+    if (ImGui::BeginMenuBar()) 
+    {
+        if (ImGui::MenuItem("Close")) 
+            setColors = false; 
+        
+        ImGui::EndMenuBar();
+    }
+
+    ImGui::ColorEdit4("Background Color", (float*)&clearColor);
+
+    ImGui::Dummy(ImVec2(0, 20));
+
+    if (ImGui::Button(("Color Mode: %s", (ParticlesPtr->Colormode ? "positional" : "color blend"))))
+        ParticlesPtr->Colormode = !ParticlesPtr->Colormode;
+    
+    ImGui::Dummy(ImVec2(0, 7));
+
+    ImGui::ColorEdit4("From <- color", (float*)&ParticlesPtr->from_color);
+    ImGui::ColorEdit4("To -> color", (float*)&ParticlesPtr->to_color);
+
+    ImGui::Dummy(ImVec2(0, 5));
+
+    ImGui::InputFloat("From Scale", &ParticlesPtr->fromScale, 0.0, 1000);
+    ImGui::InputInt("Exponent", &ParticlesPtr->exponent, 0, 10);
 
     ImGui::End();
 }

@@ -51,9 +51,11 @@ class Particles
         float setMinmax;
         float setStep;
 
+        bool Colormode = false;
         glm::vec4 from_color = glm::vec4(0.0, 0.8157, 0.8824, 1.0);
         glm::vec4 to_color = glm::vec4(0.9373, 0.5882, 0.9137, 1.0);
         float fromScale = 150;
+        int exponent = 3;
 
         std::map<std::string, Constant> constants;
 
