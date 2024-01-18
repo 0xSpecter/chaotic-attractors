@@ -89,17 +89,9 @@ void Particles::renderPoints(float deltatime)
         for(unsigned int i = 0; i < Points.size(); i++)
         {
             size_t length = Points[i].trail.size();
-            std::vector<float> vertacies;
 
-            for(unsigned int j = 0; j < length; ++j)
-            {
-                vertacies.push_back(Points[i].trail[j].x);
-                vertacies.push_back(Points[i].trail[j].y);
-                vertacies.push_back(Points[i].trail[j].z);
-            }
-
-            glBufferData(GL_ARRAY_BUFFER, length * 3 * sizeof(float), vertacies.data(), GL_DYNAMIC_DRAW);
-            glDrawArrays(GL_LINE_STRIP, 0, length);
+            glBufferData(GL_ARRAY_BUFFER, length * sizeof(float), Points[i].trail.data(), GL_DYNAMIC_DRAW);
+            glDrawArrays(GL_LINE_STRIP, 0, length / 3);
         }
     }
 }
