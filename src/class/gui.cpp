@@ -78,13 +78,23 @@ void Gui::render(float deltaTime)
 
         ImGui::Text("Chaotic Attractors");
 
-        ImGui::Dummy(ImVec2(0, 15));
+        ImGui::Dummy(ImVec2(0, 5));
 
-        ImGui::SliderFloat("Scalar", &ParticlesPtr->Scale, 0.1, 10.0);
-        ImGui::SliderFloat("Speed", &ParticlesPtr->Speed, 0.0, 10.0);
-        ImGui::SliderFloat("Point Size", &ParticlesPtr->PointSize, 0.1, 100.0);
+        ImGui::Dummy(ImVec2(0, 2));
+        ImGui::SameLine();
+        if (!ParticlesPtr->Paused && ImGui::Button("Pause")) ParticlesPtr->Paused = true;
+        if (ParticlesPtr->Paused && ImGui::Button("Start")) ParticlesPtr->Paused = false;
 
-        ImGui::Dummy(ImVec2(0, 10));
+        ImGui::SameLine();
+        ImGui::Dummy(ImVec2(5, 0));
+        ImGui::SameLine();
+
+        if (ImGui::Button("Reset Points")) {
+            ParticlesPtr->Points = ParticlesPtr->PointsInital;
+            ParticlesPtr->LossCount = 0;
+        }
+
+        ImGui::Dummy(ImVec2(0, 12));
 
         if (ParticlesPtr->doCull) {
             ImGui::Text("Loss Count");
@@ -93,8 +103,9 @@ void Gui::render(float deltaTime)
 
         ImGui::Dummy(ImVec2(0, 10));
 
-        if (!ParticlesPtr->Paused && ImGui::Button("Pause")) ParticlesPtr->Paused = true;
-        if (ParticlesPtr->Paused && ImGui::Button("Start")) ParticlesPtr->Paused = false;
+        ImGui::SliderFloat("Scalar", &ParticlesPtr->Scale, 0.1, 10.0);
+        ImGui::SliderFloat("Speed", &ParticlesPtr->Speed, 0.0, 10.0);
+        ImGui::SliderFloat("Point Size", &ParticlesPtr->PointSize, 0.1, 100.0);
 
         ImGui::Dummy(ImVec2(0, 10));
 
@@ -103,11 +114,6 @@ void Gui::render(float deltaTime)
 
         ImGui::Dummy(ImVec2(0, 10));
 
-        if (ImGui::Button("Reset Points")) {
-            ParticlesPtr->Points = ParticlesPtr->PointsInital;
-            ParticlesPtr->LossCount = 0;
-        }
-        ImGui::SameLine();
         if (ImGui::Button("Redefine Points")) {
             ParticlesPtr->definePoints(static_cast<float>(minmax), static_cast<float>(step));
         }
@@ -366,10 +372,16 @@ void Gui::renderSetup(bool* confirmed)
     ImGui::InputDouble("MinMax", &minmax);
     ImGui::InputDouble("Step", &step);
 
+    ImGui::Dummy(ImVec2(0, 3));
+
     ImGui::Checkbox("Render Points", &ParticlesPtr->doRenderPoints);
     ImGui::Checkbox("Render Trails", &ParticlesPtr->doRenderTrails);
 
+    ImGui::Dummy(ImVec2(0, 4));
+
     ImGui::Checkbox("Blending", &blend);
+
+    ImGui::Dummy(ImVec2(0, 4));
 
     if (ImGui::Button("Confirm")) {
         ParticlesPtr->definePoints(static_cast<float>(minmax), static_cast<float>(step));
