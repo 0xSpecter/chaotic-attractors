@@ -1,6 +1,11 @@
 #include "camera.hpp"
 
-
+/**
+ * @brief Constructs a Camera object.
+ * 
+ * @param window The GLFW window.
+ * @param cameraInitalDistance The initial distance of the camera from the origin.
+ */
 Camera::Camera(GLFWwindow* window, float cameraInitalDistance)
 {
     Camera::window = window;
@@ -9,7 +14,11 @@ Camera::Camera(GLFWwindow* window, float cameraInitalDistance)
     updateCameraVectors();
 }
 
-// returns the view matrix
+/**
+ * @brief Returns the view matrix of the camera.
+ * 
+ * @return The view matrix.
+ */
 glm::mat4 Camera::GetViewMatrix()
 {
     glm::mat4 view = glm::lookAt(Position, Position + Front, Up);
@@ -29,7 +38,11 @@ glm::mat4 Camera::GetViewMatrix()
     return view;
 }
 
-// processes keyboard input
+/**
+ * @brief Processes keyboard input to move the camera.
+ * 
+ * @param deltaTime The time elapsed since the last frame.
+ */
 void Camera::ProcessInput(float deltaTime)
 {
     float sprint = (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS ? 20.0 : (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS ? 3.0 : 1.0));
@@ -46,7 +59,13 @@ void Camera::ProcessInput(float deltaTime)
     else if (Zoom > 75.0f) Zoom = 75.0f;
 }
 
-// processes mouse input
+/**
+ * @brief Processes mouse input to rotate the camera.
+ * 
+ * @param xpos The x-coordinate of the mouse position.
+ * @param ypos The y-coordinate of the mouse position.
+ * @param IgnoreMouse Flag to ignore mouse input.
+ */
 void Camera::ProcessMouseInput(double xpos, double ypos, bool IgnoreMouse)
 {   
     if (IgnoreMouse) {
@@ -78,7 +97,9 @@ void Camera::ProcessMouseInput(double xpos, double ypos, bool IgnoreMouse)
     updateCameraVectors();
 }
 
-// update values
+/**
+ * @brief Updates the camera vectors based on the current yaw and pitch angles.
+ */
 void Camera::updateCameraVectors()
 {
     // calculate the new Front vector
@@ -92,6 +113,11 @@ void Camera::updateCameraVectors()
     Up    = glm::normalize(glm::cross(Right, Front));
 }
 
+/**
+ * @brief Returns the current zoom level of the camera.
+ * 
+ * @return The zoom level.
+ */
 float Camera::getZoom()
 {
     return Zoom;
