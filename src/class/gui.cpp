@@ -170,7 +170,7 @@ void Gui::setEquation(Equations newEquation)
     for (unsigned int i = 0; i < ParticlesPtr->equationConstants[newEquation].size(); i++)
     {
         datapoint data = ParticlesPtr->equationConstants[newEquation][i];
-        ParticlesPtr->constants[letters.substr(i, 1)] = Constant{data.value, data.min, data.max, data.value, false, 0.1f};
+        ParticlesPtr->constants[letters.substr(i, 1)] = Constant{data.value, data.min, data.max, data.value};
     }
 }
 
@@ -192,13 +192,7 @@ void Gui::renderConstants()
             
             if (ImGui::Button((std::string("Reset ") + pair.first).c_str())) 
                 ParticlesPtr->constants[pair.first].value = ParticlesPtr->constants[pair.first].inital;
-            
-            ImGui::SameLine(); 
-            
-            ImGui::Checkbox((std::string("Scale ") + pair.first).c_str(), &ParticlesPtr->constants[pair.first].scaling);
-            ImGui::SameLine(); 
-            ImGui::SetNextItemWidth(60);
-            ImGui::InputFloat((std::string("Speed ") + pair.first).c_str(), &ParticlesPtr->constants[pair.first].scalingSpeed);
+                        
         }
     } else ImGui::Text("No constants created");
 

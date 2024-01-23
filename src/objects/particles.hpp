@@ -18,9 +18,6 @@ struct Constant
     float min;
     float max;
     float inital;
-    
-    bool scaling;
-    float scalingSpeed;
 };
 
 struct datapoint
@@ -195,7 +192,6 @@ class Particles
         std::vector<float> vectorVertices;
 
         void movePointByEquation(float timestep, Point* point);
-        void updateScalingConstants();
         std::vector<float> getSphereVertices();
 
         void configureShaderMatrix(unsigned int location = 0);
