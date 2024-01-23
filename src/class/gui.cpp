@@ -321,6 +321,13 @@ void Gui::renderWorldTransform()
     ImGui::SliderFloat("Rotate Y", &camera->RotateY, 0.0f, 360.0f);
     ImGui::SliderFloat("Rotate Z", &camera->RotateZ, 0.0f, 360.0f);
 
+    ImGui::Dummy(ImVec2(0, 10));
+
+    ImGui::Checkbox("Pan Around", &camera->doPanRot);
+    ImGui::SliderFloat("Pan Speed", &camera->panSpeed, 0.0f, 1.0f);
+    ImGui::InputFloat3("Pan Axie", &camera->panAxie[0]);
+    ImGui::InputFloat3("Pan Offset", &camera->panOffset[0]);
+
     ImGui::End();
 }
 

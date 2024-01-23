@@ -17,6 +17,15 @@ glm::mat4 Camera::GetViewMatrix()
     view = glm::rotate(view, glm::radians(RotateY), glm::vec3(0.0f, 1.0f, 0.0f));
     view = glm::rotate(view, glm::radians(RotateZ), glm::vec3(0.0f, 0.0f, 1.0f));
 
+    if (doPanRot) 
+    {
+        view = glm::rotate(prevView, glm::radians(panSpeed), glm::vec3(panAxie[0], panAxie[1], panAxie[2]));
+        
+        prevView = view;
+        
+        view = glm::translate(view, glm::vec3(panOffset[0], panOffset[1], panOffset[2]));
+    } else prevView = view;
+
     return view;
 }
 

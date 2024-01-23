@@ -36,6 +36,12 @@ class Camera
         float RotateY = 0.0f; // is deg
         float RotateZ = 0.0f;
 
+        bool doPanRot = false;
+        float panSpeed = 0.01f;
+        float panAxie[3] = {0.0f, 1.0f, 0.0f}; // x, y, z
+        float panOffset[3] = {0.0f, 0.0f, 0.0f}; // x, y, z
+        glm::mat4 prevView;
+
         Camera(GLFWwindow* window, float cameraInitalDistance = 5.0f);
         glm::mat4 GetViewMatrix();
 
