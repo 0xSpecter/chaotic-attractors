@@ -48,7 +48,7 @@ class Particles
         float setMinmax;
         float setStep;
 
-        bool Colormode = false;
+        bool Colormode = true;
         glm::vec4 from_color = glm::vec4(0.0, 0.8157, 0.8824, 1.0);
         glm::vec4 to_color = glm::vec4(0.9373, 0.5882, 0.9137, 1.0);
         float fromScale = 150;
@@ -156,7 +156,7 @@ class Particles
         const char* equationInfo[20][2] {
             {"Lorenz", "Classic three-dimensional attractor known for its butterfly shape."},
             {"Aizawa", "Compact attractor with intriguing patterns and smaller spatial footprint."},
-            {"Aizawa Circle", "Circular variant of the Aizawa attractor, forming distinct circular trajectories."},
+            {"Aizawa Circle", "Circular variant of the Aizawa attractor"},
             {"Chen", "Dynamic attractor with potential need for speed adjustment to reveal intricate details."},
             {"Lu Chen", "Complex attractor that may benefit from speed adjustment for enhanced visualization."},
             {"Newton Leipnik", "Fascinating attractor exhibiting unique geometric patterns."},
@@ -165,7 +165,7 @@ class Particles
             {"Chen Lee", "Attractor with nuanced behavior that requires some observation time."},
             {"Bouali", "Memory-laden attractor, details are not easily recalled."},
             {"Finance", "Financially-inspired attractor with patterns resembling market fluctuations."},
-            {"Thomas", "Attractor that might benefit from increased initial speed, exhibiting gradual unfolding."},
+            {"Thomas", "Attractor that might benefit from increased initial speed, also scaling down the constant creates a cool effect"},
             {"Rössler", "Classic attractor characterized by its simple yet captivating dynamics."},
             {"Dadras", "Details about this attractor are to be determined."},
             {"Rabinovich Fabrikant", "Details about this attractor are yet to be explored."},
