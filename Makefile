@@ -7,5 +7,11 @@ all:
 	@./main
 	@rm -f main
 
+obj: 
+	@$(CXX) $(CFLAGS) ./src/*.cpp ./src/**/*.cpp -l glfw3 -L./lib $(FRAMEWORKS) -o main
+
+run: 
+	@./main
+
 clean:
 	@rm -f main imgui.ini

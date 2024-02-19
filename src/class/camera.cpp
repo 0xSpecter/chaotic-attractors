@@ -1,5 +1,7 @@
 #include "camera.hpp"
 
+// doc was created by copilot
+
 /**
  * @brief Constructs a Camera object.
  * 
