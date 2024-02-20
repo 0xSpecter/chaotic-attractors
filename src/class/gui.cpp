@@ -300,6 +300,19 @@ void Gui::renderGraphicsConfig()
         ImGui::EndCombo();
     }
 
+    ImGui::Dummy(ImVec2(0, 8));
+
+    if (ImGui::BeginCombo("Equation", currentBlendEquation.name)) {
+        for (int i = 0; i < blendEquationOptions.size(); ++i) 
+        {
+            if (ImGui::Selectable(blendEquationOptions[i].name)) {
+                glBlendEquation(blendEquationOptions[i].value);
+                currentBlendEquation = blendEquationOptions[i];
+            };
+        }
+        ImGui::EndCombo();
+    }
+
     ImGui::End();
 
     if (BLEND != glIsEnabled(GL_BLEND)) BLEND ? glEnable(GL_BLEND) : glDisable(GL_BLEND);

@@ -147,13 +147,13 @@ class Gui
         };
 
 
-        struct BlendFactor {
+        struct BlendOption {
             GLenum value;
             const char* name;
         };
 
-        BlendFactor currentSfactor = {GL_SRC_ALPHA, "GL_SRC_ALPHA"};
-        std::vector<BlendFactor> sfactorOptions = {
+        BlendOption currentSfactor = {GL_SRC_ALPHA, "GL_SRC_ALPHA"};
+        std::vector<BlendOption> sfactorOptions = {
             {GL_ZERO, "GL_ZERO"},
             {GL_ONE, "GL_ONE"},
             {GL_SRC_COLOR, "GL_SRC_COLOR"},
@@ -171,8 +171,8 @@ class Gui
             {GL_SRC_ALPHA_SATURATE, "GL_SRC_ALPHA_SATURATE"}
         };
 
-        BlendFactor currentDfactor = {GL_ONE, "GL_ONE"};
-        std::vector<BlendFactor> dfactorOptions = {
+        BlendOption currentDfactor = {GL_ONE, "GL_ONE"};
+        std::vector<BlendOption> dfactorOptions = {
             {GL_ZERO, "GL_ZERO"},
             {GL_ONE, "GL_ONE"},
             {GL_SRC_COLOR, "GL_SRC_COLOR"},
@@ -187,6 +187,16 @@ class Gui
             {GL_ONE_MINUS_CONSTANT_COLOR, "GL_ONE_MINUS_CONSTANT_COLOR"},
             {GL_CONSTANT_ALPHA, "GL_CONSTANT_ALPHA"},
             {GL_ONE_MINUS_CONSTANT_ALPHA, "GL_ONE_MINUS_CONSTANT_ALPHA"}
+        };
+
+
+        BlendOption currentBlendEquation = {GL_FUNC_ADD, "GL_FUNC_ADD"};
+        std::vector<BlendOption> blendEquationOptions = {
+            {GL_FUNC_ADD, "GL_FUNC_ADD"},
+            {GL_FUNC_SUBTRACT, "GL_FUNC_SUBTRACT"},
+            {GL_FUNC_REVERSE_SUBTRACT, "GL_FUNC_REVERSE_SUBTRACT"},
+            {GL_MIN, "GL_MIN"},
+            {GL_MAX, "GL_MAX"}
         };
 
         void renderConstants();
