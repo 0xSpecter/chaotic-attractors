@@ -9,9 +9,11 @@ all:
 
 obj: 
 	@$(CXX) $(CFLAGS) ./src/*.cpp ./src/**/*.cpp -l glfw3 -L./lib $(FRAMEWORKS) -o main
+	$(info creating obj file)
 
 run: 
 	@./main
+	$(info running obj)
 
 clean:
 	@rm -f main imgui.ini
