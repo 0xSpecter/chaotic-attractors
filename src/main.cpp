@@ -76,7 +76,7 @@ void Mainloop()
         glfwPollEvents();
     }
 }
-
+// ;w;
 
 GLFWwindow* init()
 {

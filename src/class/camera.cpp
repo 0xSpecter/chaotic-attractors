@@ -48,7 +48,7 @@ glm::mat4 Camera::GetViewMatrix()
 void Camera::ProcessInput(float deltaTime)
 {
     float sprint = (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS ? 20.0 : (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS ? 3.0 : 1.0));
-    float velocity = deltaTime * MovementSpeed * sprint;
+    float velocity = deltaTime * MovementSpeed * sprint / ((glfwGetKey(window, GLFW_KEY_CAPS_LOCK) == GLFW_PRESS) ? 4.0 : 1.0);
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) Position += Front * velocity;
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) Position -= Front * velocity;
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) Position -= Right * velocity;
@@ -56,7 +56,7 @@ void Camera::ProcessInput(float deltaTime)
 
     if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) Zoom -= 1.0f;
     if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) Zoom += 1.0f;
-
+    
     if (Zoom < 0.5f) Zoom = 0.5f;
     else if (Zoom > 75.0f) Zoom = 75.0f;
 }
