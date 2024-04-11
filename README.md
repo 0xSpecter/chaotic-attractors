@@ -10,18 +10,24 @@
 
 ![Aizawa Attractor](./md/aizawa.webp)
 
+> videos are outdated
 ---
 
 ## *Running the simulation*
 
 #### **Only runs on MAC**
 
-> All libraries are already setup (VScode superiority)
+> All libraries are already setup
 
-after downloading the repo run **'make'** in bash at the project root
+after downloading the repo run **'make obj'** in bash at the project root
 
 ``` bash
-make
+make obj
+```
+
+this will create an object file to be run with **'make run'**
+``` bash
+make run
 ```
 
 **Say No** to any extension popups, (they *will* break stuff) 
